@@ -1,0 +1,89 @@
+# SwiftLint configuration for Loosening Worry
+# https://github.com/realm/SwiftLint
+
+included:
+  - LooseningWorry
+  - LooseningWorryTests
+
+excluded:
+  - DerivedData
+  - .build
+  - .swiftpm
+  - Pods
+  - Carthage
+
+# Align with Swift 6 strict concurrency expectations
+strict: true
+
+opt_in_rules:
+  - array_init
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - joined_default_parameter
+  - last_where
+  - literal_expression_end_indentation
+  - multiline_arguments
+  - multiline_parameters
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - toggle_bool
+  - trailing_closure
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+disabled_rules:
+  - todo
+  - trailing_comma
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+
+type_body_length:
+  warning: 300
+  error: 400
+
+file_length:
+  warning: 500
+  error: 1000
+
+function_body_length:
+  warning: 60
+  error: 100
+
+identifier_name:
+  min_length:
+    warning: 2
+  excluded:
+    - id
+    - x
+    - y
+    - z
+
+# SwiftFormat's wrapMultilineStatementBraces puts the brace of a wrapped
+# if/guard/while condition on its own line
+opening_brace:
+  ignore_multiline_statement_conditions: true
+
+large_tuple:
+  warning: 3
+  error: 4
+
+reporter: xcode

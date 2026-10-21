@@ -1,0 +1,7 @@
+schemaVersion: 1
+
+# Enable the ui-automation workflow alongside other workflows
+enabledWorkflows:
+  - simulator
+  - ui-automation
+  - debugging

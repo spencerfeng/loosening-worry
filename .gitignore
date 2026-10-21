@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+
+# Xcode user state and build output
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcresult
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# XcodeGen output — project.yml is the source of truth.
+# Ignore the generated project, but keep the SwiftPM lockfile committed.
+LooseningWorry.xcodeproj/*
+!LooseningWorry.xcodeproj/project.xcworkspace/
+LooseningWorry.xcodeproj/project.xcworkspace/*
+!LooseningWorry.xcodeproj/project.xcworkspace/xcshareddata/
+LooseningWorry.xcodeproj/project.xcworkspace/xcshareddata/*
+!LooseningWorry.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+LooseningWorry.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!LooseningWorry.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+LooseningWorry/Info.plist
+LooseningWorry/LooseningWorry.entitlements
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Editors
+.vscode/
+.idea/

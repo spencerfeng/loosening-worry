@@ -1,0 +1,18 @@
+# SwiftFormat configuration for Loosening Worry
+# https://github.com/nicklockwood/SwiftFormat
+
+--swiftversion 6.4
+--indent 4
+--maxwidth 120
+--linebreaks lf
+
+# Match SwiftLint multiline argument/parameter preferences
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--wrapconditions before-first
+
+# SwiftLint disables the trailing_comma rule
+--trailingcommas multi-element-lists
+
+--exclude DerivedData,.build,.swiftpm,Pods,Carthage
