@@ -1,0 +1,3 @@
+// Shared build settings. CI writes MARKETING_VERSION here; keep it out of project.yml.
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
