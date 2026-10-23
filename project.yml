@@ -71,5 +71,8 @@ schemes:
       targets:
         - LooseningWorryTests
       gatherCoverageData: true
+      environmentVariables:
+        # Where the compiler writes the app target's extracted strings; LocalizationCatalogTests reads them.
+        LOCALIZATION_STRINGSDATA_DIR: $(OBJROOT)/LooseningWorry.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/LooseningWorry.build
       coverageTargets:
         - LooseningWorry

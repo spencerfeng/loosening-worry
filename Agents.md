@@ -69,14 +69,25 @@ xcstringstool sync LooseningWorry/Resources/Localizable.xcstrings "${args[@]}"
 The file you pass to `sync` must be *named* `Localizable.xcstrings` — the tool matches stringsdata
 tables by filename and silently syncs nothing against a differently-named copy.
 
-`LocalizationCatalogTests` fails if a key referenced in source is marked stale, if a
-`String(localized:)` key is missing from the catalog, or if the trailing newline comes back.
+`LocalizationCatalogTests` fails if a key referenced in source is marked stale, if a key referenced in
+source is missing from the catalog, or if the trailing newline comes back. "Referenced in source" means
+every key the compiler extracted into the `Localizable` table — `Text("…")`, `String(localized:)` and the
+rest — read from the app target's `.stringsdata`. The test scheme passes their location in
+`LOCALIZATION_STRINGSDATA_DIR` (set in `project.yml`); files whose source has since been deleted are
+skipped. If the build extracted no `Localizable` keys the two key checks fail rather than pass on an empty
+set. A separate test fails if `project.yml` stops setting `SWIFT_EMIT_LOC_STRINGS: YES`, which an
+incremental build would otherwise hide behind the previous build's `.stringsdata`.
 
 ## XcodeBuildMCP Integration
 **IMPORTANT**: This project uses XcodeBuildMCP for all Xcode operations.
 - Build: `mcp__xcodebuildmcp__build_sim_name_proj`
 - Test: `mcp__xcodebuildmcp__test_sim_name_proj`
 - Clean: `mcp__xcodebuildmcp__clean`
+
+**Always pass `-collect-test-diagnostics never` when running tests** — as an extra argument to the
+XcodeBuildMCP test tool, or directly on `xcodebuild test`. By default `xcodebuild` collects simulator
+diagnostics (`simctl diagnose`) whenever a test fails, and with Xcode 27.1 that step intermittently stalls
+until its 600-second timeout, so a failing run takes ten minutes to report. Passing runs are unaffected.
 
 ## Project Structure
 

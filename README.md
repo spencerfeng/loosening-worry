@@ -28,6 +28,16 @@ Then install the git hook once per clone:
 ./Scripts/install-git-hooks.sh
 ```
 
+## Running tests
+
+```bash
+xcodebuild test -project LooseningWorry.xcodeproj -scheme LooseningWorry \
+  -destination 'platform=iOS Simulator,name=iPhone Duo' -collect-test-diagnostics never
+```
+
+Keep `-collect-test-diagnostics never`. Without it, a failing run makes `xcodebuild` collect simulator
+diagnostics, which with Xcode 27.1 often stalls for up to ten minutes before the result appears.
+
 ## Code style
 
 SwiftFormat and SwiftLint are configured by `.swiftformat` and `.swiftlint.yml` at the repo root, and
