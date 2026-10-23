@@ -122,7 +122,8 @@ Useful variants:
 - SwiftLint auto-fix (safe fixes only): `swiftlint --fix`
 - Fail on warnings: `swiftlint --strict` (also enabled in `.swiftlint.yml`)
 
-**Git pre-commit hook** (formats and lints staged `.swift` files; skips commits with no staged Swift):
+**Git pre-commit hook** (normalizes the string catalog when it is staged; formats and lints staged `.swift`
+files under `LooseningWorry/` and `LooseningWorryTests/`, skipping those steps when none are staged):
 
 ```bash
 ./Scripts/install-git-hooks.sh   # once per clone

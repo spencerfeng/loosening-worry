@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+require_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "pre-commit: '$1' not found. $2" >&2
+    exit 1
+  fi
+}
+
+# Staged paths matching the given pathspecs that still exist to check: added, copied, modified or
+# renamed. NUL-separated, so filenames git would otherwise quote come through intact.
+staged_files() {
+  git diff --cached --name-only -z --diff-filter=ACMR -- "$@"
+}
+
+catalog="LooseningWorry/Resources/Localizable.xcstrings"
+
+# The catalog is stored in Xcode's collation. `xcstringstool sync` writes a different one, so a
+# hand-sync would otherwise commit the whole file reordered. Normalizing here means either writer
+# can touch it and the diff still shows only what changed. See "String catalog" in Agents.md.
+if [[ -n "$(staged_files "$catalog" | tr -d '\0')" && -f "$catalog" ]]; then
+  require_command swift "Install the Xcode command line tools: xcode-select --install"
+
+  echo "pre-commit: normalizing the string catalog..."
+  swift Scripts/normalize-string-catalog.swift "$catalog"
+  git add -- "$catalog"
+fi
+
+# SwiftFormat and SwiftLint cover the app and test sources only. See "Code Style" in Agents.md.
+swift_files=()
+while IFS= read -r -d '' file; do
+  if [[ -f "$file" ]]; then
+    swift_files+=("$file")
+  fi
+done < <(staged_files 'LooseningWorry/*.swift' 'LooseningWorryTests/*.swift')
+
+if ((${#swift_files[@]} == 0)); then
+  exit 0
+fi
+
+require_command swiftformat "Install with: brew install swiftformat"
+require_command swiftlint "Install with: brew install swiftlint"
+
+echo "pre-commit: formatting ${#swift_files[@]} Swift file(s) with SwiftFormat..."
+swiftformat "${swift_files[@]}"
+
+echo "pre-commit: re-staging formatted Swift file(s)..."
+git add -- "${swift_files[@]}"
+
+echo "pre-commit: linting ${#swift_files[@]} Swift file(s) with SwiftLint..."
+# --no-cache avoids a non-zero exit when SwiftLint cannot write its SourceKit cache.
+swiftlint lint --strict --no-cache -- "${swift_files[@]}"
+
+echo "pre-commit: Swift checks passed."
