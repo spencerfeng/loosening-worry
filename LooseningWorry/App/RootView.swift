@@ -59,4 +59,6 @@ private struct LogSheetPlaceholder: View {
 
 #Preview {
     RootView()
+        // swiftlint:disable:next force_try
+        .modelContainer(try! AppModelContainer.make(inMemory: true))
 }

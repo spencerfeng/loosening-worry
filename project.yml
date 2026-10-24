@@ -32,6 +32,18 @@ targets:
           - Figtree-SemiBold.ttf
           - Figtree-Bold.ttf
           - Figtree-ExtraBold.ttf
+        # CloudKit pushes remote changes silently; this lets SwiftData pick them up in the background.
+        UIBackgroundModes:
+          - remote-notification
+    entitlements:
+      path: LooseningWorry/LooseningWorry.entitlements
+      properties:
+        aps-environment: development
+        # Must match AppModelContainer.iCloudContainer.
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.spencerfeng.looseningworry
+        com.apple.developer.icloud-services:
+          - CloudKit
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.spencerfeng.looseningworry
