@@ -22,7 +22,7 @@ struct RootView: View {
         }
         .tint(.theme(.accent))
         .sheet(isPresented: $model.isLogSheetPresented) {
-            LogSheetPlaceholder()
+            LogLoopView()
         }
     }
 }
@@ -38,22 +38,6 @@ private struct PlaceholderScreen: View {
             .padding(20)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(.theme(.background))
-    }
-}
-
-/// Stands in for the Log a loop flow until M2.
-private struct LogSheetPlaceholder: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            PlaceholderScreen(title: "Log a loop")
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(role: .close) { dismiss() }
-                    }
-                }
-        }
     }
 }
 

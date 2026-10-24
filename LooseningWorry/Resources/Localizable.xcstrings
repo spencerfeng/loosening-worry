@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "All done" : {
+
+    },
+    "Choose below" : {
+
+    },
     "Home" : {
 
     },
@@ -11,6 +17,108 @@
 
     },
     "Log a loop" : {
+
+    },
+    "log.behavior.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The habit that kicked in."
+          }
+        }
+      }
+    },
+    "log.behavior.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What did you do?"
+          }
+        }
+      }
+    },
+    "log.behavior.summary" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What you did"
+          }
+        }
+      }
+    },
+    "log.result.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Take one breath and notice how it really feels."
+          }
+        }
+      }
+    },
+    "log.result.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What did it actually give you?"
+          }
+        }
+      }
+    },
+    "log.result.summary" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What it gave you"
+          }
+        }
+      }
+    },
+    "log.trigger.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pick the closest one."
+          }
+        }
+      }
+    },
+    "log.trigger.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What set you off?"
+          }
+        }
+      }
+    },
+    "log.trigger.summary" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What set you off"
+          }
+        }
+      }
+    },
+    "Not answered yet" : {
 
     },
     "starter.behavior.askedForReassurance" : {
@@ -273,6 +381,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Work email"
+          }
+        }
+      }
+    },
+    "Step %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
           }
         }
       }

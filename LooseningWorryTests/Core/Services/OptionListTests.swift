@@ -118,6 +118,32 @@ struct OptionListTests {
         #expect(choices.contains { $0.starterID == "trigger.news" })
     }
 
+    /// Two devices can each save the same text before they sync.
+    @Test
+    func `two custom options with the same text appear once, as the newer`() {
+        let older = LoopOption(kind: .trigger, label: "Rent due")
+        older.createdAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let newer = LoopOption(kind: .trigger, label: "Rent due")
+        newer.createdAt = Date(timeIntervalSince1970: 1_800_100_000)
+
+        let choices = OptionList.choices(for: .trigger, saved: [older, newer])
+
+        #expect(choices.first == OptionChoice(label: "Rent due", starterID: nil))
+        #expect(choices.count { $0.label == "Rent due" } == 1)
+    }
+
+    @Test
+    func `a starter renamed to another starter's text appears once, in its own place`() throws {
+        let deadline = try #require(StarterOption.with(id: "trigger.deadline"))
+        let label = String(localized: deadline.label)
+        let rename = LoopOption(kind: .trigger, label: label, starterID: "trigger.news")
+
+        let choices = OptionList.choices(for: .trigger, saved: [rename])
+
+        #expect(choices.filter { $0.label == label } == [OptionChoice(label: label, starterID: "trigger.news")])
+        #expect(choices.count == StarterOption.options(for: .trigger).count - 1)
+    }
+
     @Test
     func `only options of the requested kind appear`() {
         let behavior = LoopOption(kind: .behavior, label: "Paced around")

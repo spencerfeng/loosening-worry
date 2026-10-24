@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-enum OptionKind: String, Codable {
+enum OptionKind: String, Codable, CaseIterable {
     case trigger, behavior, result
 }
 

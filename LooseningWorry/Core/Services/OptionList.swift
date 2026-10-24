@@ -10,14 +10,13 @@ struct OptionChoice: Equatable {
 /// Combines the starters with what the person saved into the choices the logger shows.
 enum OptionList {
     /// The person's own options come first, newest first, then the starters with their changes applied. Hidden
-    /// options are left out, and a starter whose text matches one of their own exactly (case included) appears only
-    /// once, as theirs.
+    /// options are left out, and each text (case included) appears only once, in its first place, so a starter
+    /// matching one of their own appears as theirs.
     static func choices(for kind: OptionKind, saved: [LoopOption]) -> [OptionChoice] {
         let ofKind = saved.filter { $0.kind == kind }
-        let custom = customChoices(in: ofKind)
-        let customLabels = Set(custom.map(\.label))
-        let starters = starterChoices(for: kind, overrides: newestOverrides(in: ofKind))
-        return custom + starters.filter { !customLabels.contains($0.label) }
+        let all = customChoices(in: ofKind) + starterChoices(for: kind, overrides: newestOverrides(in: ofKind))
+        var seen: Set<String> = []
+        return all.filter { seen.insert($0.label).inserted }
     }
 
     private static func customChoices(in saved: [LoopOption]) -> [OptionChoice] {
