@@ -29,6 +29,8 @@ extension Theme {
         case accentWash, accentBorder
         /// Tints the soft shadows under accent elements; the same blue in light and dark, used at low opacity.
         case accentShadow
+        /// The dashed outline of an accent action that adds something, such as "+ Add your own".
+        case accentOutline
         // Hues, named by colour, not by the tool that uses them
         case greenStrong, greenTint, greenOnTint
         case amberStrong, amberTint, amberOnTint
@@ -57,6 +59,7 @@ extension Theme {
             case .accentWash: .accentWash
             case .accentBorder: .accentBorder
             case .accentShadow: .accentShadow
+            case .accentOutline: .accentOutline
             case .greenStrong: .greenStrong
             case .greenTint: .greenTint
             case .greenOnTint: .greenOnTint
@@ -91,7 +94,7 @@ extension Theme {
 
     /// The type scale (ADR 0002). Each style is named after, and scales with, the system style of the same name.
     enum TextStyle: CaseIterable, Sendable {
-        case largeTitle, title, title3, headline, body, callout, subheadline, footnote, caption2
+        case largeTitle, title, title3, headline, body, callout, subheadline, footnote, caption, caption2
 
         var metrics: TextMetrics {
             switch self {
@@ -103,6 +106,7 @@ extension Theme {
             case .callout: TextMetrics(face: .bold, size: 15, scalesWith: .callout)
             case .subheadline: TextMetrics(face: .bold, size: 14, scalesWith: .subheadline)
             case .footnote: TextMetrics(face: .semiBold, size: 13, scalesWith: .footnote)
+            case .caption: TextMetrics(face: .regular, size: 13, scalesWith: .caption)
             case .caption2: TextMetrics(face: .semiBold, size: 11, scalesWith: .caption2)
             }
         }

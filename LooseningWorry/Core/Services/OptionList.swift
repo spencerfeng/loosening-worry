@@ -19,6 +19,16 @@ enum OptionList {
         return all.filter { seen.insert($0.label).inserted }
     }
 
+    /// The hidden option of this kind that would show exactly this text if it came back: one of the person's own,
+    /// or a starter whose newest change hides it. A hidden option keeps its full text, so that text is what matches.
+    static func hiddenOption(matching label: String, for kind: OptionKind, saved: [LoopOption]) -> LoopOption? {
+        let ofKind = saved.filter { $0.kind == kind }
+        if let custom = ofKind.first(where: { $0.starterID == nil && $0.isHidden && $0.label == label }) {
+            return custom
+        }
+        return newestOverrides(in: ofKind).values.first { $0.isHidden && $0.label == label }
+    }
+
     private static func customChoices(in saved: [LoopOption]) -> [OptionChoice] {
         saved
             .filter { $0.starterID == nil && !$0.isHidden }

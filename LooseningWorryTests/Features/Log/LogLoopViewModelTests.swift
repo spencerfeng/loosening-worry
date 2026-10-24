@@ -183,3 +183,207 @@ struct LogLoopViewModelTests {
         #expect(model.currentStep == nil)
     }
 }
+
+// MARK: - Add your own
+
+@MainActor
+struct LogLoopAddOwnTests {
+    @Test
+    func `the add-your-own field opens and closes, and closing clears the draft`() {
+        let model = LogLoopViewModel()
+        #expect(model.isAddingOwn == false)
+
+        model.toggleAddOwn()
+        model.draft = "Rent due"
+        #expect(model.isAddingOwn)
+
+        model.toggleAddOwn()
+        #expect(model.isAddingOwn == false)
+        #expect(model.draft.isEmpty)
+    }
+
+    @Test
+    func `adding new text saves it and picks it`() {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = "Rent due"
+
+        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+
+        #expect(saved == ["Rent due"])
+        #expect(model.answer(for: .trigger) == "Rent due")
+        #expect(model.currentStep == .behavior)
+        #expect(model.isAddingOwn == false)
+        #expect(model.draft.isEmpty)
+    }
+
+    @Test
+    func `adding text that matches an option exactly picks it without saving a duplicate`() {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = "News"
+
+        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+
+        #expect(saved.isEmpty)
+        #expect(model.answer(for: .trigger) == "News")
+        #expect(model.currentStep == .behavior)
+    }
+
+    @Test
+    func `text that differs from an option only in case is a new option`() {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = "news"
+
+        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+
+        #expect(saved == ["news"])
+        #expect(model.answer(for: .trigger) == "news")
+    }
+
+    @Test
+    func `spaces around the text are trimmed before it is matched or saved`() {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        let existing = [OptionChoice(label: "News", starterID: "trigger.news")]
+
+        model.toggleAddOwn()
+        model.draft = "  News "
+        model.addOwn(existing: existing) { saved.append($1) }
+        #expect(saved.isEmpty)
+        #expect(model.answer(for: .trigger) == "News")
+
+        model.toggleAddOwn()
+        model.draft = " Paced around\n"
+        model.addOwn(existing: existing) { saved.append($1) }
+        #expect(saved == ["Paced around"])
+        #expect(model.answer(for: .behavior) == "Paced around")
+    }
+
+    @Test(arguments: ["", "   ", "\n"])
+    func `blank text adds nothing and keeps the field open`(draft: String) {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = draft
+
+        model.addOwn(existing: []) { saved.append($1) }
+
+        #expect(saved.isEmpty)
+        #expect(model.answer(for: .trigger) == nil)
+        #expect(model.isAddingOwn)
+    }
+
+    @Test
+    func `picking a chip closes the field and drops the draft`() {
+        let model = LogLoopViewModel()
+        model.toggleAddOwn()
+        model.draft = "Rent"
+
+        model.pick("News")
+
+        #expect(model.isAddingOwn == false)
+        #expect(model.draft.isEmpty)
+    }
+
+    @Test
+    func `reopening a step closes the field and drops the draft`() {
+        let model = LogLoopViewModel()
+        model.pick("News")
+        model.toggleAddOwn()
+        model.draft = "Paced"
+
+        model.goTo(.trigger)
+
+        #expect(model.isAddingOwn == false)
+        #expect(model.draft.isEmpty)
+    }
+
+    @Test(arguments: [("", false), ("  ", false), ("Rent", true), (" Rent ", true)])
+    func `adding is possible only once something is typed`(draft: String, canAdd: Bool) {
+        let model = LogLoopViewModel()
+        model.toggleAddOwn()
+
+        model.draft = draft
+
+        #expect(model.canAddOwn == canAdd)
+    }
+
+    @Test
+    func `a new option is saved under the step being asked`() {
+        let model = LogLoopViewModel()
+        model.pick("News")
+        var savedKinds: [OptionKind] = []
+        model.toggleAddOwn()
+        model.draft = "Paced around"
+
+        model.addOwn(existing: []) { kind, _ in savedKinds.append(kind) }
+
+        #expect(savedKinds == [.behavior])
+    }
+
+    @Test
+    func `nothing is added once the loop is finished`() {
+        let model = LogLoopViewModel()
+        model.pick("News")
+        model.pick("Scrolled")
+        model.pick("More worry")
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = "Rent due"
+
+        model.addOwn(existing: []) { saved.append($1) }
+
+        #expect(saved.isEmpty)
+    }
+
+    @Test
+    func `spaces inside the text count when matching`() {
+        let model = LogLoopViewModel()
+        var saved: [String] = []
+        model.toggleAddOwn()
+        model.draft = "Work  email"
+
+        model.addOwn(existing: [OptionChoice(label: "Work email", starterID: "trigger.workEmail")]) { saved.append($1) }
+
+        #expect(saved == ["Work  email"])
+    }
+
+    /// A failed save loses only the option for next time; the loop still gets the answer.
+    @Test
+    func `when saving fails, the text is still picked and the person is told it wasn't kept`() {
+        struct SaveFailed: Error {}
+        let model = LogLoopViewModel()
+        model.toggleAddOwn()
+        model.draft = "Rent due"
+
+        model.addOwn(existing: []) { _, _ in throw SaveFailed() }
+
+        #expect(model.answer(for: .trigger) == "Rent due")
+        #expect(model.currentStep == .behavior)
+        #expect(model.unsavedOption == "Rent due")
+    }
+
+    enum NextAction: CaseIterable { case pick, reopen, openField }
+
+    @Test(arguments: NextAction.allCases)
+    func `the note that an option wasn't kept goes once the person moves on`(next: NextAction) {
+        struct SaveFailed: Error {}
+        let model = LogLoopViewModel()
+        model.toggleAddOwn()
+        model.draft = "Rent due"
+        model.addOwn(existing: []) { _, _ in throw SaveFailed() }
+
+        switch next {
+        case .pick: model.pick("Scrolled")
+        case .reopen: model.goTo(.trigger)
+        case .openField: model.toggleAddOwn()
+        }
+
+        #expect(model.unsavedOption == nil)
+    }
+}

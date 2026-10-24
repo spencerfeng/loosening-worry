@@ -12,6 +12,7 @@ struct ThemeTextStyleTests {
         .callout: .init(face: .bold, size: 15, scalesWith: .callout),
         .subheadline: .init(face: .bold, size: 14, scalesWith: .subheadline),
         .footnote: .init(face: .semiBold, size: 13, scalesWith: .footnote),
+        .caption: .init(face: .regular, size: 13, scalesWith: .caption),
         .caption2: .init(face: .semiBold, size: 11, scalesWith: .caption2),
     ]
 

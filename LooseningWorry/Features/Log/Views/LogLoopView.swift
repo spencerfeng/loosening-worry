@@ -11,33 +11,58 @@ struct LogLoopView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    LogSummaryCard(model: model) { step in
-                        withAnimation(stepAnimation) { model.goTo(step) }
-                    }
-                    if let cheer = model.cheer {
-                        LogCheerBadge(cheer: cheer)
-                            // A new badge for every pick, so it replays even when a step is answered again.
-                            .id(model.pickCount)
-                            // Sits closer to its neighbors than the stack's spacing.
-                            .padding(.top, -8)
-                            .padding(.bottom, -6)
-                            .transition(cheerTransition)
-                    }
-                    if let step = model.currentStep {
-                        LogQuestion(
-                            step: step,
-                            choices: OptionList.choices(for: step, saved: savedOptions),
-                            selected: model.answer(for: step),
-                        ) { label in
-                            withAnimation(stepAnimation) { model.pick(label) }
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        LogSummaryCard(model: model) { step in
+                            withAnimation(stepAnimation) { model.goTo(step) }
                         }
-                        .id(step)
-                        .transition(questionTransition)
+                        if let cheer = model.cheer {
+                            LogCheerBadge(cheer: cheer)
+                                // A new badge for every pick, so it replays even when a step is answered again.
+                                .id(model.pickCount)
+                                // Sits closer to its neighbors than the stack's spacing.
+                                .padding(.top, -8)
+                                .padding(.bottom, -6)
+                                .transition(cheerTransition)
+                        }
+                        if let label = model.unsavedOption {
+                            Text(Self.unsavedNote(label))
+                                .font(.theme(.caption))
+                                .foregroundStyle(.theme(.textSecondary))
+                        }
+                        if let step = model.currentStep {
+                            let choices = OptionList.choices(for: step, saved: savedOptions)
+                            LogQuestion(
+                                step: step,
+                                choices: choices,
+                                selected: model.answer(for: step),
+                                isAddingOwn: model.isAddingOwn,
+                                draft: $model.draft,
+                                canAddOwn: model.canAddOwn,
+                            ) { label in
+                                withAnimation(stepAnimation) { model.pick(label) }
+                            } toggleAddOwn: {
+                                model.toggleAddOwn()
+                            } addOwn: {
+                                withAnimation(stepAnimation) {
+                                    model.addOwn(existing: choices) { kind, label in
+                                        try OptionStore(context: modelContext).addOwn(label, kind: kind)
+                                    }
+                                }
+                            }
+                            .id(step)
+                            .transition(questionTransition)
+                        }
                     }
+                    .padding(20)
                 }
-                .padding(20)
+                // The keyboard covers the bottom of the sheet, so keep the add-your-own field and its Add button above
+                // it: when the field opens, and again once the keyboard has shrunk the visible area.
+                .onChange(of: model.isAddingOwn) { revealAddOwnField(with: proxy) }
+                .onGeometryChange(for: CGFloat.self) { $0.size.height - $0.safeAreaInsets.bottom } action: { _ in
+                    revealAddOwnField(with: proxy)
+                }
             }
             // Stays under the header while the questions scroll.
             .safeAreaInset(edge: .top, spacing: 0) {
@@ -58,7 +83,12 @@ struct LogLoopView: View {
             }
             .onChange(of: model.pickCount) {
                 if let cheer = model.cheer {
-                    AccessibilityNotification.Announcement(String(localized: cheer.message)).post()
+                    // One announcement, so the note about an unsaved option isn't cut off by the cheer.
+                    var announcement = String(localized: cheer.message)
+                    if let label = model.unsavedOption {
+                        announcement += " " + String(localized: Self.unsavedNote(label))
+                    }
+                    AccessibilityNotification.Announcement(announcement).post()
                 }
             }
             .onAppear {
@@ -66,6 +96,21 @@ struct LogLoopView: View {
                 model.loopsLogged = (try? modelContext.fetchCount(FetchDescriptor<Loop>())) ?? 0
             }
             .sensoryFeedback(.selection, trigger: model.pickCount)
+        }
+    }
+
+    /// Shown when an added option was picked but couldn't be saved to the person's list.
+    private static func unsavedNote(_ label: String) -> LocalizedStringResource {
+        LocalizedStringResource(
+            "log.addOwn.notSaved",
+            defaultValue: "Couldn't save \"\(label)\" to your list, but it's in this loop.",
+        )
+    }
+
+    private func revealAddOwnField(with proxy: ScrollViewProxy) {
+        guard model.isAddingOwn else { return }
+        withAnimation(stepAnimation) {
+            proxy.scrollTo(LogQuestion.addOwnFieldID, anchor: .bottom)
         }
     }
 
@@ -387,58 +432,6 @@ private struct SparkleShape: Shape {
 private struct SparklePose {
     var rotation = Angle.zero
     var scale: CGFloat = 1
-}
-
-/// The current step's question and its options; tapping one answers the step.
-private struct LogQuestion: View {
-    let step: OptionKind
-    let choices: [OptionChoice]
-    let selected: String?
-    let pick: (String) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(step.logCopy.question)
-                    .font(.theme(.title))
-                    .foregroundStyle(.theme(.textPrimary))
-                    .accessibilityAddTraits(.isHeader)
-                Text(step.logCopy.hint)
-                    .font(.theme(.body))
-                    .foregroundStyle(.theme(.textSecondary))
-            }
-            FlowLayout(spacing: 8) {
-                ForEach(choices, id: \.label) { choice in
-                    OptionChip(label: choice.label, isSelected: choice.label == selected) {
-                        pick(choice.label)
-                    }
-                }
-            }
-        }
-    }
-}
-
-private struct OptionChip: View {
-    let label: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(label)
-                .font(.theme(.headline))
-                .foregroundStyle(isSelected ? .theme(.textOnAccent) : .theme(.textPrimary))
-                .padding(.horizontal, 18)
-                .frame(minHeight: 48)
-                .background(isSelected ? .theme(.accent) : .theme(.surface), in: .capsule)
-                .overlay {
-                    Capsule().strokeBorder(isSelected ? .theme(.accent) : .theme(.border))
-                }
-                .contentShape(.capsule)
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
 }
 
 #if DEBUG

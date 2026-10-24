@@ -152,4 +152,48 @@ struct OptionListTests {
 
         #expect(choices.map(\.starterID) == StarterOption.options(for: .trigger).map(\.id))
     }
+
+    // MARK: - Hidden options
+
+    @Test
+    func `a hidden custom option is found by its text`() {
+        let hidden = LoopOption(kind: .trigger, label: "Rent due")
+        hidden.isHidden = true
+
+        #expect(OptionList.hiddenOption(matching: "Rent due", for: .trigger, saved: [hidden]) === hidden)
+    }
+
+    @Test
+    func `a hidden starter is found by the text it showed when hidden`() {
+        let hide = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
+        hide.isHidden = true
+
+        #expect(OptionList.hiddenOption(matching: "World news", for: .trigger, saved: [hide]) === hide)
+    }
+
+    @Test
+    func `only a hidden option of the same kind with exactly the same text is found`() {
+        let visible = LoopOption(kind: .trigger, label: "Rent due")
+        let otherKind = LoopOption(kind: .behavior, label: "Paced around")
+        otherKind.isHidden = true
+        let hidden = LoopOption(kind: .trigger, label: "Call from Mom")
+        hidden.isHidden = true
+        let saved = [visible, otherKind, hidden]
+
+        #expect(OptionList.hiddenOption(matching: "Rent due", for: .trigger, saved: saved) == nil)
+        #expect(OptionList.hiddenOption(matching: "Paced around", for: .trigger, saved: saved) == nil)
+        #expect(OptionList.hiddenOption(matching: "call from mom", for: .trigger, saved: saved) == nil)
+    }
+
+    /// Only the starter's newest change counts, so an older hide that a later rename replaced is not hidden.
+    @Test
+    func `a starter hidden once but changed since is not found`() {
+        let hide = LoopOption(kind: .trigger, label: "News", starterID: "trigger.news")
+        hide.isHidden = true
+        hide.updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let rename = LoopOption(kind: .trigger, label: "Headlines", starterID: "trigger.news")
+        rename.updatedAt = Date(timeIntervalSince1970: 1_800_100_000)
+
+        #expect(OptionList.hiddenOption(matching: "News", for: .trigger, saved: [hide, rename]) == nil)
+    }
 }

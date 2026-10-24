@@ -6,6 +6,10 @@ struct LogStepCopy {
     let summaryLabel: LocalizedStringResource
     let question: LocalizedStringResource
     let hint: LocalizedStringResource
+    /// Names the "+ Add your own" field for VoiceOver.
+    let addLabel: LocalizedStringResource
+    /// An example in the empty "+ Add your own" field.
+    let addPlaceholder: LocalizedStringResource
     /// Shown once the step is answered, rotated so each new loop gets the next one.
     let cheers: [LocalizedStringResource]
 
@@ -28,6 +32,11 @@ extension OptionKind {
                 summaryLabel: LocalizedStringResource("log.trigger.summary", defaultValue: "What set you off"),
                 question: LocalizedStringResource("log.trigger.question", defaultValue: "What set you off?"),
                 hint: LocalizedStringResource("log.trigger.hint", defaultValue: "Pick the closest one."),
+                addLabel: LocalizedStringResource("log.trigger.addLabel", defaultValue: "Add a trigger"),
+                addPlaceholder: LocalizedStringResource(
+                    "log.trigger.addPlaceholder",
+                    defaultValue: "e.g. Call from Mom",
+                ),
                 cheers: [
                     LocalizedStringResource("log.trigger.cheer1", defaultValue: "Spotted it. That's the first step."),
                     LocalizedStringResource(
@@ -45,6 +54,11 @@ extension OptionKind {
                 summaryLabel: LocalizedStringResource("log.behavior.summary", defaultValue: "What you did"),
                 question: LocalizedStringResource("log.behavior.question", defaultValue: "What did you do?"),
                 hint: LocalizedStringResource("log.behavior.hint", defaultValue: "The habit that kicked in."),
+                addLabel: LocalizedStringResource("log.behavior.addLabel", defaultValue: "Add a behavior"),
+                addPlaceholder: LocalizedStringResource(
+                    "log.behavior.addPlaceholder",
+                    defaultValue: "e.g. Reread my messages",
+                ),
                 cheers: [
                     LocalizedStringResource("log.behavior.cheer1", defaultValue: "Nice noticing. That's the habit."),
                     LocalizedStringResource(
@@ -68,6 +82,8 @@ extension OptionKind {
                     "log.result.hint",
                     defaultValue: "Take one breath and notice how it really feels.",
                 ),
+                addLabel: LocalizedStringResource("log.result.addLabel", defaultValue: "Add a result"),
+                addPlaceholder: LocalizedStringResource("log.result.addPlaceholder", defaultValue: "e.g. Felt numb"),
                 cheers: [
                     LocalizedStringResource(
                         "log.result.cheer1",

@@ -33,6 +33,7 @@ Styles take Apple's text style names. Each one scales relative to the system sty
 | `callout` | 15 / Bold | Links, secondary buttons |
 | `subheadline` | 14 / Bold | Chips, tile labels |
 | `footnote` | 13 / SemiBold | Metadata |
+| `caption` | 13 / Regular | Notes under a field |
 | `caption2` | 11 / SemiBold | Tab-bar labels |
 
 ## Consequences

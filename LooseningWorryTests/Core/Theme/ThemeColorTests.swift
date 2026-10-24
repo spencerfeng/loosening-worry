@@ -25,6 +25,7 @@ struct ThemeColorTests {
         .accentWash: ("F1F5FE", "1A2540"),
         .accentBorder: ("C9D9FA", "2C4170"),
         .accentShadow: ("2E6AE6", "2E6AE6"),
+        .accentOutline: ("9DB6EE", "4A67A8"),
         .greenStrong: ("2E8A5C", "5CC48F"),
         .greenTint: ("E3F4EA", "17322A"),
         .greenOnTint: ("1F6B45", "7FD4A6"),
