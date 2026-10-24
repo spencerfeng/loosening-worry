@@ -4,7 +4,7 @@ Date: 2026-10-22
 
 ## Status
 
-Accepted
+Accepted. Extended by ADR 0004, which adds four accent roles.
 
 ## Context
 

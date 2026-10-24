@@ -23,6 +23,12 @@ extension Theme {
         case border, borderSubtle
         // Accent
         case accent, accentText, accentPressed, accentTint
+        /// The lighter end of accent gradients, such as the logger's progress segments.
+        case accentSoft
+        /// Fills and outlines the current row of a list, paler than `accentTint`.
+        case accentWash, accentBorder
+        /// Tints the soft shadows under accent elements; the same blue in light and dark, used at low opacity.
+        case accentShadow
         // Hues, named by colour, not by the tool that uses them
         case greenStrong, greenTint, greenOnTint
         case amberStrong, amberTint, amberOnTint
@@ -47,6 +53,10 @@ extension Theme {
             case .accentText: .accentText
             case .accentPressed: .accentPressed
             case .accentTint: .accentTint
+            case .accentSoft: .accentSoft
+            case .accentWash: .accentWash
+            case .accentBorder: .accentBorder
+            case .accentShadow: .accentShadow
             case .greenStrong: .greenStrong
             case .greenTint: .greenTint
             case .greenOnTint: .greenOnTint

@@ -19,6 +19,39 @@
     "Log a loop" : {
 
     },
+    "log.behavior.cheer1" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nice noticing. That's the habit."
+          }
+        }
+      }
+    },
+    "log.behavior.cheer2" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Seen clearly, and no need to judge it."
+          }
+        }
+      }
+    },
+    "log.behavior.cheer3" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's the pattern. Spotting it is half the work."
+          }
+        }
+      }
+    },
     "log.behavior.hint" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -52,6 +85,39 @@
         }
       }
     },
+    "log.result.cheer1" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Honest answer. That's what loosens the loop."
+          }
+        }
+      }
+    },
+    "log.result.cheer2" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Thanks for checking. Your brain is taking notes."
+          }
+        }
+      }
+    },
+    "log.result.cheer3" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Seeing what it really gave you is how habits change."
+          }
+        }
+      }
+    },
     "log.result.hint" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -81,6 +147,39 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "What it gave you"
+          }
+        }
+      }
+    },
+    "log.trigger.cheer1" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Spotted it. That's the first step."
+          }
+        }
+      }
+    },
+    "log.trigger.cheer2" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Good catch. Naming it takes away some of its pull."
+          }
+        }
+      }
+    },
+    "log.trigger.cheer3" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "There it is. Noticing is the skill you're building."
           }
         }
       }
