@@ -72,12 +72,28 @@ struct ModelPersistenceTests {
 
     @Test(arguments: [OptionKind.trigger, .behavior, .result])
     func `an option reads back with its kind`(kind: OptionKind) throws {
-        let reader = try save(LoopOption(kind: kind, label: "Checked my phone", isCustom: true))
+        let reader = try save(LoopOption(kind: kind, label: "Checked my phone"))
         let fetched = try #require(try reader.fetch(FetchDescriptor<LoopOption>()).only)
 
         #expect(fetched.kind == kind)
         #expect(fetched.label == "Checked my phone")
-        #expect(fetched.isCustom)
+        #expect(fetched.starterID == nil)
+    }
+
+    @Test
+    func `a starter override reads back with the starter it changes`() throws {
+        let updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let override = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
+        override.isHidden = true
+        override.updatedAt = updatedAt
+
+        let reader = try save(override)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<LoopOption>()).only)
+
+        #expect(fetched.starterID == "trigger.news")
+        #expect(fetched.label == "World news")
+        #expect(fetched.isHidden)
+        #expect(fetched.updatedAt == updatedAt)
     }
 
     @Test(arguments: [QuickTool.curious, .breathe, .noteIt, .beKind], [Feeling.lighter, .same, .heavier])

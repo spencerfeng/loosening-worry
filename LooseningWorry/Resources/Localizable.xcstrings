@@ -12,6 +12,270 @@
     },
     "Log a loop" : {
 
+    },
+    "starter.behavior.askedForReassurance" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asked for reassurance"
+          }
+        }
+      }
+    },
+    "starter.behavior.avoidedIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Avoided it"
+          }
+        }
+      }
+    },
+    "starter.behavior.checkedPhone" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Checked phone"
+          }
+        }
+      }
+    },
+    "starter.behavior.overPlanned" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Over-planned"
+          }
+        }
+      }
+    },
+    "starter.behavior.overthinking" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Overthinking"
+          }
+        }
+      }
+    },
+    "starter.behavior.scrolled" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Scrolled"
+          }
+        }
+      }
+    },
+    "starter.behavior.searchedOnline" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Searched online"
+          }
+        }
+      }
+    },
+    "starter.behavior.snacked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Snacked"
+          }
+        }
+      }
+    },
+    "starter.result.actualAnswer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "An actual answer"
+          }
+        }
+      }
+    },
+    "starter.result.distracted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Distracted for a while"
+          }
+        }
+      }
+    },
+    "starter.result.littleRelief" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A little relief"
+          }
+        }
+      }
+    },
+    "starter.result.lostSleep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lost sleep"
+          }
+        }
+      }
+    },
+    "starter.result.moreWorry" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More worry"
+          }
+        }
+      }
+    },
+    "starter.result.nothingChanged" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nothing changed"
+          }
+        }
+      }
+    },
+    "starter.result.restless" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Restless"
+          }
+        }
+      }
+    },
+    "starter.result.tenseAndTired" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tense and tired"
+          }
+        }
+      }
+    },
+    "starter.trigger.bedtime" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Bedtime"
+          }
+        }
+      }
+    },
+    "starter.trigger.deadline" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Deadline"
+          }
+        }
+      }
+    },
+    "starter.trigger.health" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Health"
+          }
+        }
+      }
+    },
+    "starter.trigger.money" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Money"
+          }
+        }
+      }
+    },
+    "starter.trigger.news" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "News"
+          }
+        }
+      }
+    },
+    "starter.trigger.socialPlans" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Social plans"
+          }
+        }
+      }
+    },
+    "starter.trigger.waitingForReply" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Waiting for a reply"
+          }
+        }
+      }
+    },
+    "starter.trigger.workEmail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Work email"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
