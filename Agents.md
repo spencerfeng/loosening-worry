@@ -114,6 +114,21 @@ MyApp/
 - Minimum 90% code coverage for business logic
 - Prevent SourceKit from misresolving the SwiftData Job model as a Swift Concurrency Job
 
+## SwiftUI Previews
+
+Give previews sample data with `.modelContainer(AppModelContainer.preview)`: an in-memory store (never synced)
+holding a week of loops, a tool session, completed lessons and option changes. It lives in
+`Core/Models/AppModelContainer+Preview.swift` and is compiled in Debug only, so app code can't run on it by
+mistake.
+
+**Wrap every `#Preview` that uses it in `#if DEBUG … #endif`.** Release builds compile `#Preview` blocks too, so an
+unwrapped one fails the Release build with "type 'AppModelContainer' has no member 'preview'". Check with:
+
+```bash
+xcodebuild -project LooseningWorry.xcodeproj -scheme LooseningWorry -configuration Release \
+  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+```
+
 ## Code Style (SwiftFormat + SwiftLint)
 
 Install via Homebrew: `brew install swiftformat swiftlint`

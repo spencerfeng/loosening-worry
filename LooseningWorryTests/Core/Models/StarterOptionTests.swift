@@ -31,6 +31,15 @@ struct StarterOptionTests {
         #expect(Set(ids).count == ids.count)
     }
 
+    @Test
+    func `a starter can be found by its id`() throws {
+        let news = try #require(StarterOption.with(id: "trigger.news"))
+
+        #expect(news.kind == .trigger)
+        #expect(news.label.key == "starter.trigger.news")
+        #expect(StarterOption.with(id: "trigger.unknown") == nil)
+    }
+
     /// The catalog key is spelled out for string extraction, so it could drift from the id.
     @Test
     func `every starter's catalog key matches its id`() {

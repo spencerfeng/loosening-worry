@@ -96,7 +96,7 @@ struct OptionListTests {
 
     @Test
     func `a custom option with a starter's text appears once, with the custom options`() throws {
-        let news = try #require(StarterOption.all.first { $0.id == "trigger.news" })
+        let news = try #require(StarterOption.with(id: "trigger.news"))
         let label = String(localized: news.label)
         let custom = LoopOption(kind: .trigger, label: label)
 
@@ -108,7 +108,7 @@ struct OptionListTests {
 
     @Test
     func `a custom option matching a starter only in another case appears alongside it`() throws {
-        let news = try #require(StarterOption.all.first { $0.id == "trigger.news" })
+        let news = try #require(StarterOption.with(id: "trigger.news"))
         let typed = String(localized: news.label).lowercased()
         let custom = LoopOption(kind: .trigger, label: typed)
 

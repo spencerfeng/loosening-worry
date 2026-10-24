@@ -14,6 +14,10 @@ struct StarterOption: Sendable {
         all.filter { $0.kind == kind }
     }
 
+    static func with(id: String) -> StarterOption? {
+        all.first { $0.id == id }
+    }
+
     /// In the order the logger offers them.
     static let all: [StarterOption] = [
         StarterOption(
