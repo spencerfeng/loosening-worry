@@ -19,11 +19,11 @@
     /// A sample loop: how long ago it was logged and the ids of the starters it used.
     private struct SampleLoop {
         let hoursAgo: Double
-        let trigger: String
-        let behavior: String
-        let result: String
+        let trigger: StarterID
+        let behavior: StarterID
+        let result: StarterID
 
-        init(hoursAgo: Double, _ trigger: String, _ behavior: String, _ result: String) {
+        init(hoursAgo: Double, _ trigger: StarterID, _ behavior: StarterID, _ result: StarterID) {
             self.hoursAgo = hoursAgo
             self.trigger = trigger
             self.behavior = behavior
@@ -34,26 +34,26 @@
     private enum PreviewData {
         /// A week of loops, newest first.
         private static let loops: [SampleLoop] = [
-            SampleLoop(hoursAgo: 1, "trigger.work", "behavior.overthought", "result.moreWorry"),
-            SampleLoop(hoursAgo: 5, "trigger.news", "behavior.scrolled", "result.tenseAndTired"),
-            SampleLoop(hoursAgo: 20, "trigger.deadline", "behavior.overPrepared", "result.actuallyHelped"),
-            SampleLoop(hoursAgo: 28, "trigger.tryingToSleep", "behavior.keptChecking", "result.tenseAndTired"),
-            SampleLoop(hoursAgo: 45, "trigger.familyOrPartner", "behavior.avoidedIt", "result.nothingChanged"),
-            SampleLoop(hoursAgo: 52, "trigger.socialPlans", "behavior.askedForReassurance", "result.littleRelief"),
-            SampleLoop(hoursAgo: 70, "trigger.money", "behavior.searchedOnline", "result.moreWorry"),
-            SampleLoop(hoursAgo: 95, "trigger.health", "behavior.searchedOnline", "result.notSure"),
-            SampleLoop(hoursAgo: 100, "trigger.waitingForReply", "behavior.keptChecking", "result.littleRelief"),
-            SampleLoop(hoursAgo: 120, "trigger.work", "behavior.overthought", "result.tenseAndTired"),
-            SampleLoop(hoursAgo: 140, "trigger.tryingToSleep", "behavior.scrolled", "result.nothingChanged"),
-            SampleLoop(hoursAgo: 160, "trigger.deadline", "behavior.putItOff", "result.littleRelief"),
+            SampleLoop(hoursAgo: 1, .work, .overthought, .moreWorry),
+            SampleLoop(hoursAgo: 5, .news, .scrolled, .tenseAndTired),
+            SampleLoop(hoursAgo: 20, .deadline, .overPrepared, .actuallyHelped),
+            SampleLoop(hoursAgo: 28, .tryingToSleep, .keptChecking, .tenseAndTired),
+            SampleLoop(hoursAgo: 45, .familyOrPartner, .avoidedIt, .nothingChanged),
+            SampleLoop(hoursAgo: 52, .socialPlans, .askedForReassurance, .littleRelief),
+            SampleLoop(hoursAgo: 70, .money, .searchedOnline, .moreWorry),
+            SampleLoop(hoursAgo: 95, .health, .searchedOnline, .notSure),
+            SampleLoop(hoursAgo: 100, .waitingForReply, .keptChecking, .littleRelief),
+            SampleLoop(hoursAgo: 120, .work, .overthought, .tenseAndTired),
+            SampleLoop(hoursAgo: 140, .tryingToSleep, .scrolled, .nothingChanged),
+            SampleLoop(hoursAgo: 160, .deadline, .putItOff, .littleRelief),
         ]
 
         static func insert(into context: ModelContext) {
             let newestFirst = loops.map { sample in
                 let loop = Loop(
-                    trigger: label(of: sample.trigger),
-                    behavior: label(of: sample.behavior),
-                    result: label(of: sample.result),
+                    trigger: choice(of: sample.trigger),
+                    behavior: choice(of: sample.behavior),
+                    result: choice(of: sample.result),
                 )
                 loop.createdAt = hoursAgo(sample.hoursAgo)
                 context.insert(loop)
@@ -74,12 +74,8 @@
             }
 
             context.insert(LoopOption(kind: .trigger, label: "Rent due"))
-            context.insert(LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news"))
-            let hidden = LoopOption(
-                kind: .behavior,
-                label: label(of: "behavior.snacked"),
-                starterID: "behavior.snacked",
-            )
+            context.insert(LoopOption(overriding: .news, label: "World news"))
+            let hidden = LoopOption(overriding: .snacked, label: label(of: .snacked))
             hidden.isHidden = true
             context.insert(hidden)
         }
@@ -88,11 +84,12 @@
             Date.now.addingTimeInterval(-hours * 60 * 60)
         }
 
-        private static func label(of starterID: String) -> String {
-            guard let starter = StarterOption.with(id: starterID) else {
-                preconditionFailure("No starter with id \(starterID)")
-            }
-            return String(localized: starter.label)
+        private static func label(of starter: StarterID) -> String {
+            StarterOption.with(id: starter).text
+        }
+
+        private static func choice(of starter: StarterID) -> OptionChoice {
+            OptionChoice(starter, label: label(of: starter))
         }
     }
 #endif

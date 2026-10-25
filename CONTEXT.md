@@ -13,11 +13,13 @@ Domain language for the app. The design source is the "Loosening Worry — App M
 - **Option**: one choice in the logger for a loop's trigger, behavior or result. For triggers and behaviors the
   logger shows the person's own options first, newest first, then the starters. For results it shows the starters
   (the core results, in a fixed order) first, then the person's own in the order they were added, so step 3 never
-  nudges the answer. A logged loop keeps the option's text as it was, so later changes to an
-  option never rewrite past loops.
-- **Starter**: an option that ships with the app, defined in code with a stable id (such as `trigger.news`) and
-  a translated label. Starters are never stored, so a new or reworded starter reaches everyone with the next
-  update. Once released, an id never changes: rewording changes only the label, because overrides are found by
-  id and one under a changed id would be silently dropped. Before the first release ids were renamed freely.
-- **Override**: the person's change to a starter, stored under the starter's id: a new label renames it and
-  hiding removes it. When devices disagree, the override edited last wins.
+  nudges the answer. A logged loop keeps each answer's id, which history counts by, and its text as it was, so
+  later changes to an option never rewrite past loops.
+- **Starter**: an option that ships with the app, defined in code with a stable id (a `StarterID`, such as
+  `trigger.news`) and a translated label. Starters are never stored, so a new or reworded starter reaches everyone
+  with the next update. Once released, an id never changes: rewording changes only the label, because overrides
+  are found by id and one under a changed id would be silently dropped. Before the first release ids were renamed
+  freely.
+- **Override**: the person's change to a starter, stored under the starter's id. It hides or restores the starter;
+  starters can't be renamed (to use other words, hide the starter and add your own). It keeps the starter's full
+  text, so adding that text again brings the starter back. When devices disagree, the override edited last wins.

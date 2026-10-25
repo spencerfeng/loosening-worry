@@ -2,9 +2,28 @@ import Foundation
 
 /// One choice the logger shows for a step.
 struct OptionChoice: Equatable {
+    /// What a loop stores to count this choice by: the starter's id, or the `optionID` of the person's own option.
+    let id: String
     let label: String
-    /// Set when the choice is a starter, renamed or not.
-    let starterID: String?
+    /// The ids of other options showing this same text, which the list shows once: copies synced from two devices,
+    /// or a starter and one of the person's own. Loops logged with any of them count as this choice.
+    var mergedIDs: [String] = []
+
+    /// Set when the choice is a starter.
+    var starterID: StarterID? {
+        StarterID(rawValue: id)
+    }
+
+    init(_ starter: StarterID, label: String) {
+        id = starter.rawValue
+        self.label = label
+    }
+
+    /// One of the person's own options.
+    init(_ option: LoopOption) {
+        id = option.optionID
+        label = option.label
+    }
 }
 
 /// Combines the starters with what the person saved into the choices the logger shows.
@@ -13,7 +32,7 @@ enum OptionList {
     /// the exception: step 3 never nudges the answer, so its core results always lead, in their fixed order, and the
     /// person's own follow in the order they were added. Hidden options are left out, and each text (case included)
     /// appears only once, in its first place, so a starter matching one of their own appears as theirs on steps 1
-    /// and 2, and as the starter on step 3.
+    /// and 2, and as the starter on step 3. The ids of the copies left out go into the shown choice's `mergedIDs`.
     static func choices(for kind: OptionKind, saved: [LoopOption]) -> [OptionChoice] {
         let ofKind = saved.filter { $0.kind == kind }
         let starters = starterChoices(for: kind, overrides: newestOverrides(in: ofKind))
@@ -22,8 +41,17 @@ enum OptionList {
         case .trigger, .behavior: custom.reversed() + starters
         case .result: starters + custom
         }
-        var seen: Set<String> = []
-        return all.filter { seen.insert($0.label).inserted }
+        var shown: [OptionChoice] = []
+        var placeOfLabel: [String: Int] = [:]
+        for choice in all {
+            if let place = placeOfLabel[choice.label] {
+                shown[place].mergedIDs.append(choice.id)
+            } else {
+                placeOfLabel[choice.label] = shown.count
+                shown.append(choice)
+            }
+        }
+        return shown
     }
 
     /// The hidden option of this kind that would show exactly this text if it came back: one of the person's own,
@@ -40,7 +68,7 @@ enum OptionList {
         saved
             .filter { $0.starterID == nil && !$0.isHidden }
             .sorted { $0.createdAt < $1.createdAt }
-            .map { OptionChoice(label: $0.label, starterID: nil) }
+            .map(OptionChoice.init)
     }
 
     /// Two devices can each change the same starter before they sync; the one edited last wins, and if both were
@@ -62,11 +90,11 @@ enum OptionList {
 
     private static func starterChoices(for kind: OptionKind, overrides: [String: LoopOption]) -> [OptionChoice] {
         StarterOption.options(for: kind).compactMap { starter in
-            let override = overrides[starter.id]
+            let override = overrides[starter.id.rawValue]
             if override?.isHidden == true {
                 return nil
             }
-            return OptionChoice(label: override?.label ?? String(localized: starter.label), starterID: starter.id)
+            return OptionChoice(starter.id, label: override?.label ?? starter.text)
         }
     }
 }

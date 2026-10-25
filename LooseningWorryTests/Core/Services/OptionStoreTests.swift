@@ -32,7 +32,7 @@ struct OptionStoreTests {
 
     @Test
     func `adding the text of a hidden option brings it back instead of saving a twin`() throws {
-        let hidden = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
+        let hidden = LoopOption(overriding: .news, label: "World news")
         hidden.isHidden = true
         hidden.updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
         context.insert(hidden)
@@ -96,9 +96,9 @@ struct OptionStoreTests {
     /// Each change to a starter is its own row, and only the newest one says how it shows.
     @Test
     func `a starter hidden after an earlier change comes back in its place, from its newest change`() throws {
-        let rename = LoopOption(kind: .trigger, label: "Headlines", starterID: "trigger.news")
+        let rename = LoopOption(overriding: .news, label: "Headlines")
         rename.updatedAt = Date(timeIntervalSince1970: 1_700_000_000)
-        let hide = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
+        let hide = LoopOption(overriding: .news, label: "World news")
         hide.isHidden = true
         hide.updatedAt = Date(timeIntervalSince1970: 1_700_100_000)
         context.insert(rename)
@@ -111,7 +111,7 @@ struct OptionStoreTests {
         #expect(hide.isHidden == false)
         let choices = OptionList.choices(for: .trigger, saved: options)
         #expect(choices.filter { $0.label == "World news" } == [
-            OptionChoice(label: "World news", starterID: "trigger.news")
+            OptionChoice(.news, label: "World news")
         ])
         #expect(choices.map(\.starterID) == StarterOption.options(for: .trigger).map(\.id))
     }

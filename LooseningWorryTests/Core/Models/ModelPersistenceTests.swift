@@ -21,7 +21,12 @@ struct ModelPersistenceTests {
     @Test
     func `a saved loop reads back with its details`() throws {
         let createdAt = Date(timeIntervalSince1970: 1_800_000_000)
-        let loop = Loop(trigger: "Email from boss", behavior: "Reread it", result: "Felt worse")
+        let ownTrigger = LoopOption(kind: .trigger, label: "Email from boss")
+        let loop = Loop(
+            trigger: OptionChoice(ownTrigger),
+            behavior: OptionChoice(.keptChecking, label: "Reread it"),
+            result: OptionChoice(.moreWorry, label: "More worry"),
+        )
         loop.createdAt = createdAt
         loop.anxiety = 7
         loop.note = "Before the 1:1"
@@ -29,9 +34,12 @@ struct ModelPersistenceTests {
         let reader = try save(loop)
         let fetched = try #require(try reader.fetch(FetchDescriptor<Loop>()).only)
 
-        #expect(fetched.trigger == "Email from boss")
-        #expect(fetched.behavior == "Reread it")
-        #expect(fetched.result == "Felt worse")
+        #expect(fetched.triggerID == ownTrigger.optionID)
+        #expect(fetched.triggerLabel == "Email from boss")
+        #expect(fetched.behaviorID == "behavior.keptChecking")
+        #expect(fetched.behaviorLabel == "Reread it")
+        #expect(fetched.resultID == "result.moreWorry")
+        #expect(fetched.resultLabel == "More worry")
         #expect(fetched.createdAt == createdAt)
         #expect(fetched.anxiety == 7)
         #expect(fetched.note == "Before the 1:1")
@@ -39,7 +47,11 @@ struct ModelPersistenceTests {
 
     @Test
     func `deleting a loop keeps the tool sessions started from it`() throws {
-        let loop = Loop(trigger: "Email from boss", behavior: "Reread it", result: "Felt worse")
+        let loop = Loop(
+            trigger: OptionChoice(.work, label: "Work"),
+            behavior: OptionChoice(.keptChecking, label: "Kept checking"),
+            result: OptionChoice(.moreWorry, label: "More worry"),
+        )
         let session = ToolSession(tool: .breathe)
         session.loop = loop
 
@@ -72,28 +84,58 @@ struct ModelPersistenceTests {
 
     @Test(arguments: [OptionKind.trigger, .behavior, .result])
     func `an option reads back with its kind`(kind: OptionKind) throws {
-        let reader = try save(LoopOption(kind: kind, label: "Checked my phone"))
+        let option = LoopOption(kind: kind, label: "Checked my phone")
+        let reader = try save(option)
         let fetched = try #require(try reader.fetch(FetchDescriptor<LoopOption>()).only)
 
+        #expect(fetched.optionID == option.optionID)
         #expect(fetched.kind == kind)
         #expect(fetched.label == "Checked my phone")
         #expect(fetched.starterID == nil)
     }
 
+    /// Loops count an option by this id, so two options must never share one, even when added at the same moment.
+    @Test
+    func `every new option gets its own id`() {
+        let options = (1 ... 3).map { _ in LoopOption(kind: .trigger, label: "Rent due") }
+
+        #expect(Set(options.map(\.optionID)).count == 3)
+        #expect(options.allSatisfy { $0.optionID.hasPrefix("custom.") })
+    }
+
     @Test
     func `a starter override reads back with the starter it changes`() throws {
         let updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
-        let override = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
+        let override = LoopOption(overriding: .news, label: "World news")
         override.isHidden = true
         override.updatedAt = updatedAt
 
         let reader = try save(override)
         let fetched = try #require(try reader.fetch(FetchDescriptor<LoopOption>()).only)
 
-        #expect(fetched.starterID == "trigger.news")
+        #expect(fetched.starter == .news)
         #expect(fetched.label == "World news")
         #expect(fetched.isHidden)
         #expect(fetched.updatedAt == updatedAt)
+    }
+
+    @Test
+    func `an override knows the starter it changes`() {
+        let override = LoopOption(overriding: .news, label: "World news")
+
+        #expect(override.kind == .trigger)
+        #expect(override.starter == .news)
+        #expect(override.starterID == "trigger.news")
+    }
+
+    /// A newer version on another device can sync an override of a starter this version doesn't have.
+    @Test
+    func `an override of a starter this version doesn't know has no starter`() {
+        let override = LoopOption(overriding: .news, label: "World news")
+
+        override.starterID = "trigger.addedLater"
+
+        #expect(override.starter == nil)
     }
 
     @Test(arguments: [QuickTool.curious, .breathe, .noteIt, .beKind], [Feeling.lighter, .same, .heavier])

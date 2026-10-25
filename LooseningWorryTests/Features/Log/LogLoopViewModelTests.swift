@@ -209,7 +209,7 @@ struct LogLoopAddOwnTests {
         model.toggleAddOwn()
         model.draft = "Rent due"
 
-        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+        model.addOwn(existing: [OptionChoice(.news, label: "News")]) { saved.append($1) }
 
         #expect(saved == ["Rent due"])
         #expect(model.answer(for: .trigger) == "Rent due")
@@ -225,7 +225,7 @@ struct LogLoopAddOwnTests {
         model.toggleAddOwn()
         model.draft = "News"
 
-        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+        model.addOwn(existing: [OptionChoice(.news, label: "News")]) { saved.append($1) }
 
         #expect(saved.isEmpty)
         #expect(model.answer(for: .trigger) == "News")
@@ -239,7 +239,7 @@ struct LogLoopAddOwnTests {
         model.toggleAddOwn()
         model.draft = "news"
 
-        model.addOwn(existing: [OptionChoice(label: "News", starterID: "trigger.news")]) { saved.append($1) }
+        model.addOwn(existing: [OptionChoice(.news, label: "News")]) { saved.append($1) }
 
         #expect(saved == ["news"])
         #expect(model.answer(for: .trigger) == "news")
@@ -249,7 +249,7 @@ struct LogLoopAddOwnTests {
     func `spaces around the text are trimmed before it is matched or saved`() {
         let model = LogLoopViewModel()
         var saved: [String] = []
-        let existing = [OptionChoice(label: "News", starterID: "trigger.news")]
+        let existing = [OptionChoice(.news, label: "News")]
 
         model.toggleAddOwn()
         model.draft = "  News "
@@ -348,7 +348,7 @@ struct LogLoopAddOwnTests {
         model.toggleAddOwn()
         model.draft = "Social  plans"
 
-        model.addOwn(existing: [OptionChoice(label: "Social plans", starterID: "trigger.socialPlans")]) {
+        model.addOwn(existing: [OptionChoice(.socialPlans, label: "Social plans")]) {
             saved.append($1)
         }
 

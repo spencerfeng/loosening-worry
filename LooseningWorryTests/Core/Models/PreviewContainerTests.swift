@@ -18,7 +18,8 @@ struct PreviewContainerTests {
         let loops = try AppModelContainer.preview.mainContext.fetch(FetchDescriptor<Loop>())
 
         #expect(loops.count >= 10)
-        #expect(loops.allSatisfy { !$0.trigger.isEmpty && !$0.behavior.isEmpty && !$0.result.isEmpty })
+        #expect(loops.allSatisfy { !$0.triggerLabel.isEmpty && !$0.behaviorLabel.isEmpty && !$0.resultLabel.isEmpty })
+        #expect(loops.allSatisfy { !$0.triggerID.isEmpty && !$0.behaviorID.isEmpty && !$0.resultID.isEmpty })
     }
 
     /// Weekly counts and charts need loops on several days of the past week, none in the future.
@@ -49,9 +50,9 @@ struct PreviewContainerTests {
 
         let choices = choices(from: saved)
         for rename in renames {
-            let starter = try #require(StarterOption.with(id: rename.starterID ?? ""))
-            #expect(rename.label != String(localized: starter.label))
-            #expect(choices.contains(OptionChoice(label: rename.label, starterID: starter.id)))
+            let starter = try StarterOption.with(id: #require(rename.starter))
+            #expect(rename.label != starter.text)
+            #expect(choices.contains(OptionChoice(starter.id, label: rename.label)))
         }
     }
 
@@ -63,7 +64,7 @@ struct PreviewContainerTests {
 
         let choices = choices(from: saved)
         for option in hidden {
-            #expect(!choices.contains { $0.starterID == option.starterID })
+            #expect(!choices.contains { $0.starterID == option.starter })
             #expect(!option.label.isEmpty)
         }
     }
