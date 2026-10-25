@@ -11,12 +11,12 @@ struct LogQuestion: View {
 
     let step: OptionKind
     let choices: [OptionChoice]
-    /// The step's answer, if it has one.
-    let selected: String?
+    /// The id of the step's answer, if it has one.
+    let selectedID: String?
     let isAddingOwn: Bool
     @Binding var draft: String
     let canAddOwn: Bool
-    let pick: (String) -> Void
+    let pick: (OptionChoice) -> Void
     let toggleAddOwn: () -> Void
     let addOwn: () -> Void
 
@@ -33,8 +33,8 @@ struct LogQuestion: View {
             }
             FlowLayout(spacing: 8) {
                 ForEach(choices, id: \.label) { choice in
-                    OptionChip(label: choice.label, isSelected: choice.label == selected) {
-                        pick(choice.label)
+                    OptionChip(label: choice.label, isSelected: choice.id == selectedID) {
+                        pick(choice)
                     }
                 }
                 AddOwnChip(isOpen: isAddingOwn, action: toggleAddOwn)

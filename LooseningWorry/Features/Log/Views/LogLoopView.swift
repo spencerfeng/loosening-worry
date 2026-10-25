@@ -36,12 +36,12 @@ struct LogLoopView: View {
                             LogQuestion(
                                 step: step,
                                 choices: choices,
-                                selected: model.answer(for: step),
+                                selectedID: model.answer(for: step)?.id,
                                 isAddingOwn: model.isAddingOwn,
                                 draft: $model.draft,
                                 canAddOwn: model.canAddOwn,
-                            ) { label in
-                                withAnimation(stepAnimation) { model.pick(label) }
+                            ) { choice in
+                                withAnimation(stepAnimation) { model.pick(choice) }
                             } toggleAddOwn: {
                                 model.toggleAddOwn()
                             } addOwn: {
@@ -53,10 +53,21 @@ struct LogLoopView: View {
                             }
                             .id(step)
                             .transition(questionTransition)
+                        } else {
+                            LogDetails(
+                                isShowing: model.isShowingDetails,
+                                anxiety: model.anxiety,
+                                note: $model.note,
+                            ) {
+                                withAnimation(stepAnimation) { model.toggleDetails() }
+                            } setAnxiety: { level in
+                                model.setAnxiety(level)
+                            }
                         }
                     }
                     .padding(20)
                 }
+                .scrollDismissesKeyboard(.interactively)
                 // The keyboard covers the bottom of the sheet, so keep the add-your-own field and its Add button above
                 // it: when the field opens, and again once the keyboard has shrunk the visible area.
                 .onChange(of: model.isAddingOwn) { revealAddOwnField(with: proxy) }
@@ -70,6 +81,13 @@ struct LogLoopView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 14)
                     .background(.theme(.background))
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if model.currentStep == nil {
+                    LogSaveBar(failed: model.saveFailed, canSave: model.canSave) {
+                        model.save { try LoopStore(context: modelContext).add($0) }
+                    }
+                }
             }
             .background(.theme(.background))
             .navigationBarTitleDisplayMode(.inline)
@@ -89,6 +107,17 @@ struct LogLoopView: View {
                         announcement += " " + String(localized: Self.unsavedNote(label))
                     }
                     AccessibilityNotification.Announcement(announcement).post()
+                }
+            }
+            .onChange(of: model.isSaved) { _, saved in
+                // The Nice catch screen will follow Save; until then the logger just closes.
+                if saved {
+                    dismiss()
+                }
+            }
+            .onChange(of: model.saveFailed) { _, failed in
+                if failed {
+                    AccessibilityNotification.Announcement(String(localized: LogSaveBar.failedMessage)).post()
                 }
             }
             .onAppear {
@@ -219,7 +248,7 @@ private struct LogSummaryCard: View {
             ForEach(OptionKind.allCases, id: \.self) { step in
                 LogSummaryRow(
                     step: step,
-                    answer: model.answer(for: step),
+                    answer: model.answer(for: step)?.label,
                     progress: model.progress(for: step),
                     popTrigger: model.cheer?.step == step ? model.pickCount : nil,
                 ) {

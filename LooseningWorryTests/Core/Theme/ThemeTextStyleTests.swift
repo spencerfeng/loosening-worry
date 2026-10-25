@@ -6,6 +6,7 @@ struct ThemeTextStyleTests {
     static let scale: [Theme.TextStyle: Theme.TextMetrics] = [
         .largeTitle: .init(face: .extraBold, size: 48, scalesWith: .largeTitle),
         .title: .init(face: .extraBold, size: 28, scalesWith: .title),
+        .title2: .init(face: .extraBold, size: 24, scalesWith: .title2),
         .title3: .init(face: .bold, size: 20, scalesWith: .title3),
         .headline: .init(face: .bold, size: 17, scalesWith: .headline),
         .body: .init(face: .regular, size: 16, scalesWith: .body),

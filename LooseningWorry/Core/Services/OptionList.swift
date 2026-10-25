@@ -15,14 +15,23 @@ struct OptionChoice: Equatable {
     }
 
     init(_ starter: StarterID, label: String) {
-        id = starter.rawValue
+        self.init(id: starter.rawValue, label: label)
+    }
+
+    init(id: String, label: String) {
+        self.id = id
         self.label = label
+    }
+
+    /// Text of the person's own that couldn't be saved as an option. It gets an id of its own, matching no option, so
+    /// the loop still has something to be counted by.
+    static func unsavedOwn(_ label: String) -> OptionChoice {
+        OptionChoice(id: LoopOption.newOptionID(), label: label)
     }
 
     /// One of the person's own options.
     init(_ option: LoopOption) {
-        id = option.optionID
-        label = option.label
+        self.init(id: option.optionID, label: option.label)
     }
 }
 

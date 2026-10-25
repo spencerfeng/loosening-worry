@@ -19,11 +19,12 @@ struct OptionStoreTests {
 
     @Test
     func `adding new text saves it as the person's own option`() throws {
-        try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
+        let choice = try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
 
         let options = try saved()
         try #require(options.count == 1)
         let option = options[0]
+        #expect(choice == OptionChoice(option))
         #expect(option.kind == .trigger)
         #expect(option.label == "Rent due")
         #expect(option.starterID == nil)
@@ -38,11 +39,13 @@ struct OptionStoreTests {
         context.insert(hidden)
         let before = Date.now
 
-        try OptionStore(context: context).addOwn("World news", kind: .trigger)
+        let choice = try OptionStore(context: context).addOwn("World news", kind: .trigger)
 
         let options = try saved()
         try #require(options.count == 1)
         let option = options[0]
+        // A starter brought back is counted as the starter.
+        #expect(choice == OptionChoice(.news, label: "World news"))
         #expect(option === hidden)
         #expect(option.isHidden == false)
         // Bringing it back is an edit, so it wins over older changes from other devices.
@@ -52,7 +55,7 @@ struct OptionStoreTests {
     /// The note under the field promises the option is kept, even if the loop is never saved.
     @Test
     func `an added option is saved straight away`() throws {
-        try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
+        _ = try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
 
         let elsewhere = ModelContext(container)
         #expect(try elsewhere.fetch(FetchDescriptor<LoopOption>()).map(\.label) == ["Rent due"])
@@ -68,9 +71,11 @@ struct OptionStoreTests {
         context.insert(hidden)
         context.insert(newer)
 
-        try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
+        let choice = try OptionStore(context: context).addOwn("Rent due", kind: .trigger)
 
         let options = try saved()
+        // One of their own brought back keeps its id, so its history carries on.
+        #expect(choice.id == hidden.optionID)
         #expect(options.count == 2)
         #expect(hidden.isHidden == false)
         #expect(OptionList.choices(for: .trigger, saved: options).first?.label == "Rent due")
@@ -87,7 +92,7 @@ struct OptionStoreTests {
         context.insert(hidden)
         context.insert(newer)
 
-        try OptionStore(context: context).addOwn("Felt silly", kind: .result)
+        _ = try OptionStore(context: context).addOwn("Felt silly", kind: .result)
 
         let custom = try OptionList.choices(for: .result, saved: saved()).filter { $0.starterID == nil }
         #expect(custom.map(\.label) == ["Felt silly", "Got a headache"])
@@ -104,7 +109,7 @@ struct OptionStoreTests {
         context.insert(rename)
         context.insert(hide)
 
-        try OptionStore(context: context).addOwn("World news", kind: .trigger)
+        _ = try OptionStore(context: context).addOwn("World news", kind: .trigger)
 
         let options = try saved()
         #expect(options.count == 2)

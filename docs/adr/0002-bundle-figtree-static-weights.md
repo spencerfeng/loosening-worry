@@ -27,6 +27,7 @@ Styles take Apple's text style names. Each one scales relative to the system sty
 |---|---|---|
 | `largeTitle` | 48 / ExtraBold | Stat numerals |
 | `title` | 28 / ExtraBold | Screen titles |
+| `title2` | 24 / ExtraBold | A number read at a glance, like the anxiety level |
 | `title3` | 20 / Bold | Section headings |
 | `headline` | 17 / Bold | Primary button labels |
 | `body` | 16 / Regular | Paragraphs |

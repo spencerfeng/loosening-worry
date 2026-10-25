@@ -146,6 +146,61 @@
         }
       }
     },
+    "log.details.anxiety" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How anxious, 0–10"
+          }
+        }
+      }
+    },
+    "log.details.anxietyNotSet" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Not set"
+          }
+        }
+      }
+    },
+    "log.details.note" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Note"
+          }
+        }
+      }
+    },
+    "log.details.notePlaceholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Anything worth remembering"
+          }
+        }
+      }
+    },
+    "log.details.toggle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add details (optional)"
+          }
+        }
+      }
+    },
     "log.result.addLabel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -230,6 +285,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "What it gave you"
+          }
+        }
+      }
+    },
+    "log.save" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Save loop"
+          }
+        }
+      }
+    },
+    "log.save.failed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save this loop. Please try again."
           }
         }
       }

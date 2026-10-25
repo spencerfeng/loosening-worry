@@ -94,12 +94,13 @@ extension Theme {
 
     /// The type scale (ADR 0002). Each style is named after, and scales with, the system style of the same name.
     enum TextStyle: CaseIterable, Sendable {
-        case largeTitle, title, title3, headline, body, callout, subheadline, footnote, caption, caption2
+        case largeTitle, title, title2, title3, headline, body, callout, subheadline, footnote, caption, caption2
 
         var metrics: TextMetrics {
             switch self {
             case .largeTitle: TextMetrics(face: .extraBold, size: 48, scalesWith: .largeTitle)
             case .title: TextMetrics(face: .extraBold, size: 28, scalesWith: .title)
+            case .title2: TextMetrics(face: .extraBold, size: 24, scalesWith: .title2)
             case .title3: TextMetrics(face: .bold, size: 20, scalesWith: .title3)
             case .headline: TextMetrics(face: .bold, size: 17, scalesWith: .headline)
             case .body: TextMetrics(face: .regular, size: 16, scalesWith: .body)

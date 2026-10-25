@@ -8,8 +8,10 @@ struct OptionStore {
 
     /// Adds `label` as the person's own option. If they hid an option that shows exactly this text, it comes back
     /// instead, so they never end up with a hidden option and a visible twin.
-    func addOwn(_ label: String, kind: OptionKind) throws {
+    /// - Returns: The choice to pick, with the id a loop counts it by: the new option's, or the one brought back.
+    func addOwn(_ label: String, kind: OptionKind) throws -> OptionChoice {
         let saved = try context.fetch(FetchDescriptor<LoopOption>())
+        let choice: OptionChoice
         if let hidden = OptionList.hiddenOption(matching: label, for: kind, saved: saved) {
             hidden.isHidden = false
             hidden.updatedAt = .now
@@ -19,10 +21,15 @@ struct OptionStore {
             if hidden.starterID == nil, hidden.kind != .result {
                 hidden.createdAt = .now
             }
+            // A starter is counted by its id; one of their own by its option id.
+            choice = OptionChoice(id: hidden.starterID ?? hidden.optionID, label: label)
         } else {
-            context.insert(LoopOption(kind: kind, label: label))
+            let option = LoopOption(kind: kind, label: label)
+            context.insert(option)
+            choice = OptionChoice(option)
         }
         // Saved now rather than with the loop: the logger tells the person it's kept for next time.
         try context.save()
+        return choice
     }
 }

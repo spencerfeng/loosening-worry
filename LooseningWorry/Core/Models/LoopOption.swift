@@ -46,7 +46,8 @@ final class LoopOption {
         starterID = starter.rawValue
     }
 
-    private static func newOptionID() -> String {
+    /// A fresh id for one of the person's own options.
+    static func newOptionID() -> String {
         "custom." + UUID().uuidString
     }
 }
