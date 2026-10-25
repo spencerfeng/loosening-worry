@@ -47,16 +47,20 @@ struct LogLoopView: View {
                                 .foregroundStyle(.theme(.textSecondary))
                         }
                         if let step = model.currentStep {
-                            let choices = OptionList.choices(for: step, saved: savedOptions)
+                            let choices = model.choices(for: step, saved: savedOptions)
+                            let visible = model.visibleChoices(choices, for: step)
                             LogQuestion(
                                 step: step,
-                                choices: choices,
-                                selectedID: model.answer(for: step)?.id,
+                                choices: visible.choices,
+                                hasMore: visible.hasMore,
+                                selectedID: model.answerID(in: choices, for: step),
                                 isAddingOwn: model.isAddingOwn,
                                 draft: $model.draft,
                                 canAddOwn: model.canAddOwn,
                             ) { choice in
                                 withAnimation(stepAnimation) { model.pick(choice) }
+                            } showMore: {
+                                withAnimation(stepAnimation) { model.showAllChoices() }
                             } toggleAddOwn: {
                                 model.toggleAddOwn()
                             } addOwn: {
@@ -133,6 +137,10 @@ struct LogLoopView: View {
             .onAppear {
                 // If the count can't be read, the cheers start from the first set, which is harmless.
                 model.loopsLogged = (try? modelContext.fetchCount(FetchDescriptor<Loop>())) ?? 0
+                // Read once, so the order doesn't shift while the logger is open. Without it, the order is the
+                // default one, which still works.
+                let historyStart = OptionRanker.historyStart(before: .now)
+                model.recentLoops = (try? LoopStore(context: modelContext).loops(since: historyStart)) ?? []
             }
             .sensoryFeedback(.selection, trigger: model.pickCount)
         }

@@ -10,13 +10,16 @@ struct LogQuestion: View {
     static let addOwnFieldID = "LogQuestion.addOwnField"
 
     let step: OptionKind
+    /// The choices to show now; with `hasMore`, the first few of them.
     let choices: [OptionChoice]
+    let hasMore: Bool
     /// The id of the step's answer, if it has one.
     let selectedID: String?
     let isAddingOwn: Bool
     @Binding var draft: String
     let canAddOwn: Bool
     let pick: (OptionChoice) -> Void
+    let showMore: () -> Void
     let toggleAddOwn: () -> Void
     let addOwn: () -> Void
 
@@ -37,6 +40,9 @@ struct LogQuestion: View {
                         pick(choice)
                     }
                 }
+                if hasMore {
+                    MoreChip(action: showMore)
+                }
                 AddOwnChip(isOpen: isAddingOwn, action: toggleAddOwn)
             }
             if isAddingOwn {
@@ -44,6 +50,30 @@ struct LogQuestion: View {
                     .id(Self.addOwnFieldID)
             }
         }
+    }
+}
+
+/// Shows the rest of the step's choices, in the same order. It goes once they're showing.
+private struct MoreChip: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Text(LocalizedStringResource("log.more", defaultValue: "More"))
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 12, weight: .bold))
+                    .accessibilityHidden(true)
+            }
+            .font(.theme(.headline))
+            .foregroundStyle(.theme(.textSecondary))
+            .padding(.horizontal, 18)
+            .frame(minHeight: 48)
+            .overlay { Capsule().strokeBorder(.theme(.border)) }
+            .contentShape(.capsule)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(Text(LocalizedStringResource("log.more.hint", defaultValue: "Shows the rest of the list")))
     }
 }
 

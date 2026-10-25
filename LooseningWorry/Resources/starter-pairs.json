@@ -1,0 +1,12 @@
+{
+  "trigger.work": ["behavior.overthought", "behavior.keptChecking", "behavior.putItOff", "behavior.overPrepared"],
+  "trigger.deadline": ["behavior.putItOff", "behavior.overPrepared", "behavior.overthought", "behavior.avoidedIt"],
+  "trigger.money": ["behavior.avoidedIt", "behavior.keptChecking", "behavior.overthought", "behavior.searchedOnline"],
+  "trigger.health": ["behavior.searchedOnline", "behavior.keptChecking", "behavior.askedForReassurance", "behavior.overthought"],
+  "trigger.familyOrPartner": ["behavior.askedForReassurance", "behavior.overthought", "behavior.keptChecking", "behavior.avoidedIt"],
+  "trigger.socialPlans": ["behavior.overPrepared", "behavior.avoidedIt", "behavior.overthought", "behavior.askedForReassurance"],
+  "trigger.news": ["behavior.scrolled", "behavior.keptChecking", "behavior.searchedOnline", "behavior.overthought"],
+  "trigger.waitingForReply": ["behavior.keptChecking", "behavior.overthought", "behavior.askedForReassurance", "behavior.scrolled"],
+  "trigger.tryingToSleep": ["behavior.overthought", "behavior.scrolled", "behavior.searchedOnline", "behavior.snacked"],
+  "trigger.outOfNowhere": ["behavior.overthought", "behavior.keptChecking", "behavior.scrolled", "behavior.snacked"]
+}

@@ -51,10 +51,71 @@ final class LogLoopViewModel {
         draft.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// - Parameter loopsLogged: How many loops the person logged before this one, so each new loop gets the
-    ///   next set of cheers.
-    init(loopsLogged: Int = 0) {
+    /// Loops from the last 90 days, read when the logger opens, that steps 1 and 2 are ordered by.
+    var recentLoops: [Loop] = []
+    /// Whether the current step shows all its choices rather than the first few and More.
+    private(set) var isShowingAllChoices = false
+    /// The order worked out when the current step opened. Not observed: it's filled in while the view reads the
+    /// choices, and a change to it never needs a redraw.
+    @ObservationIgnored private var stepOrder: StepOrder?
+    private let pairs: StarterPairs
+
+    /// How many choices steps 1 and 2 show before More.
+    static let choicesBeforeMore = 6
+
+    /// - Parameters:
+    ///   - loopsLogged: How many loops the person logged before this one, so each new loop gets the next set of
+    ///     cheers.
+    ///   - pairs: The behaviors offered first after each starter trigger until the person has history of their own.
+    init(loopsLogged: Int = 0, pairs: StarterPairs = .bundled) {
         self.loopsLogged = loopsLogged
+        self.pairs = pairs
+    }
+
+    /// The step's choices in the order to offer them. Steps 1 and 2 follow the person's history, and step 2 the
+    /// trigger they picked; step 3 keeps its fixed order. The order is worked out when the step opens, and for step 2
+    /// again if the trigger changes, so the chips never shift under the person's finger: an option that arrives
+    /// meanwhile, say synced from another device, joins at the end.
+    func choices(for step: OptionKind, saved: [LoopOption]) -> [OptionChoice] {
+        let choices = OptionList.choices(for: step, saved: saved)
+        let trigger = step == .behavior ? answers[.trigger] : nil
+        let key = StepOrder.Key(step: step, triggerID: trigger?.id)
+        guard step != .result else { return choices }
+        if stepOrder?.key != key {
+            let ranker = OptionRanker(loops: recentLoops, saved: saved, now: .now)
+            let ranked = if let trigger {
+                ranker.behaviors(choices, after: trigger, pairs: pairs)
+            } else {
+                ranker.triggers(choices)
+            }
+            stepOrder = StepOrder(key: key, ids: ranked.map(\.id))
+        }
+        let place = stepOrder?.places ?? [:]
+        return choices.enumerated()
+            .sorted { (place[$0.element.id] ?? Int.max, $0.offset) < (place[$1.element.id] ?? Int.max, $1.offset) }
+            .map(\.element)
+    }
+
+    /// The id of the choice that shows the step's answer: its own, or one it's now merged into.
+    func answerID(in choices: [OptionChoice], for step: OptionKind) -> String? {
+        guard let answer = answers[step] else { return nil }
+        return choices.first { $0.id == answer.id || $0.mergedIDs.contains(answer.id) }?.id
+    }
+
+    /// The part of `choices` to show: on steps 1 and 2 the first few and More, unless the person asked for the rest
+    /// or the step's answer sits past them.
+    func visibleChoices(_ choices: [OptionChoice], for step: OptionKind) -> VisibleChoices {
+        let cut = Self.choicesBeforeMore
+        let answerIsPastCut = choices.dropFirst(cut).contains { $0.id == answerID(in: choices, for: step) }
+        guard step != .result, choices.count > cut, !isShowingAllChoices, !answerIsPastCut else {
+            return VisibleChoices(choices: choices, hasMore: false)
+        }
+        return VisibleChoices(choices: Array(choices.prefix(cut)), hasMore: true)
+    }
+
+    /// Shows the rest of the current step's choices, in the same order.
+    func showAllChoices() {
+        isShowingAllChoices = true
     }
 
     /// The option chosen for `step`, kept whole so the saved loop gets its id as well as its text.
@@ -76,6 +137,8 @@ final class LogLoopViewModel {
     func pick(_ choice: OptionChoice) {
         guard let step = currentStep else { return }
         closeAddOwn()
+        isShowingAllChoices = false
+        stepOrder = nil
         answers[step] = choice
         pickCount += 1
         cheer = LogCheer(step: step, loopsLogged: loopsLogged)
@@ -159,6 +222,8 @@ final class LogLoopViewModel {
     /// Reopens a step from the summary card, keeping its answer.
     func goTo(_ step: OptionKind) {
         closeAddOwn()
+        isShowingAllChoices = false
+        stepOrder = nil
         // A failed save was about the loop as it stood; the person is changing it now.
         saveFailed = false
         currentStep = step
@@ -173,4 +238,28 @@ final class LogLoopViewModel {
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Log")
+}
+
+/// The choices a step shows now, and whether More hides the rest.
+struct VisibleChoices: Equatable {
+    let choices: [OptionChoice]
+    let hasMore: Bool
+}
+
+/// A step's order, kept while that step shows.
+private struct StepOrder {
+    /// What the order was worked out for: the step, and for step 2 the trigger.
+    struct Key: Equatable {
+        let step: OptionKind
+        let triggerID: String?
+    }
+
+    let key: Key
+    /// Each choice's place, by id.
+    let places: [String: Int]
+
+    init(key: Key, ids: [String]) {
+        self.key = key
+        places = Dictionary(ids.enumerated().map { ($1, $0) }) { first, _ in first }
+    }
 }

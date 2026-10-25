@@ -25,4 +25,9 @@ struct LoopStore {
         let loops = FetchDescriptor<Loop>(predicate: #Predicate { $0.createdAt >= start && $0.createdAt <= now })
         return try context.fetchCount(loops)
     }
+
+    /// The loops logged at or after `start`.
+    func loops(since start: Date) throws -> [Loop] {
+        try context.fetch(FetchDescriptor<Loop>(predicate: #Predicate { $0.createdAt >= start }))
+    }
 }

@@ -41,6 +41,19 @@ struct LoopStoreTests {
         #expect(try store.loopsThisWeek(now: now, calendar: calendar) == count)
     }
 
+    /// The logger reads only the history its ordering uses.
+    @Test
+    func `loops since a date leave out older ones`() throws {
+        let store = LoopStore(context: ModelContext(container))
+        for day in [1, 10, 20] {
+            try store.add(.sample(createdAt: Self.date(day: day, hour: 12)))
+        }
+
+        let loops = try store.loops(since: Self.date(day: 10, hour: 12))
+
+        #expect(try loops.map(\.createdAt).sorted() == [Self.date(day: 10, hour: 12), Self.date(day: 20, hour: 12)])
+    }
+
     private static var gmtCalendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = .gmt

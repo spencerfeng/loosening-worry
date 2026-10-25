@@ -201,6 +201,28 @@
         }
       }
     },
+    "log.more" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More"
+          }
+        }
+      }
+    },
+    "log.more.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Shows the rest of the list"
+          }
+        }
+      }
+    },
     "log.result.addLabel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
