@@ -26,8 +26,14 @@ final class LogLoopViewModel {
     private(set) var anxiety: Int?
     /// The optional note as typed.
     var note = ""
-    /// Whether the loop has been saved, so the logger can close.
-    private(set) var isSaved = false
+    /// What Nice catch shows, once the loop is saved.
+    private(set) var niceCatch: NiceCatch?
+
+    /// Whether the loop has been saved, so the logger moves on to Nice catch.
+    var isSaved: Bool {
+        niceCatch != nil
+    }
+
     /// Whether the last try to save failed; the person's answers are kept so they can try again.
     private(set) var saveFailed = false
 
@@ -105,9 +111,13 @@ final class LogLoopViewModel {
         }
     }
 
-    /// Builds the loop from the answers and hands it to `store`. Does nothing unless `canSave`.
-    /// - Parameter store: Saves the loop. If it throws, `saveFailed` tells the person, and they can try again.
-    func save(_ store: (Loop) throws -> Void) {
+    /// Builds the loop from the answers and hands it to `store`, then sets up Nice catch. Does nothing unless
+    /// `canSave`.
+    /// - Parameters:
+    ///   - store: Saves the loop. If it throws, `saveFailed` tells the person, and they can try again.
+    ///   - loopsThisWeek: Counts this week's loops, the one just saved included. If it throws, Nice catch counts just
+    ///     that one.
+    func save(_ store: (Loop) throws -> Void, loopsThisWeek: () throws -> Int) {
         guard
             canSave,
             let trigger = answers[.trigger],
@@ -120,7 +130,8 @@ final class LogLoopViewModel {
         loop.note = trimmedNote.isEmpty ? nil : trimmedNote
         do {
             try store(loop)
-            isSaved = true
+            let count = (try? loopsThisWeek()) ?? 1
+            niceCatch = NiceCatch(loop: loop, loopsThisWeek: count)
             saveFailed = false
         } catch {
             Self.logger.error("Couldn't save a loop: \(error)")

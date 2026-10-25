@@ -43,4 +43,16 @@ struct RootViewModelTests {
 
         #expect(model.selectedTab == .insights)
     }
+
+    /// Nice catch's weekly count leads to Insights, closing the logger on the way.
+    @Test
+    func `showing Insights from the logger closes it and switches to Insights`() {
+        let model = RootViewModel()
+        model.select(.log)
+
+        model.showInsights()
+
+        #expect(model.isLogSheetPresented == false)
+        #expect(model.selectedTab == .insights)
+    }
 }

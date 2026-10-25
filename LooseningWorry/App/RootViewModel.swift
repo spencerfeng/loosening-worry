@@ -19,4 +19,10 @@ final class RootViewModel {
             selectedTab = tab
         }
     }
+
+    /// Closes the logger and switches to Insights, for Nice catch's weekly count.
+    func showInsights() {
+        isLogSheetPresented = false
+        selectedTab = .insights
+    }
 }

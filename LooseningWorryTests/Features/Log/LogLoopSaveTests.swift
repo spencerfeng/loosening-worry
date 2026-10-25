@@ -36,7 +36,7 @@ struct LogLoopSaveTests {
         let model = finishedModel()
         var stored: [Loop] = []
 
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         let loop = try #require(stored.only)
         #expect(loop.triggerID == "trigger.news")
@@ -51,12 +51,34 @@ struct LogLoopSaveTests {
     }
 
     @Test
+    func `saving leads to Nice catch, showing the loop and this week's count`() throws {
+        let model = finishedModel()
+
+        model.save { _ in } loopsThisWeek: { 5 }
+
+        let niceCatch = try #require(model.niceCatch)
+        #expect(niceCatch.chips == ["News", "Scrolled", "More worry"])
+        #expect(niceCatch.loopsThisWeek == 5)
+    }
+
+    /// The loop is saved either way, so the count it shows is at least that one.
+    @Test
+    func `if the week's count can't be read, Nice catch counts just the loop saved`() throws {
+        struct CountFailed: Error {}
+        let model = finishedModel()
+
+        model.save { _ in } loopsThisWeek: { throw CountFailed() }
+
+        #expect(try #require(model.niceCatch).loopsThisWeek == 1)
+    }
+
+    @Test
     func `an unfinished loop isn't saved`() {
         let model = LogLoopViewModel()
         model.pick(.news)
         var stored: [Loop] = []
 
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         #expect(stored.isEmpty)
         #expect(model.isSaved == false)
@@ -68,8 +90,8 @@ struct LogLoopSaveTests {
         let model = finishedModel()
         var stored: [Loop] = []
 
-        model.save { stored.append($0) }
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         #expect(stored.count == 1)
         #expect(model.canSave == false)
@@ -80,14 +102,14 @@ struct LogLoopSaveTests {
         struct SaveFailed: Error {}
         let model = finishedModel()
 
-        model.save { _ in throw SaveFailed() }
+        model.save { _ in throw SaveFailed() } loopsThisWeek: { 1 }
 
         #expect(model.isSaved == false)
         #expect(model.saveFailed)
         #expect(model.canSave)
 
         var stored: [Loop] = []
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         #expect(stored.count == 1)
         #expect(model.isSaved)
@@ -99,7 +121,7 @@ struct LogLoopSaveTests {
     func `reopening a step clears the message that saving failed`() {
         struct SaveFailed: Error {}
         let model = finishedModel()
-        model.save { _ in throw SaveFailed() }
+        model.save { _ in throw SaveFailed() } loopsThisWeek: { 1 }
 
         model.goTo(.trigger)
 
@@ -121,7 +143,7 @@ struct LogLoopDetailsTests {
 
         model.setAnxiety(7)
         var stored: [Loop] = []
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         #expect(try #require(stored.only).anxiety == 7)
     }
@@ -143,7 +165,7 @@ struct LogLoopDetailsTests {
         model.note = typed
         var stored: [Loop] = []
 
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
 
         #expect(try #require(stored.only).note == saved)
     }
@@ -162,7 +184,7 @@ struct LogLoopDetailsTests {
         #expect(model.anxiety == nil)
         #expect(model.note.isEmpty)
         var stored: [Loop] = []
-        model.save { stored.append($0) }
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
         let loop = try #require(stored.only)
         #expect(loop.anxiety == nil)
         #expect(loop.note == nil)

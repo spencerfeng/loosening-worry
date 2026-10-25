@@ -22,7 +22,9 @@ struct RootView: View {
         }
         .tint(.theme(.accent))
         .sheet(isPresented: $model.isLogSheetPresented) {
-            LogLoopView()
+            LogLoopView {
+                model.showInsights()
+            }
         }
     }
 }

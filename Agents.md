@@ -43,6 +43,10 @@ Plural entries are written by hand. The source declares one `String(localized:ke
 carrying a `%lld`, and the catalog entry holds `variations.plural` with `one` and `other`;
 `String.localizedStringWithFormat` resolves the category at runtime.
 
+When the number is styled apart from its words (Nice catch's "**4** loops noticed this week"), the source declares
+`AttributedString(localized: LocalizedStringResource(key, defaultValue: "**\(count)** …"))` instead. The catalog entry
+is the same hand-written plural, with the `**` kept in each variation; the view restyles the strongly emphasized run.
+
 The pre-commit hook keeps the stored form honest: when the catalog is staged it runs
 `Scripts/normalize-string-catalog.swift`, which reorders entries into Xcode's collation and
 re-stages the file. The script moves entries as raw text rather than re-serialising them, so

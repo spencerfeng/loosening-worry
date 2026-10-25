@@ -1,15 +1,30 @@
 import SwiftData
 import SwiftUI
 
-/// Logs a loop in three one-tap steps: a summary card of the answers so far, then the current question.
+/// Logs a loop in three one-tap steps: a summary card of the answers so far, then the current question. Once the
+/// loop is saved, Nice catch takes its place.
 struct LogLoopView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
     @State private var model = LogLoopViewModel()
+    /// Closes the logger and switches to Insights, from Nice catch's weekly count.
+    let showInsights: () -> Void
 
     var body: some View {
+        // Swapped in without a transition: a leaving view stays on screen until the animations inside it finish, and
+        // the cheer's sparkle runs for over two seconds. Nice catch animates its own entrance.
+        if let niceCatch = model.niceCatch {
+            NiceCatchView(niceCatch: niceCatch, showInsights: showInsights) {
+                dismiss()
+            }
+        } else {
+            logger
+        }
+    }
+
+    private var logger: some View {
         NavigationStack {
             ScrollViewReader { proxy in
                 ScrollView {
@@ -85,7 +100,8 @@ struct LogLoopView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 if model.currentStep == nil {
                     LogSaveBar(failed: model.saveFailed, canSave: model.canSave) {
-                        model.save { try LoopStore(context: modelContext).add($0) }
+                        let store = LoopStore(context: modelContext)
+                        model.save { try store.add($0) } loopsThisWeek: { try store.loopsThisWeek() }
                     }
                 }
             }
@@ -107,12 +123,6 @@ struct LogLoopView: View {
                         announcement += " " + String(localized: Self.unsavedNote(label))
                     }
                     AccessibilityNotification.Announcement(announcement).post()
-                }
-            }
-            .onChange(of: model.isSaved) { _, saved in
-                // The Nice catch screen will follow Save; until then the logger just closes.
-                if saved {
-                    dismiss()
                 }
             }
             .onChange(of: model.saveFailed) { _, failed in
@@ -465,7 +475,7 @@ private struct SparklePose {
 
 #if DEBUG
     #Preview {
-        LogLoopView()
+        LogLoopView {}
             .modelContainer(AppModelContainer.preview)
     }
 #endif
