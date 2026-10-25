@@ -5,15 +5,15 @@ import Testing
 struct StarterOptionTests {
     @Test(arguments: [
         (OptionKind.trigger, [
-            "Work email", "News", "Deadline", "Bedtime", "Social plans", "Money", "Health", "Waiting for a reply",
+            "Work", "Deadline", "Money", "Health", "Family or partner", "Social plans", "News", "Waiting for a reply",
+            "Trying to sleep", "Out of nowhere",
         ]),
         (OptionKind.behavior, [
-            "Overthinking", "Checked phone", "Avoided it", "Snacked", "Over-planned", "Scrolled",
-            "Asked for reassurance", "Searched online",
+            "Overthought it", "Kept checking", "Asked for reassurance", "Searched online", "Avoided it", "Put it off",
+            "Over-prepared", "Scrolled", "Snacked",
         ]),
         (OptionKind.result, [
-            "More worry", "Tense and tired", "A little relief", "An actual answer", "Nothing changed",
-            "Distracted for a while", "Restless", "Lost sleep",
+            "More worry", "Tense and tired", "Nothing changed", "A little relief", "It actually helped", "Not sure",
         ]),
     ])
     func `each kind offers its starters in order`(kind: OptionKind, labels: [String]) {
@@ -21,6 +21,32 @@ struct StarterOptionTests {
 
         #expect(starters.map { String(localized: $0.label) } == labels)
         #expect(starters.allSatisfy { $0.kind == kind })
+    }
+
+    @Test
+    func `the triggers have stable ids`() {
+        #expect(StarterOption.options(for: .trigger).map(\.id) == [
+            "trigger.work", "trigger.deadline", "trigger.money", "trigger.health", "trigger.familyOrPartner",
+            "trigger.socialPlans", "trigger.news", "trigger.waitingForReply", "trigger.tryingToSleep",
+            "trigger.outOfNowhere",
+        ])
+    }
+
+    @Test
+    func `the behaviors have stable ids`() {
+        #expect(StarterOption.options(for: .behavior).map(\.id) == [
+            "behavior.overthought", "behavior.keptChecking", "behavior.askedForReassurance",
+            "behavior.searchedOnline", "behavior.avoidedIt", "behavior.putItOff", "behavior.overPrepared",
+            "behavior.scrolled", "behavior.snacked",
+        ])
+    }
+
+    @Test
+    func `the core results have stable ids, worse to better, then not sure`() {
+        #expect(StarterOption.options(for: .result).map(\.id) == [
+            "result.moreWorry", "result.tenseAndTired", "result.nothingChanged", "result.littleRelief",
+            "result.actuallyHelped", "result.notSure",
+        ])
     }
 
     /// Overrides find their starter by id, so two starters must never share one.

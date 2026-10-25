@@ -20,60 +20,68 @@ struct StarterOption: Sendable {
 
     /// In the order the logger offers them.
     static let all: [StarterOption] = [
+        // Mostly what the worry is about; a moment gets its own chip only when the moment is the hook.
         StarterOption(
             .trigger,
-            "workEmail",
-            LocalizedStringResource("starter.trigger.workEmail", defaultValue: "Work email"),
+            "work",
+            LocalizedStringResource("starter.trigger.work", defaultValue: "Work"),
         ),
-        StarterOption(.trigger, "news", LocalizedStringResource("starter.trigger.news", defaultValue: "News")),
         StarterOption(
             .trigger,
             "deadline",
             LocalizedStringResource("starter.trigger.deadline", defaultValue: "Deadline"),
         ),
-        StarterOption(.trigger, "bedtime", LocalizedStringResource("starter.trigger.bedtime", defaultValue: "Bedtime")),
+        StarterOption(
+            .trigger,
+            "money",
+            LocalizedStringResource("starter.trigger.money", defaultValue: "Money"),
+        ),
+        StarterOption(
+            .trigger,
+            "health",
+            LocalizedStringResource("starter.trigger.health", defaultValue: "Health"),
+        ),
+        StarterOption(
+            .trigger,
+            "familyOrPartner",
+            LocalizedStringResource("starter.trigger.familyOrPartner", defaultValue: "Family or partner"),
+        ),
         StarterOption(
             .trigger,
             "socialPlans",
             LocalizedStringResource("starter.trigger.socialPlans", defaultValue: "Social plans"),
         ),
-        StarterOption(.trigger, "money", LocalizedStringResource("starter.trigger.money", defaultValue: "Money")),
-        StarterOption(.trigger, "health", LocalizedStringResource("starter.trigger.health", defaultValue: "Health")),
+        StarterOption(
+            .trigger,
+            "news",
+            LocalizedStringResource("starter.trigger.news", defaultValue: "News"),
+        ),
         StarterOption(
             .trigger,
             "waitingForReply",
             LocalizedStringResource("starter.trigger.waitingForReply", defaultValue: "Waiting for a reply"),
         ),
+        StarterOption(
+            .trigger,
+            "tryingToSleep",
+            LocalizedStringResource("starter.trigger.tryingToSleep", defaultValue: "Trying to sleep"),
+        ),
+        StarterOption(
+            .trigger,
+            "outOfNowhere",
+            LocalizedStringResource("starter.trigger.outOfNowhere", defaultValue: "Out of nowhere"),
+        ),
 
+        // The most common worry habits first: new users see behaviors in this order.
         StarterOption(
             .behavior,
-            "overthinking",
-            LocalizedStringResource("starter.behavior.overthinking", defaultValue: "Overthinking"),
+            "overthought",
+            LocalizedStringResource("starter.behavior.overthought", defaultValue: "Overthought it"),
         ),
         StarterOption(
             .behavior,
-            "checkedPhone",
-            LocalizedStringResource("starter.behavior.checkedPhone", defaultValue: "Checked phone"),
-        ),
-        StarterOption(
-            .behavior,
-            "avoidedIt",
-            LocalizedStringResource("starter.behavior.avoidedIt", defaultValue: "Avoided it"),
-        ),
-        StarterOption(
-            .behavior,
-            "snacked",
-            LocalizedStringResource("starter.behavior.snacked", defaultValue: "Snacked"),
-        ),
-        StarterOption(
-            .behavior,
-            "overPlanned",
-            LocalizedStringResource("starter.behavior.overPlanned", defaultValue: "Over-planned"),
-        ),
-        StarterOption(
-            .behavior,
-            "scrolled",
-            LocalizedStringResource("starter.behavior.scrolled", defaultValue: "Scrolled"),
+            "keptChecking",
+            LocalizedStringResource("starter.behavior.keptChecking", defaultValue: "Kept checking"),
         ),
         StarterOption(
             .behavior,
@@ -85,7 +93,34 @@ struct StarterOption: Sendable {
             "searchedOnline",
             LocalizedStringResource("starter.behavior.searchedOnline", defaultValue: "Searched online"),
         ),
+        StarterOption(
+            .behavior,
+            "avoidedIt",
+            LocalizedStringResource("starter.behavior.avoidedIt", defaultValue: "Avoided it"),
+        ),
+        StarterOption(
+            .behavior,
+            "putItOff",
+            LocalizedStringResource("starter.behavior.putItOff", defaultValue: "Put it off"),
+        ),
+        StarterOption(
+            .behavior,
+            "overPrepared",
+            LocalizedStringResource("starter.behavior.overPrepared", defaultValue: "Over-prepared"),
+        ),
+        StarterOption(
+            .behavior,
+            "scrolled",
+            LocalizedStringResource("starter.behavior.scrolled", defaultValue: "Scrolled"),
+        ),
+        StarterOption(
+            .behavior,
+            "snacked",
+            LocalizedStringResource("starter.behavior.snacked", defaultValue: "Snacked"),
+        ),
 
+        // Step 3's core results, worse to better so the list reads as a fair scale. Not sure isn't on the scale,
+        // so it comes last.
         StarterOption(
             .result,
             "moreWorry",
@@ -98,34 +133,20 @@ struct StarterOption: Sendable {
         ),
         StarterOption(
             .result,
-            "littleRelief",
-            LocalizedStringResource("starter.result.littleRelief", defaultValue: "A little relief"),
-        ),
-        StarterOption(
-            .result,
-            "actualAnswer",
-            LocalizedStringResource("starter.result.actualAnswer", defaultValue: "An actual answer"),
-        ),
-        StarterOption(
-            .result,
             "nothingChanged",
             LocalizedStringResource("starter.result.nothingChanged", defaultValue: "Nothing changed"),
         ),
         StarterOption(
             .result,
-            "distracted",
-            LocalizedStringResource("starter.result.distracted", defaultValue: "Distracted for a while"),
+            "littleRelief",
+            LocalizedStringResource("starter.result.littleRelief", defaultValue: "A little relief"),
         ),
         StarterOption(
             .result,
-            "restless",
-            LocalizedStringResource("starter.result.restless", defaultValue: "Restless"),
+            "actuallyHelped",
+            LocalizedStringResource("starter.result.actuallyHelped", defaultValue: "It actually helped"),
         ),
-        StarterOption(
-            .result,
-            "lostSleep",
-            LocalizedStringResource("starter.result.lostSleep", defaultValue: "Lost sleep"),
-        ),
+        StarterOption(.result, "notSure", LocalizedStringResource("starter.result.notSure", defaultValue: "Not sure")),
     ]
 
     private init(_ kind: OptionKind, _ name: String, _ label: LocalizedStringResource) {

@@ -28,6 +28,45 @@ struct OptionListTests {
         #expect(choices.dropFirst(2).map(\.starterID) == StarterOption.options(for: .trigger).map(\.id))
     }
 
+    /// Step 3 is a feeling check, so the core results keep their places and the person's own never jump above them.
+    @Test
+    func `custom results come after the core results, oldest first`() {
+        let older = LoopOption(kind: .result, label: "Felt silly")
+        older.createdAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let newer = LoopOption(kind: .result, label: "Got a headache")
+        newer.createdAt = Date(timeIntervalSince1970: 1_700_100_000)
+
+        let choices = OptionList.choices(for: .result, saved: [newer, older])
+
+        let core = StarterOption.options(for: .result).map(\.id)
+        #expect(choices.prefix(core.count).map(\.starterID) == core)
+        #expect(Array(choices.dropFirst(core.count)) == [
+            OptionChoice(label: "Felt silly", starterID: nil),
+            OptionChoice(label: "Got a headache", starterID: nil),
+        ])
+    }
+
+    @Test
+    func `a custom result with a core result's text appears once, in the core result's place`() throws {
+        let relief = try #require(StarterOption.with(id: "result.littleRelief"))
+        let label = String(localized: relief.label)
+
+        let choices = OptionList.choices(for: .result, saved: [LoopOption(kind: .result, label: label)])
+
+        #expect(choices.map(\.starterID) == StarterOption.options(for: .result).map(\.id))
+        #expect(choices.count { $0.label == label } == 1)
+    }
+
+    @Test
+    func `a renamed core result keeps its place`() {
+        let rename = LoopOption(kind: .result, label: "Felt lighter", starterID: "result.littleRelief")
+
+        let choices = OptionList.choices(for: .result, saved: [rename])
+
+        #expect(choices.map(\.starterID) == StarterOption.options(for: .result).map(\.id))
+        #expect(choices.first { $0.starterID == "result.littleRelief" }?.label == "Felt lighter")
+    }
+
     @Test
     func `a renamed starter shows its new text in the starter's place`() {
         let rename = LoopOption(kind: .trigger, label: "World news", starterID: "trigger.news")
@@ -134,13 +173,14 @@ struct OptionListTests {
 
     @Test
     func `a starter renamed to another starter's text appears once, in its own place`() throws {
-        let deadline = try #require(StarterOption.with(id: "trigger.deadline"))
-        let label = String(localized: deadline.label)
-        let rename = LoopOption(kind: .trigger, label: label, starterID: "trigger.news")
+        // Deadline comes before News, so the rename is the first place that text appears.
+        let news = try #require(StarterOption.with(id: "trigger.news"))
+        let label = String(localized: news.label)
+        let rename = LoopOption(kind: .trigger, label: label, starterID: "trigger.deadline")
 
         let choices = OptionList.choices(for: .trigger, saved: [rename])
 
-        #expect(choices.filter { $0.label == label } == [OptionChoice(label: label, starterID: "trigger.news")])
+        #expect(choices.filter { $0.label == label } == [OptionChoice(label: label, starterID: "trigger.deadline")])
         #expect(choices.count == StarterOption.options(for: .trigger).count - 1)
     }
 

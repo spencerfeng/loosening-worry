@@ -346,11 +346,13 @@ struct LogLoopAddOwnTests {
         let model = LogLoopViewModel()
         var saved: [String] = []
         model.toggleAddOwn()
-        model.draft = "Work  email"
+        model.draft = "Social  plans"
 
-        model.addOwn(existing: [OptionChoice(label: "Work email", starterID: "trigger.workEmail")]) { saved.append($1) }
+        model.addOwn(existing: [OptionChoice(label: "Social plans", starterID: "trigger.socialPlans")]) {
+            saved.append($1)
+        }
 
-        #expect(saved == ["Work  email"])
+        #expect(saved == ["Social  plans"])
     }
 
     /// A failed save loses only the option for next time; the loop still gets the answer.

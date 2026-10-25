@@ -13,9 +13,10 @@ struct OptionStore {
         if let hidden = OptionList.hiddenOption(matching: label, for: kind, saved: saved) {
             hidden.isHidden = false
             hidden.updatedAt = .now
-            // One of their own is listed by when it was added, so coming back puts it first, as a new one would be.
-            // A starter keeps its place among the starters.
-            if hidden.starterID == nil {
+            // One of their own is listed by when it was added. On steps 1 and 2, newest first, so coming back puts it
+            // first, as a new one would be. Step 3 keeps the order they were added, so a result keeps its place. A
+            // starter keeps its place among the starters.
+            if hidden.starterID == nil, hidden.kind != .result {
                 hidden.createdAt = .now
             }
         } else {

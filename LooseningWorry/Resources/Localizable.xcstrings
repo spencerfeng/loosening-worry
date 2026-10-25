@@ -350,35 +350,46 @@
         }
       }
     },
-    "starter.behavior.checkedPhone" : {
+    "starter.behavior.keptChecking" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Checked phone"
+            "value" : "Kept checking"
           }
         }
       }
     },
-    "starter.behavior.overPlanned" : {
+    "starter.behavior.overPrepared" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Over-planned"
+            "value" : "Over-prepared"
           }
         }
       }
     },
-    "starter.behavior.overthinking" : {
+    "starter.behavior.overthought" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Overthinking"
+            "value" : "Overthought it"
+          }
+        }
+      }
+    },
+    "starter.behavior.putItOff" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Put it off"
           }
         }
       }
@@ -416,24 +427,13 @@
         }
       }
     },
-    "starter.result.actualAnswer" : {
+    "starter.result.actuallyHelped" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "An actual answer"
-          }
-        }
-      }
-    },
-    "starter.result.distracted" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Distracted for a while"
+            "value" : "It actually helped"
           }
         }
       }
@@ -445,17 +445,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "A little relief"
-          }
-        }
-      }
-    },
-    "starter.result.lostSleep" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Lost sleep"
           }
         }
       }
@@ -482,13 +471,13 @@
         }
       }
     },
-    "starter.result.restless" : {
+    "starter.result.notSure" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Restless"
+            "value" : "Not sure"
           }
         }
       }
@@ -504,17 +493,6 @@
         }
       }
     },
-    "starter.trigger.bedtime" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Bedtime"
-          }
-        }
-      }
-    },
     "starter.trigger.deadline" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -522,6 +500,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Deadline"
+          }
+        }
+      }
+    },
+    "starter.trigger.familyOrPartner" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Family or partner"
           }
         }
       }
@@ -559,6 +548,17 @@
         }
       }
     },
+    "starter.trigger.outOfNowhere" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Out of nowhere"
+          }
+        }
+      }
+    },
     "starter.trigger.socialPlans" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -566,6 +566,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Social plans"
+          }
+        }
+      }
+    },
+    "starter.trigger.tryingToSleep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Trying to sleep"
           }
         }
       }
@@ -581,13 +592,13 @@
         }
       }
     },
-    "starter.trigger.workEmail" : {
+    "starter.trigger.work" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Work email"
+            "value" : "Work"
           }
         }
       }

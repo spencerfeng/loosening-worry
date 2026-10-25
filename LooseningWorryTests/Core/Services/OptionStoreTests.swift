@@ -76,6 +76,23 @@ struct OptionStoreTests {
         #expect(OptionList.choices(for: .trigger, saved: options).first?.label == "Rent due")
     }
 
+    /// Step 3 lists the person's results in the order they were added, so one that comes back keeps its place.
+    @Test
+    func `a hidden result of the person's own comes back in its old place`() throws {
+        let hidden = LoopOption(kind: .result, label: "Felt silly")
+        hidden.isHidden = true
+        hidden.createdAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let newer = LoopOption(kind: .result, label: "Got a headache")
+        newer.createdAt = Date(timeIntervalSince1970: 1_700_100_000)
+        context.insert(hidden)
+        context.insert(newer)
+
+        try OptionStore(context: context).addOwn("Felt silly", kind: .result)
+
+        let custom = try OptionList.choices(for: .result, saved: saved()).filter { $0.starterID == nil }
+        #expect(custom.map(\.label) == ["Felt silly", "Got a headache"])
+    }
+
     /// Each change to a starter is its own row, and only the newest one says how it shows.
     @Test
     func `a starter hidden after an earlier change comes back in its place, from its newest change`() throws {

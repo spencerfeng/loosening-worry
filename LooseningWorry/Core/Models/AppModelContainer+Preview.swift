@@ -34,18 +34,18 @@
     private enum PreviewData {
         /// A week of loops, newest first.
         private static let loops: [SampleLoop] = [
-            SampleLoop(hoursAgo: 1, "trigger.workEmail", "behavior.overthinking", "result.moreWorry"),
+            SampleLoop(hoursAgo: 1, "trigger.work", "behavior.overthought", "result.moreWorry"),
             SampleLoop(hoursAgo: 5, "trigger.news", "behavior.scrolled", "result.tenseAndTired"),
-            SampleLoop(hoursAgo: 20, "trigger.deadline", "behavior.overPlanned", "result.actualAnswer"),
-            SampleLoop(hoursAgo: 28, "trigger.bedtime", "behavior.checkedPhone", "result.lostSleep"),
-            SampleLoop(hoursAgo: 45, "trigger.workEmail", "behavior.avoidedIt", "result.nothingChanged"),
+            SampleLoop(hoursAgo: 20, "trigger.deadline", "behavior.overPrepared", "result.actuallyHelped"),
+            SampleLoop(hoursAgo: 28, "trigger.tryingToSleep", "behavior.keptChecking", "result.tenseAndTired"),
+            SampleLoop(hoursAgo: 45, "trigger.familyOrPartner", "behavior.avoidedIt", "result.nothingChanged"),
             SampleLoop(hoursAgo: 52, "trigger.socialPlans", "behavior.askedForReassurance", "result.littleRelief"),
             SampleLoop(hoursAgo: 70, "trigger.money", "behavior.searchedOnline", "result.moreWorry"),
-            SampleLoop(hoursAgo: 95, "trigger.health", "behavior.searchedOnline", "result.restless"),
-            SampleLoop(hoursAgo: 100, "trigger.waitingForReply", "behavior.checkedPhone", "result.distracted"),
-            SampleLoop(hoursAgo: 120, "trigger.workEmail", "behavior.overthinking", "result.tenseAndTired"),
-            SampleLoop(hoursAgo: 140, "trigger.bedtime", "behavior.scrolled", "result.lostSleep"),
-            SampleLoop(hoursAgo: 160, "trigger.deadline", "behavior.snacked", "result.littleRelief"),
+            SampleLoop(hoursAgo: 95, "trigger.health", "behavior.searchedOnline", "result.notSure"),
+            SampleLoop(hoursAgo: 100, "trigger.waitingForReply", "behavior.keptChecking", "result.littleRelief"),
+            SampleLoop(hoursAgo: 120, "trigger.work", "behavior.overthought", "result.tenseAndTired"),
+            SampleLoop(hoursAgo: 140, "trigger.tryingToSleep", "behavior.scrolled", "result.nothingChanged"),
+            SampleLoop(hoursAgo: 160, "trigger.deadline", "behavior.putItOff", "result.littleRelief"),
         ]
 
         static func insert(into context: ModelContext) {
