@@ -86,26 +86,16 @@ struct OptionListTests {
         #expect(choices.first { $0.label == label }?.mergedIDs == [custom.optionID])
     }
 
-    @Test
-    func `a renamed core result keeps its place`() {
-        let rename = LoopOption(overriding: .littleRelief, label: "Felt lighter")
+    /// Options can't be renamed, so a starter always shows its own words, translated. An override from an older
+    /// build, or synced from one, may still carry other text; it's ignored.
+    @Test(arguments: [OptionKind.trigger, .result])
+    func `a starter shows its own text, whatever an override says`(kind: OptionKind) throws {
+        let starter = try #require(StarterOption.options(for: kind).first)
+        let old = LoopOption(overriding: starter.id, label: "Something else")
 
-        let choices = OptionList.choices(for: .result, saved: [rename])
+        let choices = OptionList.choices(for: kind, saved: [old])
 
-        #expect(choices.map(\.starterID) == StarterOption.options(for: .result).map(\.id))
-        #expect(choices.first { $0.starterID == .littleRelief }?.label == "Felt lighter")
-    }
-
-    @Test
-    func `a renamed starter shows its new text in the starter's place`() {
-        let rename = LoopOption(overriding: .news, label: "World news")
-
-        let choices = OptionList.choices(for: .trigger, saved: [rename])
-
-        let expected = StarterOption.options(for: .trigger).map { starter in
-            OptionChoice(starter.id, label: starter.id == .news ? "World news" : starter.text)
-        }
-        #expect(choices == expected)
+        #expect(choices == OptionList.choices(for: kind, saved: []))
     }
 
     @Test
@@ -125,37 +115,35 @@ struct OptionListTests {
     /// Two devices can each save a change to the same starter before they sync.
     @Test
     func `of two changes to the same starter, the one edited last wins, whenever it was created`() {
-        let editedLast = LoopOption(overriding: .news, label: "Headlines")
+        let editedLast = LoopOption(overriding: .news, label: "News")
+        editedLast.isHidden = true
         editedLast.createdAt = Date(timeIntervalSince1970: 1_800_000_000)
         editedLast.updatedAt = Date(timeIntervalSince1970: 1_800_200_000)
-        let createdLast = LoopOption(overriding: .news, label: "World news")
+        let createdLast = LoopOption(overriding: .news, label: "News")
         createdLast.createdAt = Date(timeIntervalSince1970: 1_800_100_000)
         createdLast.updatedAt = Date(timeIntervalSince1970: 1_800_100_000)
 
         let choices = OptionList.choices(for: .trigger, saved: [editedLast, createdLast])
 
-        #expect(choices.filter { $0.starterID == .news } == [
-            OptionChoice(.news, label: "Headlines")
-        ])
+        #expect(!choices.contains { $0.starterID == .news })
     }
 
     /// Fetch order differs between devices, so a tie must not fall to whichever comes first.
     @Test
     func `when two changes to a starter were edited at the same time, the one created last wins`() {
         let editedAt = Date(timeIntervalSince1970: 1_800_200_000)
-        let createdFirst = LoopOption(overriding: .news, label: "World news")
+        let createdFirst = LoopOption(overriding: .news, label: "News")
         createdFirst.createdAt = Date(timeIntervalSince1970: 1_800_000_000)
         createdFirst.updatedAt = editedAt
-        let createdLast = LoopOption(overriding: .news, label: "Headlines")
+        let createdLast = LoopOption(overriding: .news, label: "News")
+        createdLast.isHidden = true
         createdLast.createdAt = Date(timeIntervalSince1970: 1_800_100_000)
         createdLast.updatedAt = editedAt
 
         for saved in [[createdFirst, createdLast], [createdLast, createdFirst]] {
             let choices = OptionList.choices(for: .trigger, saved: saved)
 
-            #expect(choices.filter { $0.starterID == .news } == [
-                OptionChoice(.news, label: "Headlines")
-            ])
+            #expect(!choices.contains { $0.starterID == .news })
         }
     }
 
@@ -200,21 +188,6 @@ struct OptionListTests {
     }
 
     @Test
-    func `a starter renamed to another starter's text appears once, in its own place`() {
-        // Deadline comes before News, so the rename is the first place that text appears.
-        let news = StarterOption.with(id: .news)
-        let label = news.text
-        let rename = LoopOption(overriding: .deadline, label: label)
-
-        let choices = OptionList.choices(for: .trigger, saved: [rename])
-
-        let shown = choices.filter { $0.label == label }
-        #expect(shown.map(\.id) == ["trigger.deadline"])
-        #expect(shown.map(\.mergedIDs) == [["trigger.news"]])
-        #expect(choices.count == StarterOption.options(for: .trigger).count - 1)
-    }
-
-    @Test
     func `only options of the requested kind appear`() {
         let behavior = LoopOption(kind: .behavior, label: "Paced around")
 
@@ -235,10 +208,10 @@ struct OptionListTests {
 
     @Test
     func `a hidden starter is found by the text it showed when hidden`() {
-        let hide = LoopOption(overriding: .news, label: "World news")
+        let hide = LoopOption(overriding: .news, label: "News")
         hide.isHidden = true
 
-        #expect(OptionList.hiddenOption(matching: "World news", for: .trigger, saved: [hide]) === hide)
+        #expect(OptionList.hiddenOption(matching: "News", for: .trigger, saved: [hide]) === hide)
     }
 
     @Test
@@ -255,15 +228,58 @@ struct OptionListTests {
         #expect(OptionList.hiddenOption(matching: "call from mom", for: .trigger, saved: saved) == nil)
     }
 
-    /// Only the starter's newest change counts, so an older hide that a later rename replaced is not hidden.
+    /// Only the starter's newest change counts, so an older hide that a later restore replaced is not hidden.
     @Test
     func `a starter hidden once but changed since is not found`() {
         let hide = LoopOption(overriding: .news, label: "News")
         hide.isHidden = true
         hide.updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
-        let rename = LoopOption(overriding: .news, label: "Headlines")
-        rename.updatedAt = Date(timeIntervalSince1970: 1_800_100_000)
+        let restore = LoopOption(overriding: .news, label: "News")
+        restore.updatedAt = Date(timeIntervalSince1970: 1_800_100_000)
 
-        #expect(OptionList.hiddenOption(matching: "News", for: .trigger, saved: [hide, rename]) == nil)
+        #expect(OptionList.hiddenOption(matching: "News", for: .trigger, saved: [hide, restore]) == nil)
+    }
+
+    // MARK: - Removed options
+
+    @Test
+    func `removed options are listed newest removed first, each text once`() {
+        let rent = LoopOption(kind: .trigger, label: "Rent due")
+        rent.isHidden = true
+        rent.updatedAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let rentCopy = LoopOption(kind: .trigger, label: "Rent due")
+        rentCopy.isHidden = true
+        rentCopy.updatedAt = Date(timeIntervalSince1970: 1_700_000_100)
+        let news = LoopOption(overriding: .news, label: "News")
+        news.isHidden = true
+        news.updatedAt = Date(timeIntervalSince1970: 1_700_100_000)
+        let visible = LoopOption(kind: .trigger, label: "Call from Mom")
+
+        let removed = OptionList.removedChoices(for: .trigger, saved: [rent, rentCopy, news, visible])
+
+        #expect(removed.map(\.label) == ["News", "Rent due"])
+        #expect(removed.map(\.starterID) == [.news, nil])
+        #expect(removed.last?.mergedIDs.count == 1)
+    }
+
+    @Test
+    func `a starter restored since it was removed isn't listed as removed`() {
+        let hide = LoopOption(overriding: .news, label: "News")
+        hide.isHidden = true
+        hide.updatedAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let restore = LoopOption(overriding: .news, label: "News")
+        restore.updatedAt = Date(timeIntervalSince1970: 1_700_100_000)
+
+        #expect(OptionList.removedChoices(for: .trigger, saved: [hide, restore]).isEmpty)
+    }
+
+    // MARK: - Matching typed text
+
+    /// The logger's add-your-own and the Edit options screen share this check.
+    @Test(arguments: [("  News ", "News"), ("news", nil), ("Ne ws", nil), ("Money", "Money")])
+    func `typed text matches a choice exactly, after trimming`(typed: String, match: String?) {
+        let choices = OptionList.choices(for: .trigger, saved: [])
+
+        #expect(OptionList.match(typed, in: choices)?.label == match)
     }
 }

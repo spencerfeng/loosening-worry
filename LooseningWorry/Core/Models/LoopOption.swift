@@ -11,7 +11,7 @@ enum OptionKind: String, Codable, CaseIterable {
 /// starters can't be renamed. It keeps the starter's full text, so adding that text again brings the starter back.
 /// Starters themselves are never stored (see `StarterOption`).
 ///
-/// When two devices each change the same starter, the override with the newest `updatedAt` wins (see `OptionList`).
+/// When two devices each change the same starter, the override that `supersedes` the others wins.
 @Model
 final class LoopOption {
     var kind = OptionKind.trigger
@@ -24,6 +24,17 @@ final class LoopOption {
     var isHidden: Bool = false
     var createdAt = Date.now
     var updatedAt = Date.now
+
+    /// Whether this is the person's own option rather than a change to a starter.
+    var isCustom: Bool {
+        starterID == nil
+    }
+
+    /// Whether this change to a starter wins over `other`: the one edited last, and if both were edited at the same
+    /// moment, the one created last, so every device picks the same one.
+    func supersedes(_ other: LoopOption) -> Bool {
+        (updatedAt, createdAt) > (other.updatedAt, other.createdAt)
+    }
 
     /// The starter this overrides; `nil` for the person's own option, or for an override of a starter this version
     /// doesn't have, synced from a newer one.

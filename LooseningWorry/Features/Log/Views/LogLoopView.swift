@@ -9,6 +9,8 @@ struct LogLoopView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
     @State private var model = LogLoopViewModel()
+    /// The step whose options are being edited, when Edit options is open.
+    @State private var editing: OptionKind?
     /// Closes the logger and switches to Insights, from Nice catch's weekly count.
     let showInsights: () -> Void
 
@@ -61,6 +63,8 @@ struct LogLoopView: View {
                                 withAnimation(stepAnimation) { model.pick(choice) }
                             } showMore: {
                                 withAnimation(stepAnimation) { model.showAllChoices() }
+                            } edit: {
+                                editing = step
                             } toggleAddOwn: {
                                 model.toggleAddOwn()
                             } addOwn: {
@@ -110,6 +114,9 @@ struct LogLoopView: View {
                 }
             }
             .background(.theme(.background))
+            .navigationDestination(item: $editing) { kind in
+                EditOptionsView(kind: kind)
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

@@ -74,7 +74,6 @@
             }
 
             context.insert(LoopOption(kind: .trigger, label: "Rent due"))
-            context.insert(LoopOption(overriding: .news, label: "World news"))
             let hidden = LoopOption(overriding: .snacked, label: label(of: .snacked))
             hidden.isHidden = true
             context.insert(hidden)

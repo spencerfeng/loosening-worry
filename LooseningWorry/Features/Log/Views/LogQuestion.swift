@@ -20,16 +20,30 @@ struct LogQuestion: View {
     let canAddOwn: Bool
     let pick: (OptionChoice) -> Void
     let showMore: () -> Void
+    /// Opens Edit options on this step's tab.
+    let edit: () -> Void
     let toggleAddOwn: () -> Void
     let addOwn: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(step.logCopy.question)
-                    .font(.theme(.title))
-                    .foregroundStyle(.theme(.textPrimary))
-                    .accessibilityAddTraits(.isHeader)
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Text(step.logCopy.question)
+                        .font(.theme(.title))
+                        .foregroundStyle(.theme(.textPrimary))
+                        .accessibilityAddTraits(.isHeader)
+                    Spacer(minLength: 0)
+                    Button(action: edit) {
+                        Text(LocalizedStringResource("log.edit", defaultValue: "Edit"))
+                            .font(.theme(.callout))
+                            .foregroundStyle(.theme(.accentText))
+                            .frame(minWidth: 44, minHeight: 44, alignment: .trailing)
+                            .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(Text(step.logCopy.editLabel))
+                }
                 Text(step.logCopy.hint)
                     .font(.theme(.body))
                     .foregroundStyle(.theme(.textSecondary))

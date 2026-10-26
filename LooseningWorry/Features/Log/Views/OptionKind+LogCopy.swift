@@ -10,6 +10,10 @@ struct LogStepCopy {
     let addLabel: LocalizedStringResource
     /// An example in the empty "+ Add your own" field.
     let addPlaceholder: LocalizedStringResource
+    /// "Edit your triggers": the step's Edit link for VoiceOver, since the visible "Edit" relies on the question.
+    let editLabel: LocalizedStringResource
+    /// The step's tab on the Edit options screen.
+    let optionsTab: LocalizedStringResource
     /// Shown once the step is answered, rotated so each new loop gets the next one.
     let cheers: [LocalizedStringResource]
 
@@ -37,6 +41,8 @@ extension OptionKind {
                     "log.trigger.addPlaceholder",
                     defaultValue: "e.g. Call from Mom",
                 ),
+                editLabel: LocalizedStringResource("log.edit.triggers", defaultValue: "Edit your triggers"),
+                optionsTab: LocalizedStringResource("edit.tab.triggers", defaultValue: "Triggers"),
                 cheers: [
                     LocalizedStringResource("log.trigger.cheer1", defaultValue: "Spotted it. That's the first step."),
                     LocalizedStringResource(
@@ -59,6 +65,8 @@ extension OptionKind {
                     "log.behavior.addPlaceholder",
                     defaultValue: "e.g. Reread my messages",
                 ),
+                editLabel: LocalizedStringResource("log.edit.behaviors", defaultValue: "Edit your behaviors"),
+                optionsTab: LocalizedStringResource("edit.tab.behaviors", defaultValue: "Behaviors"),
                 cheers: [
                     LocalizedStringResource("log.behavior.cheer1", defaultValue: "Nice noticing. That's the habit."),
                     LocalizedStringResource(
@@ -84,6 +92,8 @@ extension OptionKind {
                 ),
                 addLabel: LocalizedStringResource("log.result.addLabel", defaultValue: "Add a result"),
                 addPlaceholder: LocalizedStringResource("log.result.addPlaceholder", defaultValue: "e.g. Felt numb"),
+                editLabel: LocalizedStringResource("log.edit.results", defaultValue: "Edit your results"),
+                optionsTab: LocalizedStringResource("edit.tab.results", defaultValue: "Results"),
                 cheers: [
                     LocalizedStringResource(
                         "log.result.cheer1",

@@ -162,4 +162,18 @@ struct LogLoopOrderTests {
         #expect(news.id == copy.optionID)
         #expect(model.answerID(in: choices, for: .trigger) == copy.optionID)
     }
+
+    /// Back from Edit options, the step keeps its order: a removed option leaves, and a new one joins the end.
+    @Test
+    func `after editing options, removed ones leave the step and new ones join the end`() {
+        let model = model()
+        let before = model.choices(for: .trigger, saved: [])
+        let removed = LoopOption(overriding: .work, label: "Work")
+        removed.isHidden = true
+        let added = LoopOption(kind: .trigger, label: "Rent due")
+
+        let after = model.choices(for: .trigger, saved: [removed, added])
+
+        #expect(after.map(\.label) == before.filter { $0.starterID != .work }.map(\.label) + ["Rent due"])
+    }
 }

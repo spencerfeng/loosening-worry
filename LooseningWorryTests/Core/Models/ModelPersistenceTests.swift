@@ -106,7 +106,7 @@ struct ModelPersistenceTests {
     @Test
     func `a starter override reads back with the starter it changes`() throws {
         let updatedAt = Date(timeIntervalSince1970: 1_800_000_000)
-        let override = LoopOption(overriding: .news, label: "World news")
+        let override = LoopOption(overriding: .news, label: "News")
         override.isHidden = true
         override.updatedAt = updatedAt
 
@@ -114,14 +114,14 @@ struct ModelPersistenceTests {
         let fetched = try #require(try reader.fetch(FetchDescriptor<LoopOption>()).only)
 
         #expect(fetched.starter == .news)
-        #expect(fetched.label == "World news")
+        #expect(fetched.label == "News")
         #expect(fetched.isHidden)
         #expect(fetched.updatedAt == updatedAt)
     }
 
     @Test
     func `an override knows the starter it changes`() {
-        let override = LoopOption(overriding: .news, label: "World news")
+        let override = LoopOption(overriding: .news, label: "News")
 
         #expect(override.kind == .trigger)
         #expect(override.starter == .news)
@@ -131,7 +131,7 @@ struct ModelPersistenceTests {
     /// A newer version on another device can sync an override of a starter this version doesn't have.
     @Test
     func `an override of a starter this version doesn't know has no starter`() {
-        let override = LoopOption(overriding: .news, label: "World news")
+        let override = LoopOption(overriding: .news, label: "News")
 
         override.starterID = "trigger.addedLater"
 

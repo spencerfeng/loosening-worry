@@ -43,20 +43,6 @@ struct PreviewContainerTests {
     }
 
     @Test
-    func `the preview renames a starter, shown in the starter's place`() throws {
-        let saved = try savedOptions()
-        let renames = saved.filter { $0.starterID != nil && !$0.isHidden }
-        try #require(!renames.isEmpty)
-
-        let choices = choices(from: saved)
-        for rename in renames {
-            let starter = try StarterOption.with(id: #require(rename.starter))
-            #expect(rename.label != starter.text)
-            #expect(choices.contains(OptionChoice(starter.id, label: rename.label)))
-        }
-    }
-
-    @Test
     func `the preview hides a starter, keeping its full label`() throws {
         let saved = try savedOptions()
         let hidden = saved.filter { $0.starterID != nil && $0.isHidden }

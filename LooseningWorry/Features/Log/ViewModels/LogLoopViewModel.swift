@@ -161,7 +161,7 @@ final class LogLoopViewModel {
     func addOwn(existing: [OptionChoice], save: (OptionKind, String) throws -> OptionChoice) {
         guard let step = currentStep, canAddOwn else { return }
         let label = trimmedDraft
-        if let match = existing.first(where: { $0.label == label }) {
+        if let match = OptionList.match(label, in: existing) {
             pick(match)
             return
         }

@@ -13,6 +13,303 @@
     "Closed" : {
 
     },
+    "edit.add.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "edit.add.error.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Type a name first."
+          }
+        }
+      }
+    },
+    "edit.add.error.removed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "“%@” is in Removed. Restore it instead."
+          }
+        }
+      }
+    },
+    "edit.add.error.saveFailed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn’t save that. Please try again."
+          }
+        }
+      }
+    },
+    "edit.add.error.showing" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You already have “%@”."
+          }
+        }
+      }
+    },
+    "edit.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "edit.error.remove" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn’t remove that. Please try again."
+          }
+        }
+      }
+    },
+    "edit.error.restore" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn’t restore that. Please try again."
+          }
+        }
+      }
+    },
+    "edit.footnote" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Removed options stop showing in the logger. Past loops keep them, and you can restore them any time. To fix a typo, remove the option and add it again."
+          }
+        }
+      }
+    },
+    "edit.footnote.results" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core results can’t be removed and always stay in the same order, so step 3 never nudges your answer. To fix a typo in your own option, remove it and add it again."
+          }
+        }
+      }
+    },
+    "edit.locked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core result: can’t be removed"
+          }
+        }
+      }
+    },
+    "edit.note.coreResult" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core result"
+          }
+        }
+      }
+    },
+    "edit.note.starter" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Starter"
+          }
+        }
+      }
+    },
+    "edit.note.yourOwn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your own"
+          }
+        }
+      }
+    },
+    "edit.remove" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Remove %@"
+          }
+        }
+      }
+    },
+    "edit.restore" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Restore"
+          }
+        }
+      }
+    },
+    "edit.restore.blocked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Another option already shows this text."
+          }
+        }
+      }
+    },
+    "edit.restore.label" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Restore %@"
+          }
+        }
+      }
+    },
+    "edit.section.coreResults" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core results"
+          }
+        }
+      }
+    },
+    "edit.section.removed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Removed (%lld)"
+          }
+        }
+      }
+    },
+    "edit.section.starters" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Starters"
+          }
+        }
+      }
+    },
+    "edit.section.yourOwn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your own"
+          }
+        }
+      }
+    },
+    "edit.tab.behaviors" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Behaviors"
+          }
+        }
+      }
+    },
+    "edit.tab.results" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Results"
+          }
+        }
+      }
+    },
+    "edit.tab.triggers" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Triggers"
+          }
+        }
+      }
+    },
+    "edit.tabs" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Option type"
+          }
+        }
+      }
+    },
+    "edit.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your options"
+          }
+        }
+      }
+    },
     "Home" : {
 
     },
@@ -197,6 +494,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Add details (optional)"
+          }
+        }
+      }
+    },
+    "log.edit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "log.edit.behaviors" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit your behaviors"
+          }
+        }
+      }
+    },
+    "log.edit.results" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit your results"
+          }
+        }
+      }
+    },
+    "log.edit.triggers" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit your triggers"
           }
         }
       }
