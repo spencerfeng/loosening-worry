@@ -6,7 +6,9 @@ struct RootView: View {
     var body: some View {
         TabView(selection: Binding(get: { model.selectedTab }, set: { model.select($0) })) {
             Tab("Home", systemImage: "house", value: .home) {
-                PlaceholderScreen(title: "Home")
+                HomeView { tab in
+                    model.select(tab)
+                }
             }
             Tab("Learn", systemImage: "book", value: .learn) {
                 PlaceholderScreen(title: "Learn")

@@ -29,7 +29,7 @@ struct NiceCatch {
     private static func suggestion(for _: Loop) -> ToolSuggestion {
         ToolSuggestion(
             tool: .curious,
-            name: LocalizedStringResource("tool.curious.name", defaultValue: "Get curious"),
+            name: QuickTool.curious.name,
             detail: LocalizedStringResource("tool.curious.detail", defaultValue: "90 sec · explore the feeling"),
         )
     }

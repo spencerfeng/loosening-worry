@@ -313,6 +313,215 @@
     "Home" : {
 
     },
+    "home.banner.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Log trigger, behavior, result in 20 sec"
+          }
+        }
+      }
+    },
+    "home.banner.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Feeling it now?"
+          }
+        }
+      }
+    },
+    "home.forYou" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "For you today"
+          }
+        }
+      }
+    },
+    "home.greeting.afternoon" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Good afternoon"
+          }
+        }
+      }
+    },
+    "home.greeting.evening" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Good evening"
+          }
+        }
+      }
+    },
+    "home.greeting.morning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Good morning"
+          }
+        }
+      }
+    },
+    "home.lesson.day" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lesson · Day %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "home.lesson.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Opens Learn"
+          }
+        }
+      }
+    },
+    "home.lesson.minutes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld min read"
+          }
+        }
+      }
+    },
+    "home.lesson.progress" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld lessons done"
+          }
+        }
+      }
+    },
+    "home.tools.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Use one anytime worry shows up"
+          }
+        }
+      }
+    },
+    "home.tools.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Quick tools"
+          }
+        }
+      }
+    },
+    "home.tools.unavailable" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Available soon"
+          }
+        }
+      }
+    },
+    "home.week" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This week: **%1$@ · %2$@**"
+          }
+        }
+      }
+    },
+    "home.week.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Opens Insights"
+          }
+        }
+      }
+    },
+    "home.week.loops" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld loop noticed"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld loops noticed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "home.week.tools" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld tool used"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld tools used"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Insights" : {
 
     },
@@ -1196,6 +1405,28 @@
         }
       }
     },
+    "tool.beKind.name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Be kind"
+          }
+        }
+      }
+    },
+    "tool.breathe.name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Breathe"
+          }
+        }
+      }
+    },
     "tool.curious.detail" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1214,6 +1445,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Get curious"
+          }
+        }
+      }
+    },
+    "tool.noteIt.name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Note it"
           }
         }
       }

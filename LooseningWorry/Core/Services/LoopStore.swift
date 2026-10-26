@@ -20,8 +20,7 @@ struct LoopStore {
 
     /// How many loops were logged this calendar week, from its first day in `calendar` up to `now`.
     func loopsThisWeek(now: Date = .now, calendar: Calendar = .current) throws -> Int {
-        guard let week = calendar.dateInterval(of: .weekOfYear, for: now) else { return 0 }
-        let start = week.start
+        guard let start = calendar.startOfWeek(containing: now) else { return 0 }
         let loops = FetchDescriptor<Loop>(predicate: #Predicate { $0.createdAt >= start && $0.createdAt <= now })
         return try context.fetchCount(loops)
     }

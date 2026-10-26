@@ -213,18 +213,13 @@ private struct WeeklyCount: View {
 
     /// The count is the strong run of a plural sentence, so translators keep it in the right place.
     private var sentence: AttributedString {
-        var sentence = AttributedString(
+        AttributedString(
             localized: LocalizedStringResource(
                 "niceCatch.count",
                 defaultValue: "**\(count)** loops noticed this week",
             )
         )
-        for run in sentence.runs where run.inlinePresentationIntent?.contains(.stronglyEmphasized) == true {
-            sentence[run.range].inlinePresentationIntent = nil
-            sentence[run.range].font = .theme(.title3)
-            sentence[run.range].foregroundColor = .theme(.accentText)
-        }
-        return sentence
+        .restylingEmphasis(font: .theme(.title3), color: .theme(.accentText))
     }
 }
 
@@ -234,11 +229,11 @@ private struct ToolSuggestionCard: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass")
+            Image(systemName: suggestion.tool.symbol)
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.theme(.accentText))
+                .foregroundStyle(.theme(suggestion.tool.ink))
                 .frame(width: 40, height: 40)
-                .background(.theme(.accentTint), in: .rect(cornerRadius: 12))
+                .background(.theme(suggestion.tool.tint), in: .rect(cornerRadius: 12))
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(suggestion.name)
