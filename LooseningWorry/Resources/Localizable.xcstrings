@@ -310,6 +310,226 @@
         }
       }
     },
+    "help.call" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Call %@"
+          }
+        }
+      }
+    },
+    "help.country" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Country: %@"
+          }
+        }
+      }
+    },
+    "help.country.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Changes the country"
+          }
+        }
+      }
+    },
+    "help.country.picker" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Country"
+          }
+        }
+      }
+    },
+    "help.disclaimer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Loosening Worry is a self-help app. It isn't therapy or medical care, and it can't respond in an emergency."
+          }
+        }
+      }
+    },
+    "help.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "help.elsewhere" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Somewhere else? Find a free helpline in your country"
+          }
+        }
+      }
+    },
+    "help.emergency.call" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "In danger right now? Call %@"
+          }
+        }
+      }
+    },
+    "help.emergency.local" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "In danger right now? Call your local emergency number"
+          }
+        }
+      }
+    },
+    "help.intro" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If you're struggling, you don't have to handle it alone. These services are free and open 24/7."
+          }
+        }
+      }
+    },
+    "help.intro.noLines" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If you're struggling, you don't have to handle it alone."
+          }
+        }
+      }
+    },
+    "help.line.shout" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Text SHOUT to talk by message with a trained volunteer"
+          }
+        }
+      }
+    },
+    "help.line.talk" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Talk to a trained crisis supporter"
+          }
+        }
+      }
+    },
+    "help.region.australia" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Australia"
+          }
+        }
+      }
+    },
+    "help.region.other" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Somewhere else"
+          }
+        }
+      }
+    },
+    "help.region.unitedKingdom" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "United Kingdom"
+          }
+        }
+      }
+    },
+    "help.region.unitedStates" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "United States"
+          }
+        }
+      }
+    },
+    "help.talk" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Talk to someone now"
+          }
+        }
+      }
+    },
+    "help.text" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Text %@"
+          }
+        }
+      }
+    },
+    "help.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get help now"
+          }
+        }
+      }
+    },
     "Home" : {
 
     },
@@ -375,6 +595,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Good morning"
+          }
+        }
+      }
+    },
+    "home.help" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Help"
+          }
+        }
+      }
+    },
+    "home.help.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Crisis lines and support"
           }
         }
       }

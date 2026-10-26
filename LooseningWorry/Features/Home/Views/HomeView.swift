@@ -3,12 +3,14 @@ import SwiftUI
 
 /// Home: a greeting, a way into the logger, today's lesson, the quick tools and a line about the week.
 struct HomeView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query private var loops: [Loop]
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
 
     /// Opens a tab: Log opens the logger, Learn the lesson, Insights the week.
     let open: (AppTab) -> Void
+    @State private var isShowingHelp = false
 
     var body: some View {
         // Redrawn each minute, so the date, the greeting and the week roll over while Home stays open.
@@ -16,12 +18,25 @@ struct HomeView: View {
             content(now: context.date)
         }
         .background(.theme(.background))
+        .sheet(isPresented: $isShowingHelp) {
+            HelpView()
+        }
     }
 
     private func content(now: Date) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                HomeHeader(now: now)
+                // At accessibility sizes the greeting needs the full width, so Help moves above it.
+                if dynamicTypeSize.isAccessibilitySize {
+                    HelpButton { isShowingHelp = true }
+                    HomeHeader(now: now)
+                } else {
+                    HStack(alignment: .center, spacing: 12) {
+                        HomeHeader(now: now)
+                        Spacer(minLength: 0)
+                        HelpButton { isShowingHelp = true }
+                    }
+                }
                 LogBanner { open(.log) }
                 if let card = HomeContent.nextLesson(progress: lessonProgress, catalog: .bundled) {
                     Text(LocalizedStringResource("home.forYou", defaultValue: "For you today"))
@@ -65,6 +80,33 @@ private struct HomeHeader: View {
         case .afternoon: LocalizedStringResource("home.greeting.afternoon", defaultValue: "Good afternoon")
         case .evening: LocalizedStringResource("home.greeting.evening", defaultValue: "Good evening")
         }
+    }
+}
+
+/// Opens Help, the crisis path, in its own color (ADR 0001).
+private struct HelpButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image(systemName: "lifepreserver")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.theme(.help))
+                    .accessibilityHidden(true)
+                Text(LocalizedStringResource("home.help", defaultValue: "Help"))
+                    .foregroundStyle(.theme(.textPrimary))
+            }
+            .font(.theme(.callout))
+            .padding(.leading, 10)
+            .padding(.trailing, 14)
+            .frame(minHeight: 44)
+            .background(.theme(.surface), in: .capsule)
+            .overlay { Capsule().strokeBorder(.theme(.border)) }
+            .contentShape(.capsule)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(Text(LocalizedStringResource("home.help.hint", defaultValue: "Crisis lines and support")))
     }
 }
 
