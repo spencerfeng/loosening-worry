@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var model = RootViewModel()
+    @Bindable var model: RootViewModel
 
     var body: some View {
         TabView(selection: Binding(get: { model.selectedTab }, set: { model.select($0) })) {
             Tab("Home", systemImage: "house", value: .home) {
-                HomeView { tab in
+                HomeView(isLoggerOpen: model.isLogSheetPresented) { tab in
                     model.select(tab)
                 }
             }
@@ -47,7 +47,7 @@ private struct PlaceholderScreen: View {
 
 #if DEBUG
     #Preview {
-        RootView()
+        RootView(model: RootViewModel())
             .modelContainer(AppModelContainer.preview)
     }
 #endif

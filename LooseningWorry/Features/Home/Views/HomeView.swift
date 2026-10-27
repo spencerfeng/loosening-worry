@@ -8,9 +8,12 @@ struct HomeView: View {
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
 
+    /// The logger can also open from the daily reminder, over a sheet Home has open; iOS shows one sheet at a time.
+    let isLoggerOpen: Bool
     /// Opens a tab: Log opens the logger, Learn the lesson, Insights the week.
     let open: (AppTab) -> Void
     @State private var isShowingHelp = false
+    @State private var isShowingSettings = false
 
     var body: some View {
         // Redrawn each minute, so the date, the greeting and the week roll over while Home stays open.
@@ -21,20 +24,34 @@ struct HomeView: View {
         .sheet(isPresented: $isShowingHelp) {
             HelpView()
         }
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView()
+        }
+        .onChange(of: isLoggerOpen) { _, isOpen in
+            if isOpen {
+                isShowingHelp = false
+                isShowingSettings = false
+            }
+        }
+    }
+
+    @ViewBuilder private var headerButtons: some View {
+        SettingsButton { isShowingSettings = true }
+        HelpButton { isShowingHelp = true }
     }
 
     private func content(now: Date) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // At accessibility sizes the greeting needs the full width, so Help moves above it.
+                // At accessibility sizes the greeting needs the full width, so Settings and Help move above it.
                 if dynamicTypeSize.isAccessibilitySize {
-                    HelpButton { isShowingHelp = true }
+                    HStack(spacing: 8) { headerButtons }
                     HomeHeader(now: now)
                 } else {
                     HStack(alignment: .center, spacing: 12) {
                         HomeHeader(now: now)
                         Spacer(minLength: 0)
-                        HelpButton { isShowingHelp = true }
+                        HStack(spacing: 8) { headerButtons }
                     }
                 }
                 LogBanner { open(.log) }
@@ -80,6 +97,28 @@ private struct HomeHeader: View {
         case .afternoon: LocalizedStringResource("home.greeting.afternoon", defaultValue: "Good afternoon")
         case .evening: LocalizedStringResource("home.greeting.evening", defaultValue: "Good evening")
         }
+    }
+}
+
+/// Opens Settings: an icon-only round gear, named for VoiceOver.
+private struct SettingsButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "gearshape")
+                .font(.theme(.callout))
+                .fontWeight(.semibold)
+                .foregroundStyle(.theme(.textSecondary))
+                // Padding rather than a fixed size, so the circle grows with the gear at large text sizes.
+                .padding(11)
+                .frame(minWidth: 44, minHeight: 44)
+                .background(.theme(.surface), in: .circle)
+                .overlay { Circle().strokeBorder(.theme(.border)) }
+                .contentShape(.circle)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(LocalizedStringResource("home.settings", defaultValue: "Settings")))
     }
 }
 
@@ -333,7 +372,7 @@ private struct WeekLine: View {
 
 #if DEBUG
     #Preview {
-        HomeView { _ in }
+        HomeView(isLoggerOpen: false) { _ in }
             .modelContainer(AppModelContainer.preview)
     }
 #endif

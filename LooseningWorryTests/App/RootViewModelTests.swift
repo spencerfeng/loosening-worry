@@ -55,4 +55,25 @@ struct RootViewModelTests {
         #expect(model.isLogSheetPresented == false)
         #expect(model.selectedTab == .insights)
     }
+
+    @Test
+    func `tapping the daily reminder opens the logger`() {
+        let model = RootViewModel()
+        model.select(.learn)
+
+        model.openNotification(identifier: ReminderNotification.identifier)
+
+        #expect(model.isLogSheetPresented)
+        #expect(model.selectedTab == .learn)
+    }
+
+    @Test
+    func `tapping any other notification leaves the app as it was`() {
+        let model = RootViewModel()
+
+        model.openNotification(identifier: "something.else")
+
+        #expect(model.isLogSheetPresented == false)
+        #expect(model.selectedTab == .home)
+    }
 }

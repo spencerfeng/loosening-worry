@@ -25,4 +25,11 @@ final class RootViewModel {
         isLogSheetPresented = false
         selectedTab = .insights
     }
+
+    /// Tapping the daily reminder opens the logger, over whichever tab was showing.
+    func openNotification(identifier: String) {
+        if identifier == ReminderNotification.identifier {
+            select(.log)
+        }
+    }
 }
