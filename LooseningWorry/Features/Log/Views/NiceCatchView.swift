@@ -12,6 +12,7 @@ struct NiceCatchView: View {
     @State private var hasAppeared = false
     /// VoiceOver starts at the title, since the screen replaces the logger without a transition.
     @AccessibilityFocusState private var isTitleFocused: Bool
+    @State private var runningTool: QuickTool?
 
     var body: some View {
         ScrollView {
@@ -47,7 +48,7 @@ struct NiceCatchView: View {
                     .tracking(0.6)
                     .foregroundStyle(.theme(.textTertiary))
                     .accessibilityAddTraits(.isHeader)
-                ToolSuggestionCard(suggestion: niceCatch.suggestion)
+                ToolSuggestionCard(suggestion: niceCatch.suggestion) { runningTool = niceCatch.suggestion.tool }
                 Button(action: done) {
                     Text(LocalizedStringResource("niceCatch.done", defaultValue: "Done"))
                         .font(.theme(.headline))
@@ -65,6 +66,9 @@ struct NiceCatchView: View {
             .background(.theme(.background))
         }
         .background(.theme(.background))
+        .fullScreenCover(item: $runningTool) { tool in
+            ToolRunView(tool: tool)
+        }
         .sensoryFeedback(.success, trigger: hasAppeared)
         .onAppear {
             isTitleFocused = true
@@ -223,11 +227,19 @@ private struct WeeklyCount: View {
     }
 }
 
-/// The suggested tool. It opens the tool once the tools are built; until then it's a card, not a button.
+/// The suggested tool, as a card that starts it.
 private struct ToolSuggestionCard: View {
     let suggestion: NiceCatch.ToolSuggestion
+    let action: () -> Void
 
     var body: some View {
+        Button(action: action) {
+            label
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var label: some View {
         HStack(spacing: 12) {
             Image(systemName: suggestion.tool.symbol)
                 .font(.system(size: 20, weight: .semibold))
@@ -251,6 +263,7 @@ private struct ToolSuggestionCard: View {
         .frame(minHeight: 64)
         .background(.theme(.surface), in: .rect(cornerRadius: 18))
         .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+        .contentShape(.rect(cornerRadius: 18))
         .accessibilityElement(children: .combine)
     }
 }

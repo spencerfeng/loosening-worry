@@ -1,7 +1,8 @@
 import Foundation
 import SwiftData
 
-enum QuickTool: String, Codable {
+/// In the order the tools are shown.
+enum QuickTool: String, Codable, CaseIterable {
     case curious, breathe, noteIt, beKind
 }
 

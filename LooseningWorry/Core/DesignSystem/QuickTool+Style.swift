@@ -1,6 +1,6 @@
 import Foundation
 
-/// How each tool is named and drawn, wherever it appears: Home's grid and Nice catch's suggestion.
+/// How each tool is named and drawn, wherever it appears: Home's grid, Nice catch's suggestion and the tool's run.
 extension QuickTool {
     var name: LocalizedStringResource {
         switch self {
@@ -28,6 +28,16 @@ extension QuickTool {
         case .breathe: .greenStrong
         case .noteIt: .amberStrong
         case .beKind: .redStrong
+        }
+    }
+
+    /// Text on the tool's tint, such as the name in the run's header.
+    var onTint: Theme.ColorRole {
+        switch self {
+        case .curious: .accentText
+        case .breathe: .greenOnTint
+        case .noteIt: .amberOnTint
+        case .beKind: .redOnTint
         }
     }
 

@@ -1,0 +1,242 @@
+import SwiftUI
+
+/// The shell every tool runs in, full screen: Close, the tool's name, End, and what its pacing needs. A timed tool
+/// has a bar with the time and Play, so the person starts when they're ready; a counted tool shows its time in the
+/// header; a paged tool shows none. On End, or when a timed tool's time is up, the finish screen asks how the person
+/// feels now.
+struct ToolRunView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var model: ToolRunViewModel
+
+    init(tool: QuickTool) {
+        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now))
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                switch model.stage {
+                case .running: running
+                case .finished: ToolFinishView(model: model) { dismiss() }
+                }
+            }
+            .background(.theme(.background))
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        // A soft tap when the time runs out; End is the person's own doing, so it needs none.
+        .sensoryFeedback(.impact(weight: .light), trigger: model.stage) { _, stage in
+            stage == .finished && model.finishedOnTime
+        }
+        // Only leaving the app pauses: a glance at Control Center or Notification Center (inactive) doesn't.
+        .onChange(of: scenePhase) { _, phase in
+            switch phase {
+            case .active: model.returnToApp(now: .now)
+            case .background: model.leaveApp(now: .now)
+            default: break
+            }
+        }
+    }
+
+    private var running: some View {
+        ToolBody(model: model)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if model.tool.pacing == .timed, let length = model.length {
+                    ToolControls(model: model, length: length)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .close) { dismiss() }
+                }
+                ToolbarItem(placement: .principal) {
+                    ToolRunPill(model: model)
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        model.end(now: .now)
+                    } label: {
+                        Text(LocalizedStringResource("tool.end", defaultValue: "End"))
+                    }
+                    .tint(.theme(.accentText))
+                }
+            }
+            // Keeps the timer moving while the run is on screen and not paused.
+            .task(id: model.isPaused) {
+                while !model.isPaused, model.stage == .running {
+                    model.tick(now: .now)
+                    do {
+                        try await Task.sleep(for: .milliseconds(250))
+                    } catch {
+                        return
+                    }
+                }
+            }
+    }
+}
+
+/// The run's header: "Get curious · 1:30" for a timed tool, "Note it · 0:42 / 1:30" for a counted one (just
+/// "Note it · 1:52" once past its length), and the name alone for a paged one. Only a counted tool's pill reads the
+/// clock, so the others aren't redrawn as it ticks.
+private struct ToolRunPill: View {
+    let model: ToolRunViewModel
+
+    var body: some View {
+        ToolPill(text: text, ink: model.tool.onTint, tint: model.tool.tint)
+            .accessibilityAddTraits(model.tool.pacing == .counted ? .updatesFrequently : [])
+    }
+
+    private var text: LocalizedStringResource {
+        let tool = model.tool
+        guard let length = tool.length, tool.pacing != .paged else { return tool.name }
+        let name = String(localized: tool.name)
+        let lengthText = length.formatted(.time(pattern: .minuteSecond))
+        guard tool.pacing == .counted else {
+            return LocalizedStringResource("tool.run.title", defaultValue: "\(name) · \(lengthText)")
+        }
+        let elapsedText = model.elapsed.formatted(.time(pattern: .minuteSecond))
+        return model.elapsed <= length
+            ? LocalizedStringResource("tool.run.counted", defaultValue: "\(name) · \(elapsedText) / \(lengthText)")
+            : LocalizedStringResource("tool.run.countedPast", defaultValue: "\(name) · \(elapsedText)")
+    }
+}
+
+/// A pill in the header: the run's tool in its own hue, or "Session complete" in the accent.
+struct ToolPill: View {
+    let text: LocalizedStringResource
+    let ink: Theme.ColorRole
+    let tint: Theme.ColorRole
+
+    var body: some View {
+        Text(text)
+            .font(.theme(.subheadline))
+            .foregroundStyle(.theme(ink))
+            .padding(.vertical, 8)
+            .padding(.horizontal, 14)
+            .background(.theme(tint), in: .capsule)
+            .accessibilityAddTraits(.isHeader)
+    }
+}
+
+/// The tool itself, which drives the run: a counted tool starts its timer on its first tap. Each tool takes its place
+/// here as it's built.
+private struct ToolBody: View {
+    let model: ToolRunViewModel
+
+    var body: some View {
+        switch model.tool {
+        case .curious, .breathe, .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
+        }
+    }
+}
+
+/// Stands in for the tool itself until each tool is built.
+private struct ToolPlaceholder: View {
+    let tool: QuickTool
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: tool.symbol)
+                .font(.system(size: 56, weight: .semibold))
+                .foregroundStyle(.theme(tool.ink))
+                .frame(width: 140, height: 140)
+                .background(.theme(tool.tint), in: .circle)
+                .accessibilityHidden(true)
+            Text(LocalizedStringResource("tool.placeholder", defaultValue: "This tool is on its way."))
+                .font(.theme(.body))
+                .foregroundStyle(.theme(.textSecondary))
+                .multilineTextAlignment(.center)
+        }
+        .padding(24)
+    }
+}
+
+/// The progress bar with the time so far and the length, and Play/Pause. Tools add their own buttons beside it.
+private struct ToolControls: View {
+    let model: ToolRunViewModel
+    let length: Duration
+
+    var body: some View {
+        VStack(spacing: 14) {
+            VStack(spacing: 6) {
+                ToolProgressBar(progress: model.progress)
+                HStack {
+                    Text(model.elapsed.formatted(.time(pattern: .minuteSecond)))
+                    Spacer()
+                    Text(length.formatted(.time(pattern: .minuteSecond)))
+                }
+                .font(.theme(.footnote))
+                .monospacedDigit()
+                .foregroundStyle(.theme(.textTertiary))
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(LocalizedStringResource("tool.time", defaultValue: "Time")))
+            .accessibilityValue(Text(timeSpoken))
+
+            Button {
+                if model.isPaused {
+                    model.play(now: .now)
+                } else {
+                    model.pause(now: .now)
+                }
+            } label: {
+                Image(systemName: model.isPaused ? "play.fill" : "pause.fill")
+                    .font(.system(size: 26, weight: .semibold))
+                    .foregroundStyle(.theme(.textOnAccent))
+                    .frame(width: 72, height: 72)
+                    .background(.theme(.accent), in: .circle)
+                    .shadow(color: .theme(.accentShadow), radius: 8, y: 6)
+                    .contentShape(.circle)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(playLabel)
+        }
+        .padding(18)
+        .background(.theme(.surface), in: .rect(cornerRadius: 24))
+        .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(.theme(.borderSubtle)) }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 12)
+    }
+
+    private var playLabel: Text {
+        if !model.hasStarted {
+            Text(LocalizedStringResource("tool.start", defaultValue: "Start"))
+        } else if model.isPaused {
+            Text(LocalizedStringResource("tool.resume", defaultValue: "Resume"))
+        } else {
+            Text(LocalizedStringResource("tool.pause", defaultValue: "Pause"))
+        }
+    }
+
+    /// "36 seconds of 1 minute, 30 seconds"
+    private var timeSpoken: LocalizedStringResource {
+        let units = Duration.UnitsFormatStyle(allowedUnits: [.minutes, .seconds], width: .wide)
+        let elapsed = model.elapsed.formatted(units)
+        let lengthText = length.formatted(units)
+        return LocalizedStringResource("tool.time.value", defaultValue: "\(elapsed) of \(lengthText)")
+    }
+}
+
+private struct ToolProgressBar: View {
+    let progress: Double
+
+    var body: some View {
+        Capsule()
+            .fill(.theme(.border))
+            .frame(height: 6)
+            .overlay(alignment: .leading) {
+                GeometryReader { proxy in
+                    Capsule()
+                        .fill(.theme(.accent))
+                        .frame(width: proxy.size.width * progress)
+                }
+            }
+    }
+}
+
+#if DEBUG
+    #Preview {
+        ToolRunView(tool: .curious)
+    }
+#endif

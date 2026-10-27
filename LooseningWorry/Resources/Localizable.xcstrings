@@ -698,17 +698,6 @@
         }
       }
     },
-    "home.tools.unavailable" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Available soon"
-          }
-        }
-      }
-    },
     "home.week" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1845,6 +1834,204 @@
         }
       }
     },
+    "tool.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "End"
+          }
+        }
+      }
+    },
+    "tool.feeling.heavier" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Heavier"
+          }
+        }
+      }
+    },
+    "tool.feeling.lighter" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lighter"
+          }
+        }
+      }
+    },
+    "tool.feeling.same" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "About the same"
+          }
+        }
+      }
+    },
+    "tool.finish.another" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try another tool"
+          }
+        }
+      }
+    },
+    "tool.finish.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Compared to when you started."
+          }
+        }
+      }
+    },
+    "tool.finish.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "tool.finish.heavier" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Some moments are just hard, and that's fine. A minute of breathing can help, or reach out for more support."
+          }
+        }
+      }
+    },
+    "tool.finish.heavier.breathe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Some moments are just hard, and that's fine. Getting curious about the feeling can help, or reach out for more support."
+          }
+        }
+      }
+    },
+    "tool.finish.help" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get help"
+          }
+        }
+      }
+    },
+    "tool.finish.lighter.beKind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's kindness at work. Your brain just noticed warmth feels better than worry."
+          }
+        }
+      }
+    },
+    "tool.finish.lighter.breathe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's your breath at work. Your brain just noticed calm feels better than worry."
+          }
+        }
+      }
+    },
+    "tool.finish.lighter.curious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's curiosity at work. Your brain just noticed it feels better than worry."
+          }
+        }
+      }
+    },
+    "tool.finish.lighter.noteIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's noticing at work. Naming what's here gave your brain a step back from worry."
+          }
+        }
+      }
+    },
+    "tool.finish.pill" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Session complete"
+          }
+        }
+      }
+    },
+    "tool.finish.same" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's okay. Noticing without fighting is the practice, and it gets easier each time."
+          }
+        }
+      }
+    },
+    "tool.finish.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How do you feel now?"
+          }
+        }
+      }
+    },
+    "tool.finish.try" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try %@"
+          }
+        }
+      }
+    },
     "tool.noteIt.name" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1852,6 +2039,105 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Note it"
+          }
+        }
+      }
+    },
+    "tool.pause" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pause"
+          }
+        }
+      }
+    },
+    "tool.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This tool is on its way."
+          }
+        }
+      }
+    },
+    "tool.resume" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Resume"
+          }
+        }
+      }
+    },
+    "tool.run.counted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@ / %3$@"
+          }
+        }
+      }
+    },
+    "tool.run.countedPast" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "tool.run.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "tool.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "tool.time" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Time"
+          }
+        }
+      }
+    },
+    "tool.time.value" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@"
           }
         }
       }

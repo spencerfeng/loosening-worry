@@ -8,12 +8,13 @@ struct HomeView: View {
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
 
-    /// The logger can also open from the daily reminder, over a sheet Home has open; iOS shows one sheet at a time.
+    /// The logger can also open from the daily reminder, over a sheet or tool Home has open; iOS shows one at a time.
     let isLoggerOpen: Bool
     /// Opens a tab: Log opens the logger, Learn the lesson, Insights the week.
     let open: (AppTab) -> Void
     @State private var isShowingHelp = false
     @State private var isShowingSettings = false
+    @State private var runningTool: QuickTool?
 
     var body: some View {
         // Redrawn each minute, so the date, the greeting and the week roll over while Home stays open.
@@ -27,10 +28,14 @@ struct HomeView: View {
         .sheet(isPresented: $isShowingSettings) {
             SettingsView()
         }
+        .fullScreenCover(item: $runningTool) { tool in
+            ToolRunView(tool: tool)
+        }
         .onChange(of: isLoggerOpen) { _, isOpen in
             if isOpen {
                 isShowingHelp = false
                 isShowingSettings = false
+                runningTool = nil
             }
         }
     }
@@ -63,7 +68,7 @@ struct HomeView: View {
                         .padding(.bottom, -6)
                     LessonCardView(card: card) { open(.learn) }
                 }
-                QuickToolsGrid()
+                QuickToolsGrid { runningTool = $0 }
                 WeekLine(week: HomeContent.thisWeek(loops: loops, sessions: sessions, now: now, calendar: .current)) {
                     open(.insights)
                 }
@@ -274,9 +279,11 @@ private struct CourseProgressStyle: ProgressViewStyle {
     }
 }
 
-/// The four tools. They open once the tools are built; until then the tiles are labels, not buttons.
+/// The four tools; each tile starts its tool.
 private struct QuickToolsGrid: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    let start: (QuickTool) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -292,8 +299,8 @@ private struct QuickToolsGrid: View {
             // One column at the largest text sizes, so the names aren't cut off.
             let columnCount = dynamicTypeSize.isAccessibilitySize ? 1 : 2
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: columnCount), spacing: 10) {
-                ForEach([QuickTool.curious, .breathe, .noteIt, .beKind], id: \.self) { tool in
-                    ToolTile(tool: tool)
+                ForEach(QuickTool.allCases) { tool in
+                    ToolTile(tool: tool) { start(tool) }
                 }
             }
         }
@@ -302,8 +309,16 @@ private struct QuickToolsGrid: View {
 
 private struct ToolTile: View {
     let tool: QuickTool
+    let action: () -> Void
 
     var body: some View {
+        Button(action: action) {
+            label
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var label: some View {
         HStack(spacing: 10) {
             Image(systemName: tool.symbol)
                 .font(.system(size: 18, weight: .semibold))
@@ -321,8 +336,7 @@ private struct ToolTile: View {
         .frame(minHeight: 58)
         .background(.theme(.surface), in: .rect(cornerRadius: 18))
         .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
-        .accessibilityElement(children: .combine)
-        .accessibilityValue(Text(LocalizedStringResource("home.tools.unavailable", defaultValue: "Available soon")))
+        .contentShape(.rect(cornerRadius: 18))
     }
 }
 
