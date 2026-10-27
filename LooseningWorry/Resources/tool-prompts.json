@@ -1,0 +1,7 @@
+{
+  "curious": [
+    { "id": "find", "seconds": 30, "prompts": ["curious.find.1", "curious.find.2"] },
+    { "id": "curious", "seconds": 30, "prompts": ["curious.curious.1", "curious.curious.2"] },
+    { "id": "watch", "seconds": 30, "prompts": ["curious.watch.1", "curious.watch.2"] }
+  ]
+}

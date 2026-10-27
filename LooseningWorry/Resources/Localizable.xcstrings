@@ -1790,6 +1790,17 @@
         }
       }
     },
+    "tool.back15" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Back 15 seconds"
+          }
+        }
+      }
+    },
     "tool.beKind.name" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2065,6 +2076,149 @@
         }
       }
     },
+    "tool.prompt.announcement" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.curious.1.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Is it tight or loose? Warm or cool? Moving or still? Just notice, like a scientist."
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.curious.1.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… what is this feeling?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.curious.2.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Heavy or light? Sharp or dull? Big or small? There's no right answer."
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.curious.2.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… what's it like?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.find.1.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Scan from your head to your feet. Where do you feel the worry most?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.find.1.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… where is it?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.find.2.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Chest, stomach, throat, shoulders? Notice where it sits, just as it is."
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.find.2.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… where do you feel it?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.watch.1.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stronger, weaker, moving? Watch it, and let it do whatever it does."
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.watch.1.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… is it changing?"
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.watch.2.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Keep looking with curiosity. Notice how it feels to watch it, rather than worry."
+          }
+        }
+      }
+    },
+    "tool.prompt.curious.watch.2.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hmm… what happens if you stay with it?"
+          }
+        }
+      }
+    },
     "tool.resume" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2088,17 +2242,6 @@
       }
     },
     "tool.run.countedPast" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ · %2$@"
-          }
-        }
-      }
-    },
-    "tool.run.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {

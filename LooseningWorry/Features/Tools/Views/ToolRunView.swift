@@ -10,7 +10,7 @@ struct ToolRunView: View {
     @State private var model: ToolRunViewModel
 
     init(tool: QuickTool) {
-        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now))
+        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now, picker: .standard))
     }
 
     var body: some View {
@@ -43,7 +43,9 @@ struct ToolRunView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 if model.tool.pacing == .timed, let length = model.length {
-                    ToolControls(model: model, length: length)
+                    ToolControls(model: model, length: length) {
+                        ToolSideControl(model: model)
+                    }
                 }
             }
             .toolbar {
@@ -76,9 +78,9 @@ struct ToolRunView: View {
     }
 }
 
-/// The run's header: "Get curious · 1:30" for a timed tool, "Note it · 0:42 / 1:30" for a counted one (just
-/// "Note it · 1:52" once past its length), and the name alone for a paged one. Only a counted tool's pill reads the
-/// clock, so the others aren't redrawn as it ticks.
+/// The run's header: the tool's name, with a counted tool's time beside it ("Note it · 0:42 / 1:30", just
+/// "Note it · 1:52" once past its length), since it has no bar to show it. A timed tool's bar already shows its time.
+/// Only a counted tool's pill reads the clock, so the others aren't redrawn as it ticks.
 private struct ToolRunPill: View {
     let model: ToolRunViewModel
 
@@ -89,12 +91,9 @@ private struct ToolRunPill: View {
 
     private var text: LocalizedStringResource {
         let tool = model.tool
-        guard let length = tool.length, tool.pacing != .paged else { return tool.name }
+        guard tool.pacing == .counted, let length = tool.length else { return tool.name }
         let name = String(localized: tool.name)
         let lengthText = length.formatted(.time(pattern: .minuteSecond))
-        guard tool.pacing == .counted else {
-            return LocalizedStringResource("tool.run.title", defaultValue: "\(name) · \(lengthText)")
-        }
         let elapsedText = model.elapsed.formatted(.time(pattern: .minuteSecond))
         return model.elapsed <= length
             ? LocalizedStringResource("tool.run.counted", defaultValue: "\(name) · \(elapsedText) / \(lengthText)")
@@ -126,7 +125,8 @@ private struct ToolBody: View {
 
     var body: some View {
         switch model.tool {
-        case .curious, .breathe, .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
+        case .curious: CuriousView(model: model)
+        case .breathe, .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
         }
     }
 }
@@ -152,10 +152,46 @@ private struct ToolPlaceholder: View {
     }
 }
 
-/// The progress bar with the time so far and the length, and Play/Pause. Tools add their own buttons beside it.
-private struct ToolControls: View {
+/// A timed tool's own button left of Play: Get curious's Back 15. Each tool adds its own here as it's built.
+private struct ToolSideControl: View {
+    let model: ToolRunViewModel
+
+    var body: some View {
+        switch model.tool {
+        case .curious: BackButton(model: model)
+        case .breathe, .noteIt, .beKind: EmptyView()
+        }
+    }
+}
+
+/// Back 15, for a prompt missed or read too fast.
+private struct BackButton: View {
+    let model: ToolRunViewModel
+
+    var body: some View {
+        Button {
+            model.goBack(now: .now)
+        } label: {
+            Image(systemName: "gobackward.15")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(.theme(.textPrimary))
+                .frame(width: 48, height: 48)
+                .background(.theme(.surfaceSunken), in: .circle)
+                .contentShape(.circle)
+        }
+        .buttonStyle(.plain)
+        .disabled(!model.hasStarted)
+        .opacity(model.hasStarted ? 1 : 0.4)
+        .accessibilityLabel(Text(LocalizedStringResource("tool.back15", defaultValue: "Back 15 seconds")))
+    }
+}
+
+/// The progress bar with the time so far and the length, and Play/Pause with the tool's own button on its left. The
+/// right-hand slot is kept, so Play stays centered, for Silent mode once a tool makes sound.
+private struct ToolControls<Side: View>: View {
     let model: ToolRunViewModel
     let length: Duration
+    @ViewBuilder let side: Side
 
     var body: some View {
         VStack(spacing: 14) {
@@ -174,29 +210,41 @@ private struct ToolControls: View {
             .accessibilityLabel(Text(LocalizedStringResource("tool.time", defaultValue: "Time")))
             .accessibilityValue(Text(timeSpoken))
 
-            Button {
-                if model.isPaused {
-                    model.play(now: .now)
-                } else {
-                    model.pause(now: .now)
-                }
-            } label: {
-                Image(systemName: model.isPaused ? "play.fill" : "pause.fill")
-                    .font(.system(size: 26, weight: .semibold))
-                    .foregroundStyle(.theme(.textOnAccent))
-                    .frame(width: 72, height: 72)
-                    .background(.theme(.accent), in: .circle)
-                    .shadow(color: .theme(.accentShadow), radius: 8, y: 6)
-                    .contentShape(.circle)
+            HStack(spacing: 24) {
+                side
+                    .frame(width: 64)
+                playButton
+                Color.clear
+                    .frame(width: 64, height: 1)
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(playLabel)
         }
         .padding(18)
         .background(.theme(.surface), in: .rect(cornerRadius: 24))
         .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(.theme(.borderSubtle)) }
         .padding(.horizontal, 20)
         .padding(.bottom, 12)
+        // A tool's words scroll under the bar at large text sizes; this keeps them out of the gaps around it.
+        .background(.theme(.background))
+    }
+
+    private var playButton: some View {
+        Button {
+            if model.isPaused {
+                model.play(now: .now)
+            } else {
+                model.pause(now: .now)
+            }
+        } label: {
+            Image(systemName: model.isPaused ? "play.fill" : "pause.fill")
+                .font(.system(size: 26, weight: .semibold))
+                .foregroundStyle(.theme(.textOnAccent))
+                .frame(width: 72, height: 72)
+                .background(.theme(.accent), in: .circle)
+                .shadow(color: .theme(.accentShadow), radius: 8, y: 6)
+                .contentShape(.circle)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(playLabel)
     }
 
     private var playLabel: Text {
