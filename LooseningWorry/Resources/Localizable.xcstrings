@@ -2384,6 +2384,17 @@
         }
       }
     },
+    "tool.finish.answerNotSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save your answer."
+          }
+        }
+      }
+    },
     "tool.finish.detail" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2479,6 +2490,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "That's noticing at work. Naming what's here gave your brain a step back from worry."
+          }
+        }
+      }
+    },
+    "tool.finish.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save this session."
           }
         }
       }

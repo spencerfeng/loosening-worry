@@ -68,6 +68,7 @@ final class BeKindViewModel {
     }
 
     func readPhrases() {
+        run.markEngaged()
         readKept()
         readingList = keptPhrases
         mode = .reading
@@ -133,7 +134,9 @@ final class BeKindViewModel {
         }
     }
 
+    /// Next; turning past the first page makes this a session.
     func next() {
+        run.markEngaged()
         move(by: 1)
     }
 

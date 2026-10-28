@@ -10,8 +10,16 @@ struct ToolRunView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var model: ToolRunViewModel
 
-    init(tool: QuickTool) {
-        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now, picker: .standard, lengths: .standard))
+    /// `loop` is the loop just logged, for a tool started from Nice catch; the session belongs to it.
+    init(tool: QuickTool, sessions: any SessionRecording, loop: Loop? = nil) {
+        _model = State(initialValue: ToolRunViewModel(
+            tool: tool,
+            now: .now,
+            picker: .standard,
+            lengths: .standard,
+            sessions: sessions,
+            loop: loop,
+        ))
     }
 
     var body: some View {
@@ -353,6 +361,6 @@ private struct ToolProgressBar: View {
 
 #if DEBUG
     #Preview {
-        ToolRunView(tool: .curious)
+        ToolRunView(tool: .curious, sessions: SessionStore(context: AppModelContainer.preview.mainContext))
     }
 #endif

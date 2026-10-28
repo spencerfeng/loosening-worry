@@ -456,9 +456,6 @@ private struct TextButton: View {
 
 #if DEBUG
     #Preview {
-        BeKindView(
-            model: ToolRunViewModel(tool: .beKind, now: .now, picker: .standard, lengths: .standard),
-            store: PhraseStore(context: AppModelContainer.preview.mainContext),
-        )
+        BeKindView(model: .preview(.beKind), store: PhraseStore(context: AppModelContainer.preview.mainContext))
     }
 #endif

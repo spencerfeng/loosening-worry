@@ -26,6 +26,18 @@ struct ToolFinishView: View {
 
                 FeelingPicker(feeling: model.feeling) { model.choose($0) }
 
+                // Quietly, so a failed save doesn't spoil the moment; the rest of the screen works as ever.
+                if let failure = model.saveFailure {
+                    Text(failure == .session
+                        ? LocalizedStringResource("tool.finish.notSaved", defaultValue: "Couldn't save this session.")
+                        : LocalizedStringResource(
+                            "tool.finish.answerNotSaved",
+                            defaultValue: "Couldn't save your answer.",
+                        ))
+                        .font(.theme(.footnote))
+                        .foregroundStyle(.theme(.textTertiary))
+                }
+
                 if let feeling = model.feeling {
                     FeelingMessage(
                         text: model.tool.finishMessage(for: feeling),

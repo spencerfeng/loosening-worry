@@ -3,6 +3,8 @@ import Foundation
 /// What Nice catch shows once a loop is saved: the loop, a line reflecting on what it gave the person, how many loops
 /// they've noticed this week, and a tool to try.
 struct NiceCatch {
+    /// The loop just saved, which a tool started from here belongs to.
+    let loop: Loop
     /// Trigger, behavior and result, as logged.
     let chips: [String]
     let reflection: LocalizedStringResource
@@ -11,6 +13,7 @@ struct NiceCatch {
     let suggestion: ToolSuggestion
 
     init(loop: Loop, loopsThisWeek: Int) {
+        self.loop = loop
         chips = [loop.triggerLabel, loop.behaviorLabel, loop.resultLabel]
         reflection = Self.reflection(forResult: loop.resultID)
         self.loopsThisWeek = loopsThisWeek

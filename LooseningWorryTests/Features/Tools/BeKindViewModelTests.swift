@@ -10,6 +10,7 @@ final class BeKindViewModelTests {
     private let suiteName = "BeKindViewModelTests.\(UUID().uuidString)"
     private let run: ToolRunViewModel
     private let container: ModelContainer
+    private let sessions = FakeSessionRecorder()
 
     init() throws {
         let defaults = try #require(UserDefaults(suiteName: suiteName))
@@ -18,6 +19,7 @@ final class BeKindViewModelTests {
             now: start,
             picker: PromptPicker(defaults: defaults, prompts: .empty),
             lengths: ToolLengths(defaults: defaults),
+            sessions: sessions,
         )
         container = try AppModelContainer.make(inMemory: true)
     }
@@ -268,6 +270,51 @@ final class BeKindViewModelTests {
 
         #expect(model.failedToKeep == "This is hard right now.")
         #expect(model.isKept("This is hard right now.") == false)
+    }
+}
+
+/// Be kind is a session once the person engages: opening it and ending at once isn't one.
+extension BeKindViewModelTests {
+    @Test
+    func `turning past the first page makes it a session`() {
+        let model = model()
+        model.next()
+
+        model.finish(now: start.addingTimeInterval(40))
+
+        #expect(sessions.sessions.map(\.tool) == [.beKind])
+    }
+
+    @Test
+    func `reading the kept phrases makes it a session`() throws {
+        try store.keep("This is hard right now.", now: start)
+        let model = model()
+        model.readPhrases()
+
+        model.finish(now: start.addingTimeInterval(20))
+
+        #expect(sessions.sessions.count == 1)
+    }
+
+    /// Choosing to go through it opens the steps; it's doing them that counts.
+    @Test
+    func `choosing to go through it isn't yet a session`() throws {
+        try store.keep("This is hard right now.", now: start)
+        let model = model()
+        model.goThrough()
+
+        model.finish(now: start.addingTimeInterval(5))
+
+        #expect(sessions.sessions.isEmpty)
+    }
+
+    @Test
+    func `ending on the first page saves nothing`() {
+        let model = model()
+
+        model.finish(now: start.addingTimeInterval(5))
+
+        #expect(sessions.sessions.isEmpty)
     }
 }
 

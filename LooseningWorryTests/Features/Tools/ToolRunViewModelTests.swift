@@ -9,6 +9,7 @@ final class ToolRunViewModelTests {
     private let suiteName = "ToolRunViewModelTests.\(UUID().uuidString)"
     private let picker: PromptPicker
     private let lengths: ToolLengths
+    let sessions = FakeSessionRecorder()
 
     init() throws {
         // Its own prompts, so the tests don't depend on how a reviewer arranges the bundled file. Be kind has some
@@ -31,8 +32,8 @@ final class ToolRunViewModelTests {
     }
 
     /// A run of `tool` opened at the start, with the tests' own prompts and stored lengths.
-    func model(_ tool: QuickTool) -> ToolRunViewModel {
-        ToolRunViewModel(tool: tool, now: start, picker: picker, lengths: lengths)
+    func model(_ tool: QuickTool, loop: Loop? = nil) -> ToolRunViewModel {
+        ToolRunViewModel(tool: tool, now: start, picker: picker, lengths: lengths, sessions: sessions, loop: loop)
     }
 
     isolated deinit {

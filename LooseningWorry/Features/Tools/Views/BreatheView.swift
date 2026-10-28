@@ -149,6 +149,6 @@ private struct BreathCircle: View {
 
 #if DEBUG
     #Preview {
-        BreatheView(model: ToolRunViewModel(tool: .breathe, now: .now, picker: .standard, lengths: .standard))
+        BreatheView(model: .preview(.breathe))
     }
 #endif

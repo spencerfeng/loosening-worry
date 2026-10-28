@@ -23,4 +23,12 @@ final class ToolSession {
     init(tool: QuickTool) {
         self.tool = tool
     }
+
+    /// A run of `tool` that started at `startedAt` and ran for `duration`, to the nearest second.
+    convenience init(tool: QuickTool, startedAt: Date, duration: Duration, loop: Loop?) {
+        self.init(tool: tool)
+        self.startedAt = startedAt
+        durationSeconds = Int((duration / .seconds(1)).rounded())
+        self.loop = loop
+    }
 }

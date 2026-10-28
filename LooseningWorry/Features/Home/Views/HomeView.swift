@@ -4,6 +4,7 @@ import SwiftUI
 /// Home: a greeting, a way into the logger, today's lesson, the quick tools and a line about the week.
 struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.modelContext) private var modelContext
     @Query private var loops: [Loop]
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
@@ -29,7 +30,7 @@ struct HomeView: View {
             SettingsView()
         }
         .fullScreenCover(item: $runningTool) { tool in
-            ToolRunView(tool: tool)
+            ToolRunView(tool: tool, sessions: SessionStore(context: modelContext))
         }
         .onChange(of: isLoggerOpen) { _, isOpen in
             if isOpen {
@@ -69,7 +70,9 @@ struct HomeView: View {
                     LessonCardView(card: card) { open(.learn) }
                 }
                 QuickToolsGrid { runningTool = $0 }
-                WeekLine(week: HomeContent.thisWeek(loops: loops, sessions: sessions, now: now, calendar: .current)) {
+                // Counted up to the actual time, not the timeline's minute, which can be up to a minute behind: a
+                // loop or tool saved since that minute began would otherwise be left out until the next one.
+                WeekLine(week: HomeContent.thisWeek(loops: loops, sessions: sessions, now: .now, calendar: .current)) {
                     open(.insights)
                 }
             }

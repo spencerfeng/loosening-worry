@@ -1,9 +1,11 @@
+import SwiftData
 import SwiftUI
 
 /// Shown once a loop is saved: a celebration, the loop, a line about what it gave the person, this week's count and
 /// a tool to try.
 struct NiceCatchView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.modelContext) private var modelContext
 
     let niceCatch: NiceCatch
     let showInsights: () -> Void
@@ -67,7 +69,8 @@ struct NiceCatchView: View {
         }
         .background(.theme(.background))
         .fullScreenCover(item: $runningTool) { tool in
-            ToolRunView(tool: tool)
+            // The session belongs to the loop just logged.
+            ToolRunView(tool: tool, sessions: SessionStore(context: modelContext), loop: niceCatch.loop)
         }
         .sensoryFeedback(.success, trigger: hasAppeared)
         .onAppear {

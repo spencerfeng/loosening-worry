@@ -16,6 +16,7 @@ final class NoteItViewModelTests {
             now: start,
             picker: PromptPicker(defaults: defaults, prompts: .empty),
             lengths: ToolLengths(defaults: defaults),
+            sessions: FakeSessionRecorder(),
         )
     }
 

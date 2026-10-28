@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import os
 
 /// One run of a tool in the shared shell: its timer, then the finish screen's "How do you feel now?". The person
 /// starts the timer, with Play or a tool's first tap, except in a paged tool, whose time runs from when it opens.
@@ -7,6 +8,11 @@ import Observation
 final class ToolRunViewModel {
     enum Stage {
         case running, finished
+    }
+
+    /// What couldn't be saved, for the finish screen to say.
+    enum SaveFailure {
+        case session, feeling
     }
 
     private(set) var tool: QuickTool
@@ -20,12 +26,24 @@ final class ToolRunViewModel {
     private(set) var finishedOnTime = false
     /// How long the run is meant to last: the tool's own, or the one the person chose. A paged tool has none.
     private(set) var length: Duration?
+    /// The session, or the answer given on the finish screen, couldn't be saved; the finish screen says which.
+    private(set) var saveFailure: SaveFailure?
 
     /// The session's prompts, for a guided tool; empty for the others.
     private var script: PromptScript
 
     private let picker: PromptPicker
     private let lengths: ToolLengths
+    private let sessions: any SessionRecording
+    /// The loop just logged, for a tool started from Nice catch.
+    private let loop: Loop?
+    /// When the run started: on Play or the first tap, or for a paged tool, when it opened.
+    private var startedAt: Date?
+    /// Whether the person has engaged with a paged tool, which runs from the moment it opens; only then is it a
+    /// session.
+    private var hasEngaged = false
+    /// The run saved as it ended, which the feeling is saved with.
+    private var session: ToolSession?
     /// When the timer last started running; `nil` until Play, and while paused.
     private var runningSince: Date?
     /// The time run before the last pause.
@@ -35,10 +53,19 @@ final class ToolRunViewModel {
     private var motionBefore = Duration.zero
 
     /// The prompts are chosen here, so a guided tool shows its first one from the moment it opens.
-    init(tool: QuickTool, now: Date, picker: PromptPicker, lengths: ToolLengths) {
+    init(
+        tool: QuickTool,
+        now: Date,
+        picker: PromptPicker,
+        lengths: ToolLengths,
+        sessions: any SessionRecording,
+        loop: Loop? = nil,
+    ) {
         self.tool = tool
         self.picker = picker
         self.lengths = lengths
+        self.sessions = sessions
+        self.loop = loop
         script = picker.script(for: tool)
         length = lengths.length(for: tool)
         startIfPaged(now: now)
@@ -101,11 +128,14 @@ final class ToolRunViewModel {
 
     /// Brings the timer up to `now`; the shell calls it a few times a second.
     func tick(now: Date) {
+        let unclamped = Self.time(before: elapsedBefore, since: runningSince, until: now)
         advance(to: now)
         // Only a timed tool ends on time; a counted one runs on past its target until End.
-        if tool.pacing == .timed, elapsed == length {
+        if tool.pacing == .timed, let length, elapsed == length {
             finishedOnTime = true
-            finish()
+            // At the moment the time ran out, not the tick that noticed it a little later.
+            let overshoot = max(unclamped - length, .zero) / .seconds(1)
+            finish(now: now.addingTimeInterval(-overshoot))
         }
     }
 
@@ -169,6 +199,10 @@ final class ToolRunViewModel {
         feeling = nil
         hasStarted = false
         finishedOnTime = false
+        hasEngaged = false
+        startedAt = nil
+        session = nil
+        saveFailure = nil
         runningSince = nil
         motionSince = nil
         startIfPaged(now: now)
@@ -177,11 +211,24 @@ final class ToolRunViewModel {
     /// End: straight to the finish screen, keeping the time spent.
     func end(now: Date) {
         advance(to: now)
-        finish()
+        finish(now: now)
     }
 
+    /// The answer to "How do you feel now?", saved with the session.
     func choose(_ feeling: Feeling) {
         self.feeling = feeling
+        guard let session else { return }
+        do {
+            try sessions.setFeeling(feeling, on: session)
+        } catch {
+            Self.logger.error("Couldn't save the feeling with the session: \(error)")
+            saveFailure = .feeling
+        }
+    }
+
+    /// A paged tool has no Play, so it tells the run when the person has engaged, such as turning past the first page.
+    func markEngaged() {
+        hasEngaged = true
     }
 
     /// Brings `elapsed` up to `now` while the timer runs, stopping a timed tool's at its length.
@@ -195,6 +242,9 @@ final class ToolRunViewModel {
 
     private func run(from now: Date) {
         guard isPaused else { return }
+        if startedAt == nil {
+            startedAt = now
+        }
         hasStarted = true
         runningSince = now
         motionSince = now
@@ -206,11 +256,30 @@ final class ToolRunViewModel {
         }
     }
 
-    private func finish() {
+    private func finish(now: Date) {
+        record(now: now)
         runningSince = nil
         motionSince = nil
         stage = .finished
     }
+
+    /// Saves the run as a session once it has really started: Play or a first tap, or for a paged tool, the person
+    /// engaging. A run ended before then isn't one.
+    ///
+    /// It lasts the time actually spent running, which Back 15 doesn't take away from. Every tool of a sitting
+    /// started from Nice catch belongs to its loop, as the person's response to it.
+    private func record(now: Date) {
+        let isSession = tool.pacing == .paged ? hasEngaged : hasStarted
+        guard isSession, session == nil, let startedAt else { return }
+        do {
+            session = try sessions.record(tool, startedAt: startedAt, duration: motionTime(at: now), loop: loop)
+        } catch {
+            Self.logger.error("Couldn't save the session: \(error)")
+            saveFailure = .session
+        }
+    }
+
+    private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Tools")
 
     /// `before`, plus the time from `since` to `now` if the clock is running.
     private static func time(before: Duration, since: Date?, until now: Date) -> Duration {

@@ -148,6 +148,6 @@ private struct CuriousRings: View {
 
 #if DEBUG
     #Preview {
-        CuriousView(model: ToolRunViewModel(tool: .curious, now: .now, picker: .standard, lengths: .standard))
+        CuriousView(model: .preview(.curious))
     }
 #endif

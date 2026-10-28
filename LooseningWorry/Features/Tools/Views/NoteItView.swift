@@ -287,6 +287,6 @@ private struct NoteItFooter: View {
 
 #if DEBUG
     #Preview {
-        NoteItView(model: ToolRunViewModel(tool: .noteIt, now: .now, picker: .standard, lengths: .standard))
+        NoteItView(model: .preview(.noteIt))
     }
 #endif
