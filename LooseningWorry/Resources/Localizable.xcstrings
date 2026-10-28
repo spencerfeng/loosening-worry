@@ -2131,6 +2131,116 @@
         }
       }
     },
+    "tool.noteIt.anyLabel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No wrong labels. “Something” counts too."
+          }
+        }
+      }
+    },
+    "tool.noteIt.ask" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What's here?"
+          }
+        }
+      }
+    },
+    "tool.noteIt.calm" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "calm"
+          }
+        }
+      }
+    },
+    "tool.noteIt.group.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Body"
+          }
+        }
+      }
+    },
+    "tool.noteIt.group.senses" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Senses"
+          }
+        }
+      }
+    },
+    "tool.noteIt.group.thinking" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Thinking"
+          }
+        }
+      }
+    },
+    "tool.noteIt.hearing" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "hearing"
+          }
+        }
+      }
+    },
+    "tool.noteIt.heavy" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "heavy"
+          }
+        }
+      }
+    },
+    "tool.noteIt.instruction" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tap one word each time you notice something."
+          }
+        }
+      }
+    },
+    "tool.noteIt.judging" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "judging"
+          }
+        }
+      }
+    },
     "tool.noteIt.name" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2138,6 +2248,160 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Note it"
+          }
+        }
+      }
+    },
+    "tool.noteIt.noted" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "noted %lld time"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "noted %lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tool.noteIt.oneWord" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "one word"
+          }
+        }
+      }
+    },
+    "tool.noteIt.pastTarget" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That's %@. Keep noting, or tap End when you're ready."
+          }
+        }
+      }
+    },
+    "tool.noteIt.planning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "planning"
+          }
+        }
+      }
+    },
+    "tool.noteIt.remembering" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "remembering"
+          }
+        }
+      }
+    },
+    "tool.noteIt.restless" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "restless"
+          }
+        }
+      }
+    },
+    "tool.noteIt.seeing" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "seeing"
+          }
+        }
+      }
+    },
+    "tool.noteIt.something" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "something"
+          }
+        }
+      }
+    },
+    "tool.noteIt.tally" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "So far: %@"
+          }
+        }
+      }
+    },
+    "tool.noteIt.tallyItem" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ ×%2$lld"
+          }
+        }
+      }
+    },
+    "tool.noteIt.tight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "tight"
+          }
+        }
+      }
+    },
+    "tool.noteIt.touching" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "touching"
+          }
+        }
+      }
+    },
+    "tool.noteIt.worrying" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "worrying"
           }
         }
       }
@@ -2330,6 +2594,17 @@
       }
     },
     "tool.run.countedPast" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "tool.run.countedTarget" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {

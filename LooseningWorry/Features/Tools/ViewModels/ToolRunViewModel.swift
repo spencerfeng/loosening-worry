@@ -65,6 +65,12 @@ final class ToolRunViewModel {
         return BreathPattern.breaths(in: length)
     }
 
+    /// Whether a counted tool has run past its target length, which it carries on past until End.
+    var isPastLength: Bool {
+        guard let length else { return false }
+        return elapsed > length
+    }
+
     /// How far through the run, from 0 to 1, for a timed tool's progress bar.
     var progress: Double {
         guard let length else { return 0 }

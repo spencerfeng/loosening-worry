@@ -79,7 +79,9 @@ struct ToolRunView: View {
 }
 
 /// The run's header: the tool's name, with a counted tool's time beside it ("Note it · 0:42 / 1:30", just
-/// "Note it · 1:52" once past its length), since it has no bar to show it. A timed tool's bar already shows its time.
+/// "Note it · 1:52" once past its length), since it has no bar to show it. Until its first tap starts the time it shows
+/// only the target ("Note it · 1:30"), rather than a "0:00" that looks stuck. A timed tool's bar already shows its
+/// time.
 /// Only a counted tool's pill reads the clock, so the others aren't redrawn as it ticks.
 private struct ToolRunPill: View {
     let model: ToolRunViewModel
@@ -94,8 +96,11 @@ private struct ToolRunPill: View {
         guard tool.pacing == .counted, let length = tool.length else { return tool.name }
         let name = String(localized: tool.name)
         let lengthText = length.formatted(.time(pattern: .minuteSecond))
+        guard model.hasStarted else {
+            return LocalizedStringResource("tool.run.countedTarget", defaultValue: "\(name) · \(lengthText)")
+        }
         let elapsedText = model.elapsed.formatted(.time(pattern: .minuteSecond))
-        return model.elapsed <= length
+        return !model.isPastLength
             ? LocalizedStringResource("tool.run.counted", defaultValue: "\(name) · \(elapsedText) / \(lengthText)")
             : LocalizedStringResource("tool.run.countedPast", defaultValue: "\(name) · \(elapsedText)")
     }
@@ -127,7 +132,8 @@ private struct ToolBody: View {
         switch model.tool {
         case .curious: CuriousView(model: model)
         case .breathe: BreatheView(model: model)
-        case .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
+        case .noteIt: NoteItView(model: model)
+        case .beKind: ToolPlaceholder(tool: model.tool)
         }
     }
 }

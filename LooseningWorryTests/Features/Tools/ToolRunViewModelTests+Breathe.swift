@@ -91,4 +91,15 @@ extension ToolRunViewModelTests {
         #expect(model.length == .seconds(180))
         #expect(model.breathCount == 18)
     }
+
+    /// Only a counted tool runs on past its length; a timed one stops there, and a paged one has none.
+    @Test(arguments: [QuickTool.breathe, .beKind])
+    func `a timed or paged run is never past its length`(tool: QuickTool) {
+        let model = model(tool)
+        model.play(now: start)
+
+        model.tick(now: start.addingTimeInterval(400))
+
+        #expect(model.isPastLength == false)
+    }
 }
