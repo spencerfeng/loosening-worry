@@ -2,7 +2,7 @@ import SwiftData
 
 /// Builds the app's SwiftData store, synced through the person's private iCloud database.
 enum AppModelContainer {
-    static let schema = Schema([LoopOption.self, Loop.self, ToolSession.self, LessonProgress.self])
+    static let schema = Schema([LoopOption.self, Loop.self, ToolSession.self, LessonProgress.self, KeptPhrase.self])
 
     /// Must match the container granted in `project.yml`.
     static let iCloudContainer = "iCloud.com.spencerfeng.looseningworry"

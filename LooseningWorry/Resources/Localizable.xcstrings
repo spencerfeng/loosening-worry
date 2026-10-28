@@ -1801,6 +1801,226 @@
         }
       }
     },
+    "tool.beKind.back" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "tool.beKind.choice" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your kind words are here."
+          }
+        }
+      }
+    },
+    "tool.beKind.choice.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Read the ones you kept, or go through it again."
+          }
+        }
+      }
+    },
+    "tool.beKind.doingMyBest" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "I'm doing the best I can with what I have."
+          }
+        }
+      }
+    },
+    "tool.beKind.finish" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Finish"
+          }
+        }
+      }
+    },
+    "tool.beKind.friend" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What would you say to a friend who felt this way?"
+          }
+        }
+      }
+    },
+    "tool.beKind.friend.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Write it if you like. Then say it to yourself, the same way."
+          }
+        }
+      }
+    },
+    "tool.beKind.gentleWithMyself" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "I can be gentle with myself."
+          }
+        }
+      }
+    },
+    "tool.beKind.goThrough" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Go through it"
+          }
+        }
+      }
+    },
+    "tool.beKind.hard.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Read it slowly, and let it land with one breath."
+          }
+        }
+      }
+    },
+    "tool.beKind.keep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Keep this phrase"
+          }
+        }
+      }
+    },
+    "tool.beKind.keep.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Keeps it to read again"
+          }
+        }
+      }
+    },
+    "tool.beKind.keepFailed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save that. Try again."
+          }
+        }
+      }
+    },
+    "tool.beKind.kept" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Kept"
+          }
+        }
+      }
+    },
+    "tool.beKind.kept.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lets it go"
+          }
+        }
+      }
+    },
+    "tool.beKind.kindness.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If this feels awkward or untrue, that's common. Kindness gets easier with practice."
+          }
+        }
+      }
+    },
+    "tool.beKind.lotsOfPeople" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lots of people feel this way."
+          }
+        }
+      }
+    },
+    "tool.beKind.makesSense" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It makes sense that this feels hard."
+          }
+        }
+      }
+    },
+    "tool.beKind.mayIBeKind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "May I be kind to myself right now."
+          }
+        }
+      }
+    },
+    "tool.beKind.momentOfStruggle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This is a moment of struggle."
+          }
+        }
+      }
+    },
     "tool.beKind.name" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1808,6 +2028,204 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Be kind"
+          }
+        }
+      }
+    },
+    "tool.beKind.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Next"
+          }
+        }
+      }
+    },
+    "tool.beKind.notAlone.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Right now, others are feeling something like this too."
+          }
+        }
+      }
+    },
+    "tool.beKind.notAloneInThis" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "I'm not alone in this."
+          }
+        }
+      }
+    },
+    "tool.beKind.notice" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Notice how you're talking to yourself right now."
+          }
+        }
+      }
+    },
+    "tool.beKind.notice.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Is the voice harsh, or kind? Just notice. You don't need to change it."
+          }
+        }
+      }
+    },
+    "tool.beKind.otherWords" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try other words"
+          }
+        }
+      }
+    },
+    "tool.beKind.ownWords" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your words"
+          }
+        }
+      }
+    },
+    "tool.beKind.ownWords.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It's okay to find this hard."
+          }
+        }
+      }
+    },
+    "tool.beKind.pagePosition" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Page %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "tool.beKind.partOfBeingHuman" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Struggling like this is part of being human."
+          }
+        }
+      }
+    },
+    "tool.beKind.read" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Read your phrases"
+          }
+        }
+      }
+    },
+    "tool.beKind.takeAway" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Something to take with you"
+          }
+        }
+      }
+    },
+    "tool.beKind.takeAway.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Come back to it whenever the harsh voice returns."
+          }
+        }
+      }
+    },
+    "tool.beKind.thisIsHard" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This is hard right now."
+          }
+        }
+      }
+    },
+    "tool.beKind.touch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If it feels okay, rest a hand on your chest."
+          }
+        }
+      }
+    },
+    "tool.beKind.touch.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Or anywhere that feels soothing. Feel its warmth for a breath or two."
+          }
+        }
+      }
+    },
+    "tool.beKind.yourPhrases" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your phrases"
+          }
+        }
+      }
+    },
+    "tool.beKind.yourPhrases.guide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Words that helped before."
           }
         }
       }
@@ -2413,17 +2831,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Pause"
-          }
-        }
-      }
-    },
-    "tool.placeholder" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "This tool is on its way."
           }
         }
       }

@@ -76,4 +76,12 @@ struct PreviewContainerTests {
         try #require(completedDays.count >= 3)
         #expect(completedDays == Array(1 ... completedDays.count))
     }
+
+    /// So Be kind previews with its choice and "Your phrases".
+    @Test
+    func `the preview has a kept phrase`() throws {
+        let phrases = try AppModelContainer.preview.mainContext.fetch(FetchDescriptor<KeptPhrase>())
+
+        #expect(!phrases.isEmpty)
+    }
 }

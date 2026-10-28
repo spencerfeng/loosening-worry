@@ -60,6 +60,8 @@
                 return loop
             }
 
+            context.insert(KeptPhrase(text: String(localized: KindWording.gentleWithMyself.text), keptAt: hoursAgo(30)))
+
             let session = ToolSession(tool: .breathe)
             session.loop = newestFirst.first
             session.startedAt = hoursAgo(1)

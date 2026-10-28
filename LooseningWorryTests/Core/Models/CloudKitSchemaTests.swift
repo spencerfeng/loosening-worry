@@ -36,6 +36,6 @@ struct CloudKitSchemaTests {
     func `app schema holds every model`() {
         let names = Set(AppModelContainer.schema.entities.map(\.name))
 
-        #expect(names == ["LoopOption", "Loop", "ToolSession", "LessonProgress"])
+        #expect(names == ["LoopOption", "Loop", "ToolSession", "LessonProgress", "KeptPhrase"])
     }
 }

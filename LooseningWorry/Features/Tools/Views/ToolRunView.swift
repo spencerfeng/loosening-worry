@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// The shell every tool runs in, full screen: Close, the tool's name, End, and what its pacing needs. A timed tool
@@ -126,6 +127,8 @@ struct ToolPill: View {
 /// The tool itself, which drives the run: a counted tool starts its timer on its first tap. Each tool takes its place
 /// here as it's built.
 private struct ToolBody: View {
+    @Environment(\.modelContext) private var modelContext
+
     let model: ToolRunViewModel
 
     var body: some View {
@@ -133,29 +136,8 @@ private struct ToolBody: View {
         case .curious: CuriousView(model: model)
         case .breathe: BreatheView(model: model)
         case .noteIt: NoteItView(model: model)
-        case .beKind: ToolPlaceholder(tool: model.tool)
+        case .beKind: BeKindView(model: model, store: PhraseStore(context: modelContext))
         }
-    }
-}
-
-/// Stands in for the tool itself until each tool is built.
-private struct ToolPlaceholder: View {
-    let tool: QuickTool
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: tool.symbol)
-                .font(.system(size: 56, weight: .semibold))
-                .foregroundStyle(.theme(tool.ink))
-                .frame(width: 140, height: 140)
-                .background(.theme(tool.tint), in: .circle)
-                .accessibilityHidden(true)
-            Text(LocalizedStringResource("tool.placeholder", defaultValue: "This tool is on its way."))
-                .font(.theme(.body))
-                .foregroundStyle(.theme(.textSecondary))
-                .multilineTextAlignment(.center)
-        }
-        .padding(24)
     }
 }
 
