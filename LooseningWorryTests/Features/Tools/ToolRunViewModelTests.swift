@@ -4,10 +4,11 @@ import Testing
 
 @MainActor
 final class ToolRunViewModelTests {
-    private let start = Date(timeIntervalSince1970: 1_793_000_000)
+    let start = Date(timeIntervalSince1970: 1_793_000_000)
     /// Each test gets its own defaults for the prompt rotation, so nothing leaks between tests or into the app.
     private let suiteName = "ToolRunViewModelTests.\(UUID().uuidString)"
     private let picker: PromptPicker
+    private let lengths: ToolLengths
 
     init() throws {
         // Its own prompts, so the tests don't depend on how a reviewer arranges the bundled file. Be kind has some
@@ -24,7 +25,14 @@ final class ToolRunViewModelTests {
           ]
         }
         """.utf8))
-        picker = try PromptPicker(defaults: #require(UserDefaults(suiteName: suiteName)), prompts: prompts)
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        picker = PromptPicker(defaults: defaults, prompts: prompts)
+        lengths = ToolLengths(defaults: defaults)
+    }
+
+    /// A run of `tool` opened at the start, with the tests' own prompts and stored lengths.
+    func model(_ tool: QuickTool) -> ToolRunViewModel {
+        ToolRunViewModel(tool: tool, now: start, picker: picker, lengths: lengths)
     }
 
     isolated deinit {
@@ -37,7 +45,7 @@ final class ToolRunViewModelTests {
         (.noteIt, .seconds(90)),
     ])
     func `a tool opens ready but stopped, with nothing elapsed, for its own length`(tool: QuickTool, length: Duration) {
-        let model = ToolRunViewModel(tool: tool, now: start, picker: picker)
+        let model = model(tool)
 
         #expect(model.tool == tool)
         #expect(model.length == length)
@@ -51,7 +59,7 @@ final class ToolRunViewModelTests {
     /// The person starts the timer when they're ready, not when the tool opens.
     @Test
     func `the timer waits for Play`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
 
         model.tick(now: start.addingTimeInterval(30))
         #expect(model.elapsed == .zero)
@@ -65,7 +73,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `as time passes, the timer and the progress bar move`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.tick(now: start.addingTimeInterval(36))
@@ -76,7 +84,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `pausing stops the timer, and resuming carries on from where it was`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.pause(now: start.addingTimeInterval(10))
@@ -92,7 +100,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `when the time is up, the run moves to the finish screen and the timer stops at the length`() {
-        let model = ToolRunViewModel(tool: .breathe, now: start, picker: picker)
+        let model = model(.breathe)
         model.play(now: start)
 
         model.tick(now: start.addingTimeInterval(59))
@@ -110,7 +118,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `ending early moves to the finish screen and keeps the time spent`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.end(now: start.addingTimeInterval(20))
@@ -122,7 +130,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `the finish screen starts with no answer, and the answer can be changed`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
         #expect(model.feeling == nil)
@@ -140,7 +148,7 @@ final class ToolRunViewModelTests {
         (.breathe, .curious),
     ])
     func `feeling heavier suggests Breathe, or Get curious after Breathe`(tool: QuickTool, suggested: QuickTool) {
-        let model = ToolRunViewModel(tool: tool, now: start, picker: picker)
+        let model = model(tool)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
 
@@ -151,7 +159,7 @@ final class ToolRunViewModelTests {
 
     @Test(arguments: [Feeling?.none, .lighter, .same])
     func `only feeling heavier suggests another tool`(feeling: Feeling?) {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
 
@@ -164,7 +172,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `another tool from the finish screen opens fresh, waiting for Play`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.pause(now: start.addingTimeInterval(10))
         model.end(now: start.addingTimeInterval(20))
@@ -187,7 +195,7 @@ final class ToolRunViewModelTests {
     /// A finished run stays finished, whatever plays it again, such as coming back to the app.
     @Test
     func `a finished run can't be played again`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(20))
 
@@ -201,7 +209,7 @@ final class ToolRunViewModelTests {
     /// Note it counts the time from the first word tapped; 1:30 is a target, not a limit.
     @Test
     func `a Note it timer runs past its length until the person ends it`() {
-        let model = ToolRunViewModel(tool: .noteIt, now: start, picker: picker)
+        let model = model(.noteIt)
         model.play(now: start)
 
         model.tick(now: start.addingTimeInterval(100))
@@ -213,7 +221,7 @@ final class ToolRunViewModelTests {
     /// Be kind goes at the person's own pace through its pages, so it has no length and no Play.
     @Test
     func `a Be kind run starts the moment it opens and never finishes on time`() {
-        let model = ToolRunViewModel(tool: .beKind, now: start, picker: picker)
+        let model = model(.beKind)
 
         model.tick(now: start.addingTimeInterval(200))
 
@@ -225,7 +233,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `a Be kind run opened from the finish screen starts straight away`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.end(now: start.addingTimeInterval(20))
         let later = start.addingTimeInterval(100)
 
@@ -238,7 +246,7 @@ final class ToolRunViewModelTests {
     /// Leaving the app pauses every tool; coming back carries on only where there's no Play to tap.
     @Test(arguments: [(QuickTool.curious, true), (.breathe, true), (.noteIt, true), (.beKind, false)])
     func `after leaving the app, only Be kind carries on by itself`(tool: QuickTool, staysPaused: Bool) {
-        let model = ToolRunViewModel(tool: tool, now: start, picker: picker)
+        let model = model(tool)
         model.play(now: start)
 
         model.leaveApp(now: start.addingTimeInterval(10))
@@ -252,7 +260,7 @@ final class ToolRunViewModelTests {
     /// Only running out of time counts as finishing on time; End is the person's own doing, even at the last second.
     @Test(arguments: [59.0, 60.0, 75.0])
     func `ending is never finishing on time`(endsAt seconds: Double) {
-        let model = ToolRunViewModel(tool: .breathe, now: start, picker: picker)
+        let model = model(.breathe)
         model.play(now: start)
 
         model.end(now: start.addingTimeInterval(seconds))
@@ -263,7 +271,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `another tool from the finish screen hasn't finished on time`() {
-        let model = ToolRunViewModel(tool: .breathe, now: start, picker: picker)
+        let model = model(.breathe)
         model.play(now: start)
         model.tick(now: start.addingTimeInterval(60))
 
@@ -274,7 +282,7 @@ final class ToolRunViewModelTests {
 
     @Test
     func `a Be kind run has no progress bar to fill and ends on End with the time spent`() {
-        let model = ToolRunViewModel(tool: .beKind, now: start, picker: picker)
+        let model = model(.beKind)
 
         model.tick(now: start.addingTimeInterval(40))
         #expect(model.progress == 0)
@@ -290,7 +298,7 @@ final class ToolRunViewModelTests {
 extension ToolRunViewModelTests {
     @Test
     func `back 15 moves the time back and carries on from there`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.goBack(now: start.addingTimeInterval(40))
@@ -302,7 +310,7 @@ extension ToolRunViewModelTests {
 
     @Test
     func `back 15 never goes below the start`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.goBack(now: start.addingTimeInterval(10))
@@ -312,7 +320,7 @@ extension ToolRunViewModelTests {
 
     @Test
     func `back 15 works while paused, and the run stays paused`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.pause(now: start.addingTimeInterval(40))
 
@@ -328,7 +336,7 @@ extension ToolRunViewModelTests {
 
     @Test
     func `back 15 does nothing before Play or after the run is over`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.goBack(now: start.addingTimeInterval(10))
         #expect(model.hasStarted == false)
         #expect(model.elapsed == .zero)
@@ -343,14 +351,14 @@ extension ToolRunViewModelTests {
     /// The prompt is there from the first frame, so nothing shifts as the tool opens.
     @Test
     func `a Get curious run shows its first prompt as soon as it opens`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
 
         #expect(model.prompt?.id == "curious.find.1")
     }
 
     @Test
     func `the prompt follows the time`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
 
         model.tick(now: start.addingTimeInterval(35))
@@ -361,20 +369,21 @@ extension ToolRunViewModelTests {
     /// Opening a tool and closing it without starting doesn't use up the session's wording.
     @Test
     func `a session counts once started, so the next run gets the next versions`() {
-        _ = ToolRunViewModel(tool: .curious, now: start, picker: picker)
-        let opened = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        _ = model(.curious)
+        let opened = model(.curious)
         #expect(opened.prompt?.id == "curious.find.1")
 
         opened.play(now: start)
         opened.pause(now: start.addingTimeInterval(5))
         opened.play(now: start.addingTimeInterval(6))
 
-        #expect(ToolRunViewModel(tool: .curious, now: start, picker: picker).prompt?.id == "curious.find.2")
+        #expect(model(.curious).prompt?
+            .id == "curious.find.2")
     }
 
     @Test
     func `a Get curious run opened again from the finish screen gets the next versions`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
 
@@ -385,7 +394,7 @@ extension ToolRunViewModelTests {
 
     @Test
     func `a tool with no prompts in the file shows none`() {
-        let model = ToolRunViewModel(tool: .breathe, now: start, picker: picker)
+        let model = model(.breathe)
 
         #expect(model.prompt == nil)
     }
@@ -394,7 +403,7 @@ extension ToolRunViewModelTests {
     /// there, and don't jump back when Back 15 moves the timer.
     @Test
     func `the motion clock counts only time spent running, and Back 15 doesn't rewind it`() {
-        let model = ToolRunViewModel(tool: .curious, now: start, picker: picker)
+        let model = model(.curious)
         #expect(model.motionTime(at: start.addingTimeInterval(5)) == .zero)
 
         model.play(now: start)
@@ -412,10 +421,10 @@ extension ToolRunViewModelTests {
     /// A paged tool starts by itself, and its view can be rebuilt many times, so only Play uses up a session.
     @Test
     func `opening a tool that starts by itself doesn't use up a session`() {
-        let opened = ToolRunViewModel(tool: .beKind, now: start, picker: picker)
+        let opened = model(.beKind)
         #expect(opened.hasStarted)
 
-        let next = ToolRunViewModel(tool: .beKind, now: start, picker: picker)
+        let next = model(.beKind)
 
         #expect(next.prompt?.id == "curious.find.1")
     }

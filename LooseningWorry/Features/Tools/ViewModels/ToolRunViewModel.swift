@@ -18,11 +18,14 @@ final class ToolRunViewModel {
     private(set) var hasStarted = false
     /// Whether the run ended because a timed tool's time was up, rather than on End.
     private(set) var finishedOnTime = false
+    /// How long the run is meant to last: the tool's own, or the one the person chose. A paged tool has none.
+    private(set) var length: Duration?
 
     /// The session's prompts, for a guided tool; empty for the others.
     private var script: PromptScript
 
     private let picker: PromptPicker
+    private let lengths: ToolLengths
     /// When the timer last started running; `nil` until Play, and while paused.
     private var runningSince: Date?
     /// The time run before the last pause.
@@ -32,10 +35,12 @@ final class ToolRunViewModel {
     private var motionBefore = Duration.zero
 
     /// The prompts are chosen here, so a guided tool shows its first one from the moment it opens.
-    init(tool: QuickTool, now: Date, picker: PromptPicker) {
+    init(tool: QuickTool, now: Date, picker: PromptPicker, lengths: ToolLengths) {
         self.tool = tool
         self.picker = picker
+        self.lengths = lengths
         script = picker.script(for: tool)
+        length = lengths.length(for: tool)
         startIfPaged(now: now)
     }
 
@@ -43,8 +48,21 @@ final class ToolRunViewModel {
         stage == .running && runningSince == nil
     }
 
-    var length: Duration? {
-        tool.length
+    /// The lengths the person can choose between before starting; one or none means there's no choice.
+    var lengthOptions: [Duration] {
+        tool.lengthOptions
+    }
+
+    /// Where the breathing is, for Breathe; `nil` for the other tools.
+    var breath: Breath? {
+        guard tool == .breathe else { return nil }
+        return BreathPattern.breath(at: elapsed, of: breathCount)
+    }
+
+    /// How many breaths the run holds, for Breathe's "Breath 3 of 18".
+    var breathCount: Int {
+        guard tool == .breathe, let length else { return 0 }
+        return BreathPattern.breaths(in: length)
     }
 
     /// How far through the run, from 0 to 1, for a timed tool's progress bar.
@@ -125,10 +143,19 @@ final class ToolRunViewModel {
         }
     }
 
+    /// Chooses how long the run lasts. Only before it starts, and only a length the tool offers; it's remembered for
+    /// next time.
+    func chooseLength(_ length: Duration) {
+        guard !hasStarted, lengthOptions.contains(length) else { return }
+        self.length = length
+        lengths.remember(length, for: tool)
+    }
+
     /// Opens `tool` fresh in place of the run that just finished.
     func start(_ tool: QuickTool, now: Date) {
         self.tool = tool
         script = picker.script(for: tool)
+        length = lengths.length(for: tool)
         stage = .running
         elapsed = .zero
         elapsedBefore = .zero

@@ -1812,6 +1812,28 @@
         }
       }
     },
+    "tool.breathe.count" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Breath %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "tool.breathe.in" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Breathe in"
+          }
+        }
+      }
+    },
     "tool.breathe.name" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1819,6 +1841,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Breathe"
+          }
+        }
+      }
+    },
+    "tool.breathe.natural" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If the pace feels off, just breathe naturally and watch the circle."
+          }
+        }
+      }
+    },
+    "tool.breathe.notice" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Notice the air: a little cooler coming in, warmer going out."
+          }
+        }
+      }
+    },
+    "tool.breathe.out" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Breathe out"
+          }
+        }
+      }
+    },
+    "tool.breathe.pace" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "In for 4 · out for 6"
           }
         }
       }
@@ -2039,6 +2105,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Try %@"
+          }
+        }
+      }
+    },
+    "tool.length" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Length"
+          }
+        }
+      }
+    },
+    "tool.length.minutes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld min"
           }
         }
       }
@@ -2270,6 +2358,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Time"
+          }
+        }
+      }
+    },
+    "tool.time.breathValue" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@ of %3$@"
+          }
+        }
+      }
+    },
+    "tool.time.ofLength" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ / %2$@"
           }
         }
       }

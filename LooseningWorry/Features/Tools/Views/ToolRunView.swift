@@ -10,7 +10,7 @@ struct ToolRunView: View {
     @State private var model: ToolRunViewModel
 
     init(tool: QuickTool) {
-        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now, picker: .standard))
+        _model = State(initialValue: ToolRunViewModel(tool: tool, now: .now, picker: .standard, lengths: .standard))
     }
 
     var body: some View {
@@ -126,7 +126,8 @@ private struct ToolBody: View {
     var body: some View {
         switch model.tool {
         case .curious: CuriousView(model: model)
-        case .breathe, .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
+        case .breathe: BreatheView(model: model)
+        case .noteIt, .beKind: ToolPlaceholder(tool: model.tool)
         }
     }
 }
@@ -152,14 +153,16 @@ private struct ToolPlaceholder: View {
     }
 }
 
-/// A timed tool's own button left of Play: Get curious's Back 15. Each tool adds its own here as it's built.
+/// A timed tool's own button left of Play: Get curious's Back 15, Breathe's length. Each tool adds its own here as
+/// it's built.
 private struct ToolSideControl: View {
     let model: ToolRunViewModel
 
     var body: some View {
         switch model.tool {
         case .curious: BackButton(model: model)
-        case .breathe, .noteIt, .beKind: EmptyView()
+        case .breathe: LengthMenu(model: model)
+        case .noteIt, .beKind: EmptyView()
         }
     }
 }
@@ -186,6 +189,54 @@ private struct BackButton: View {
     }
 }
 
+/// Breathe's length, chosen before starting from a small menu: 1, 3 or 5 minutes. Greyed out once breathing begins.
+private struct LengthMenu: View {
+    let model: ToolRunViewModel
+
+    var body: some View {
+        Menu {
+            Picker(selection: lengthBinding) {
+                ForEach(model.lengthOptions, id: \.self) { length in
+                    Text(Self.minutes(length)).tag(length)
+                }
+            } label: {
+                Text(LocalizedStringResource("tool.length", defaultValue: "Length"))
+            }
+        } label: {
+            Text(model.length.map(Self.minutes) ?? "")
+                .font(.theme(.footnote))
+                .foregroundStyle(.theme(.textPrimary))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                // A label inside a small round button: capped, as the system caps its own; VoiceOver reads it whole.
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                .padding(.horizontal, 4)
+                .frame(width: 48, height: 48)
+                .background(.theme(.surfaceSunken), in: .circle)
+                .contentShape(.circle)
+        }
+        .disabled(model.hasStarted)
+        .opacity(model.hasStarted ? 0.4 : 1)
+        .accessibilityLabel(Text(LocalizedStringResource("tool.length", defaultValue: "Length")))
+        .accessibilityValue(Text(model.length.map(Self.minutesSpoken) ?? ""))
+    }
+
+    private var lengthBinding: Binding<Duration> {
+        Binding(get: { model.length ?? .zero }, set: { model.chooseLength($0) })
+    }
+
+    /// "1 min", the same short form whatever the number.
+    private static func minutes(_ length: Duration) -> String {
+        let minutes = Int(length / .seconds(60))
+        return String(localized: LocalizedStringResource("tool.length.minutes", defaultValue: "\(minutes) min"))
+    }
+
+    /// "1 minute"
+    private static func minutesSpoken(_ length: Duration) -> String {
+        length.formatted(.units(allowed: [.minutes], width: .wide))
+    }
+}
+
 /// The progress bar with the time so far and the length, and Play/Pause with the tool's own button on its left. The
 /// right-hand slot is kept, so Play stays centered, for Silent mode once a tool makes sound.
 private struct ToolControls<Side: View>: View {
@@ -198,9 +249,19 @@ private struct ToolControls<Side: View>: View {
             VStack(spacing: 6) {
                 ToolProgressBar(progress: model.progress)
                 HStack {
-                    Text(model.elapsed.formatted(.time(pattern: .minuteSecond)))
-                    Spacer()
-                    Text(length.formatted(.time(pattern: .minuteSecond)))
+                    if let breath = model.breath {
+                        // "Breath 3 of 18" and "0:24 / 3:00", as Breathe's design has it.
+                        Text(breathText(breath))
+                        Spacer()
+                        Text(LocalizedStringResource(
+                            "tool.time.ofLength",
+                            defaultValue: "\(elapsedText) / \(lengthText)",
+                        ))
+                    } else {
+                        Text(elapsedText)
+                        Spacer()
+                        Text(lengthText)
+                    }
                 }
                 .font(.theme(.footnote))
                 .monospacedDigit()
@@ -225,6 +286,18 @@ private struct ToolControls<Side: View>: View {
         .padding(.bottom, 12)
         // A tool's words scroll under the bar at large text sizes; this keeps them out of the gaps around it.
         .background(.theme(.background))
+    }
+
+    private var elapsedText: String {
+        model.elapsed.formatted(.time(pattern: .minuteSecond))
+    }
+
+    private var lengthText: String {
+        length.formatted(.time(pattern: .minuteSecond))
+    }
+
+    private func breathText(_ breath: Breath) -> LocalizedStringResource {
+        LocalizedStringResource("tool.breathe.count", defaultValue: "Breath \(breath.number) of \(model.breathCount)")
     }
 
     private var playButton: some View {
@@ -262,6 +335,13 @@ private struct ToolControls<Side: View>: View {
         let units = Duration.UnitsFormatStyle(allowedUnits: [.minutes, .seconds], width: .wide)
         let elapsed = model.elapsed.formatted(units)
         let lengthText = length.formatted(units)
+        if let breath = model.breath {
+            let count = String(localized: breathText(breath))
+            return LocalizedStringResource(
+                "tool.time.breathValue",
+                defaultValue: "\(count), \(elapsed) of \(lengthText)",
+            )
+        }
         return LocalizedStringResource("tool.time.value", defaultValue: "\(elapsed) of \(lengthText)")
     }
 }

@@ -20,13 +20,19 @@ extension QuickTool {
         }
     }
 
-    /// How long a run is meant to last; a paged tool has no length.
-    var length: Duration? {
+    /// The lengths a person can choose between, first the one a run starts at: Breathe can run longer; the others
+    /// have the one length, and a paged tool none.
+    var lengthOptions: [Duration] {
         switch self {
-        case .breathe: .seconds(60)
-        case .curious, .noteIt: .seconds(90)
-        case .beKind: nil
+        case .breathe: [.seconds(60), .seconds(180), .seconds(300)]
+        case .curious, .noteIt: [.seconds(90)]
+        case .beKind: []
         }
+    }
+
+    /// How long a run is meant to last unless the person chooses otherwise; a paged tool has no length.
+    var length: Duration? {
+        lengthOptions.first
     }
 }
 
