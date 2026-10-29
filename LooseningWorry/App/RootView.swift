@@ -14,7 +14,9 @@ struct RootView: View {
                 PlaceholderScreen(title: "Learn")
             }
             Tab("Insights", systemImage: "chart.bar", value: .insights) {
-                PlaceholderScreen(title: "Insights")
+                InsightsView {
+                    model.select(.log)
+                }
             }
             // Selecting this tab opens the sheet; RootViewModel never makes it the selection.
             // Keeps the system's glass look rather than the mockup's accent fill (ADR 0003).

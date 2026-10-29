@@ -4,7 +4,7 @@ Date: 2026-10-22
 
 ## Status
 
-Accepted. Extended by ADR 0004, which adds five accent roles.
+Accepted. Extended by ADR 0004, which adds five accent roles, and ADR 0005, which adds two fill roles.
 
 ## Context
 

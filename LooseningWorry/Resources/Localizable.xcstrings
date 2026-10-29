@@ -767,6 +767,248 @@
     "Insights" : {
 
     },
+    "insights.busiest" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Most loops start between %1$@ and %2$@."
+          }
+        }
+      }
+    },
+    "insights.chart.loops" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Loops"
+          }
+        }
+      }
+    },
+    "insights.chart.when" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When"
+          }
+        }
+      }
+    },
+    "insights.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Each loop you notice shows up here: when they start, what sets them off, and what your habits give you."
+          }
+        }
+      }
+    },
+    "insights.empty.quiet" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No loops noticed %@ yet."
+          }
+        }
+      }
+    },
+    "insights.habit.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld times %3$@, it brought more worry, tension, or no change."
+          }
+        }
+      }
+    },
+    "insights.habit.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What “%@” gave you"
+          }
+        }
+      }
+    },
+    "insights.habit.wait" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "After a few more loops, you'll see what each habit gives you."
+          }
+        }
+      }
+    },
+    "insights.logLoop" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Log a loop"
+          }
+        }
+      }
+    },
+    "insights.loopCount" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld loop"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld loops"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.loops" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Loops noticed"
+          }
+        }
+      }
+    },
+    "insights.period" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Period"
+          }
+        }
+      }
+    },
+    "insights.period.lastFourWeeks" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last 4 weeks"
+          }
+        }
+      }
+    },
+    "insights.period.thisWeek" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This week"
+          }
+        }
+      }
+    },
+    "insights.span.lastFourWeeks" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "in the last 4 weeks"
+          }
+        }
+      }
+    },
+    "insights.span.thisWeek" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "this week"
+          }
+        }
+      }
+    },
+    "insights.thisWeek" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "this week"
+          }
+        }
+      }
+    },
+    "insights.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Insights"
+          }
+        }
+      }
+    },
+    "insights.today" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "today"
+          }
+        }
+      }
+    },
+    "insights.triggers" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Top triggers"
+          }
+        }
+      }
+    },
+    "insights.weekOf" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Week of %@"
+          }
+        }
+      }
+    },
     "Learn" : {
 
     },
