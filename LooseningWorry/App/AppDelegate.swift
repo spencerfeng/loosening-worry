@@ -2,7 +2,7 @@ import UIKit
 import UserNotifications
 
 /// Receives taps on the daily reminder. It owns the root model, so a tap that launches the app still opens the
-/// logger once the first screen appears.
+/// lesson or the logger once the first screen appears.
 @MainActor
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     let rootModel = RootViewModel()
@@ -20,8 +20,10 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         _: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
     ) async {
-        let identifier = response.notification.request.identifier
-        await MainActor.run { rootModel.openNotification(identifier: identifier) }
+        let request = response.notification.request
+        let identifier = request.identifier
+        let lessonDay = request.content.userInfo[ReminderNotification.lessonDayKey] as? Int
+        await MainActor.run { rootModel.openNotification(identifier: identifier, lessonDay: lessonDay) }
     }
 
     /// The reminder shows even while the app is open.

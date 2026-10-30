@@ -1,16 +1,20 @@
 import SwiftUI
 
-/// Settings, opened from the gear on Home: the daily reminder, the person's options and a way to Help. Later
-/// sections (Face ID, export, purchases, About) join as their own sections. All wording is a draft.
+/// Settings, opened from the gear on Home or a lesson's task: the daily reminder, the person's options and a way to
+/// Help. Later sections (Face ID, export, purchases, About) join as their own sections. All wording is a draft.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @State private var model = SettingsViewModel(
-        settings: ReminderSettings(defaults: .standard),
-        scheduler: NotificationReminderScheduler(),
-    )
+    @State private var model: SettingsViewModel
     @State private var isShowingOptions = false
     @State private var isShowingHelp = false
+
+    init(scheduler: any ReminderScheduler) {
+        _model = State(initialValue: SettingsViewModel(
+            settings: ReminderSettings(defaults: .standard),
+            scheduler: scheduler,
+        ))
+    }
 
     var body: some View {
         NavigationStack {
@@ -162,7 +166,7 @@ private struct SettingsRow: View {
 
 #if DEBUG
     #Preview {
-        SettingsView()
+        SettingsView(scheduler: NotificationReminderScheduler { nil })
             .modelContainer(AppModelContainer.preview)
     }
 #endif

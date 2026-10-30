@@ -3,6 +3,10 @@ import UserNotifications
 
 /// Schedules the daily reminder with the system's notification center.
 struct NotificationReminderScheduler: ReminderScheduler {
+    /// The lesson the reminder names, looked up each time it's scheduled; `nil` once the course is done. It reads the
+    /// app's main database context, so it runs on the main actor.
+    let nextLesson: @MainActor () -> Lesson?
+
     private var center: UNUserNotificationCenter {
         .current()
     }
@@ -29,7 +33,8 @@ struct NotificationReminderScheduler: ReminderScheduler {
     }
 
     func scheduleDaily(at time: ReminderTime) async throws {
-        try await center.add(ReminderNotification.request(at: time))
+        let lesson = await nextLesson()
+        try await center.add(ReminderNotification.request(at: time, next: lesson))
     }
 
     func cancel() {

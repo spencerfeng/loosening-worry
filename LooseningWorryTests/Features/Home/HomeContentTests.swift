@@ -35,9 +35,9 @@ struct HomeContentTests {
 
     init() throws {
         catalog = try LessonCatalog(json: Data("""
-        [{"day": 1, "title": "Welcome", "minutes": 5},
-         {"day": 2, "title": "Your brain loves loops", "minutes": 5},
-         {"day": 3, "title": "Worry as a behavior", "minutes": 6}]
+        [{"day": 1, "title": "Welcome", "minutes": 5, "cards": []},
+         {"day": 2, "title": "Your brain loves loops", "minutes": 5, "cards": []},
+         {"day": 3, "title": "Worry as a behavior", "minutes": 6, "cards": []}]
         """.utf8))
     }
 

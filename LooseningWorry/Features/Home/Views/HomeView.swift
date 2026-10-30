@@ -4,18 +4,12 @@ import SwiftUI
 /// Home: a greeting, a way into the logger, today's lesson, the quick tools and a line about the week.
 struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Environment(\.modelContext) private var modelContext
     @Query private var loops: [Loop]
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
 
-    /// The logger can also open from the daily reminder, over a sheet or tool Home has open; iOS shows one at a time.
-    let isLoggerOpen: Bool
-    /// Opens a tab: Log opens the logger, Learn the lesson, Insights the week.
-    let open: (AppTab) -> Void
-    @State private var isShowingHelp = false
-    @State private var isShowingSettings = false
-    @State private var runningTool: QuickTool?
+    /// Opens the logger, other tabs, lessons, tools, Settings and Help.
+    let root: RootViewModel
 
     var body: some View {
         // Redrawn each minute, so the date, the greeting and the week roll over while Home stays open.
@@ -23,27 +17,11 @@ struct HomeView: View {
             content(now: context.date)
         }
         .background(.theme(.background))
-        .sheet(isPresented: $isShowingHelp) {
-            HelpView()
-        }
-        .sheet(isPresented: $isShowingSettings) {
-            SettingsView()
-        }
-        .fullScreenCover(item: $runningTool) { tool in
-            ToolRunView(tool: tool, sessions: SessionStore(context: modelContext))
-        }
-        .onChange(of: isLoggerOpen) { _, isOpen in
-            if isOpen {
-                isShowingHelp = false
-                isShowingSettings = false
-                runningTool = nil
-            }
-        }
     }
 
     @ViewBuilder private var headerButtons: some View {
-        SettingsButton { isShowingSettings = true }
-        HelpButton { isShowingHelp = true }
+        SettingsButton { root.openSettings() }
+        HelpButton { root.openHelp() }
     }
 
     private func content(now: Date) -> some View {
@@ -60,20 +38,20 @@ struct HomeView: View {
                         HStack(spacing: 8) { headerButtons }
                     }
                 }
-                LogBanner { open(.log) }
+                LogBanner { root.select(.log) }
                 if let card = HomeContent.nextLesson(progress: lessonProgress, catalog: .bundled) {
                     Text(LocalizedStringResource("home.forYou", defaultValue: "For you today"))
                         .font(.theme(.title3))
                         .foregroundStyle(.theme(.textPrimary))
                         .accessibilityAddTraits(.isHeader)
                         .padding(.bottom, -6)
-                    LessonCardView(card: card) { open(.learn) }
+                    NextLessonCard(card: card) { root.openLesson(card.lesson) }
                 }
-                QuickToolsGrid { runningTool = $0 }
+                QuickToolsGrid { root.openTool($0) }
                 // Counted up to the actual time, not the timeline's minute, which can be up to a minute behind: a
                 // loop or tool saved since that minute began would otherwise be left out until the next one.
                 WeekLine(week: HomeContent.thisWeek(loops: loops, sessions: sessions, now: .now, calendar: .current)) {
-                    open(.insights)
+                    root.select(.insights)
                 }
             }
             .padding(.horizontal, 20)
@@ -205,83 +183,6 @@ private struct LogBanner: View {
     }
 }
 
-/// The next lesson, and how far through the course the person is. Opens Learn.
-private struct LessonCardView: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    let card: HomeContent.LessonCard
-    let action: () -> Void
-
-    var body: some View {
-        // The day and the reading time stack at the largest text sizes rather than crowd one line.
-        let topRow = dynamicTypeSize.isAccessibilitySize
-            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
-            : AnyLayout(HStackLayout())
-        Button(action: action) {
-            VStack(alignment: .leading, spacing: 12) {
-                topRow {
-                    Text(LocalizedStringResource(
-                        "home.lesson.day",
-                        defaultValue: "Lesson · Day \(card.lesson.day) of \(card.totalDays)",
-                    ))
-                    .foregroundStyle(.theme(.violetOnTint))
-                    if !dynamicTypeSize.isAccessibilitySize {
-                        Spacer()
-                    }
-                    Text(LocalizedStringResource(
-                        "home.lesson.minutes",
-                        defaultValue: "\(card.lesson.minutes) min read",
-                    ))
-                    .foregroundStyle(.theme(.textTertiary))
-                }
-                .font(.theme(.footnote))
-                HStack(spacing: 12) {
-                    Text(card.lesson.title)
-                        .font(.theme(.title3))
-                        .foregroundStyle(.theme(.textPrimary))
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(.theme(.textOnAccent))
-                        .frame(width: 40, height: 40)
-                        .background(.theme(.violetStrong), in: .circle)
-                        .accessibilityHidden(true)
-                }
-                ProgressView(value: Double(card.daysCompleted), total: Double(max(card.totalDays, 1)))
-                    .progressViewStyle(CourseProgressStyle())
-                    .accessibilityLabel(Text(LocalizedStringResource(
-                        "home.lesson.progress",
-                        defaultValue: "\(card.daysCompleted) of \(card.totalDays) lessons done",
-                    )))
-            }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 18)
-            .background(.theme(.surface), in: .rect(cornerRadius: 22))
-            .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle)) }
-            .contentShape(.rect(cornerRadius: 22))
-        }
-        .buttonStyle(.plain)
-        .accessibilityHint(Text(LocalizedStringResource("home.lesson.hint", defaultValue: "Opens Learn")))
-    }
-}
-
-/// The course's progress as a thin violet bar.
-private struct CourseProgressStyle: ProgressViewStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        Capsule()
-            .fill(.theme(.violetTint))
-            .frame(height: 6)
-            .overlay(alignment: .leading) {
-                GeometryReader { proxy in
-                    Capsule()
-                        .fill(.theme(.violetStrong))
-                        .frame(width: proxy.size.width * (configuration.fractionCompleted ?? 0))
-                }
-            }
-    }
-}
-
 /// The four tools; each tile starts its tool.
 private struct QuickToolsGrid: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -389,7 +290,7 @@ private struct WeekLine: View {
 
 #if DEBUG
     #Preview {
-        HomeView(isLoggerOpen: false) { _ in }
+        HomeView(root: RootViewModel())
             .modelContainer(AppModelContainer.preview)
     }
 #endif

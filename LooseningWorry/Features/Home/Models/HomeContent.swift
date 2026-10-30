@@ -7,8 +7,8 @@ enum HomeContent {
         case morning, afternoon, evening
     }
 
-    /// The lesson card: the next lesson not yet completed, and how far through the course the person is.
-    struct LessonCard: Equatable {
+    /// The next lesson not yet completed, and how far through the course the person is.
+    struct NextLessonSummary: Equatable {
         let lesson: Lesson
         let daysCompleted: Int
         let totalDays: Int
@@ -30,11 +30,11 @@ enum HomeContent {
     }
 
     /// The first lesson not yet completed, since lessons can be read out of order; `nil` once all are done.
-    static func nextLesson(progress: [LessonProgress], catalog: LessonCatalog) -> LessonCard? {
+    static func nextLesson(progress: [LessonProgress], catalog: LessonCatalog) -> NextLessonSummary? {
         let done = Set(progress.filter { $0.completedAt != nil }.map(\.day))
         guard let next = catalog.lessons.first(where: { !done.contains($0.day) }) else { return nil }
         let completed = catalog.lessons.count { done.contains($0.day) }
-        return LessonCard(lesson: next, daysCompleted: completed, totalDays: catalog.lessons.count)
+        return NextLessonSummary(lesson: next, daysCompleted: completed, totalDays: catalog.lessons.count)
     }
 
     /// Loops logged and tools used since this calendar week began, up to now.

@@ -638,7 +638,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Opens Learn"
+            "value" : "Opens the lesson"
           }
         }
       }
@@ -1011,6 +1011,358 @@
     },
     "Learn" : {
 
+    },
+    "learn.minutes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld min"
+          }
+        }
+      }
+    },
+    "learn.row" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$lld, %2$@"
+          }
+        }
+      }
+    },
+    "learn.row.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "learn.row.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Up next"
+          }
+        }
+      }
+    },
+    "learn.stage.1" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stage 1 · Map your loops"
+          }
+        }
+      }
+    },
+    "learn.stage.2" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stage 2 · Update the reward value"
+          }
+        }
+      }
+    },
+    "learn.stage.3" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stage 3 · Find a bigger, better offer"
+          }
+        }
+      }
+    },
+    "learn.stage.days" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Days %1$lld–%2$lld"
+          }
+        }
+      }
+    },
+    "learn.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "30 days · 5 minutes a day"
+          }
+        }
+      }
+    },
+    "learn.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn"
+          }
+        }
+      }
+    },
+    "learn.upNext" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Up next · Day %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "lesson.action.insights" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Insights"
+          }
+        }
+      }
+    },
+    "lesson.action.log" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Log a loop"
+          }
+        }
+      }
+    },
+    "lesson.action.reminder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Set my reminder"
+          }
+        }
+      }
+    },
+    "lesson.action.settings" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "lesson.back" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "lesson.close" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "lesson.done.backToLearn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Back to Learn"
+          }
+        }
+      }
+    },
+    "lesson.done.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Up next · Day %lld"
+          }
+        }
+      }
+    },
+    "lesson.done.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save this lesson as done. It may not show a tick yet."
+          }
+        }
+      }
+    },
+    "lesson.done.task" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Today's task: %@"
+          }
+        }
+      }
+    },
+    "lesson.done.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %lld done"
+          }
+        }
+      }
+    },
+    "lesson.finish" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Finish lesson"
+          }
+        }
+      }
+    },
+    "lesson.header" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$lld · %2$lld min"
+          }
+        }
+      }
+    },
+    "lesson.kicker.example" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Example"
+          }
+        }
+      }
+    },
+    "lesson.kicker.hook" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lesson · Day %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "lesson.kicker.idea" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Idea %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "lesson.kicker.task" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Today's task"
+          }
+        }
+      }
+    },
+    "lesson.kicker.try" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try it now · %@"
+          }
+        }
+      }
+    },
+    "lesson.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Next"
+          }
+        }
+      }
+    },
+    "lesson.position" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Card %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "lesson.task.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Finishes the lesson"
+          }
+        }
+      }
     },
     "Log a loop" : {
 
@@ -1611,6 +1963,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Take 20 seconds to log it, or try a quick tool if worry's around now."
+          }
+        }
+      }
+    },
+    "reminder.lesson.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$lld min"
+          }
+        }
+      }
+    },
+    "reminder.lesson.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %lld is ready"
           }
         }
       }
