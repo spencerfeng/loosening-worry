@@ -9,6 +9,8 @@ final class FakeSessionRecorder: SessionRecording {
     var failing = false
     /// Saves sessions, but fails to save the feeling.
     var failingFeeling = false
+    /// Fails to read earlier feelings.
+    var failingReads = false
 
     struct Failed: Error {}
 
@@ -26,5 +28,21 @@ final class FakeSessionRecorder: SessionRecording {
             throw Failed()
         }
         session.feeling = feeling
+    }
+
+    func feelings(for tool: QuickTool) throws -> [Feeling] {
+        if failingReads {
+            throw Failed()
+        }
+        return sessions.filter { $0.tool == tool }.compactMap(\.feeling)
+    }
+
+    /// Runs of `tool` from before, one per feeling; `nil` is a run left unanswered.
+    func saveEarlier(_ tool: QuickTool, feelings: [Feeling?]) {
+        for feeling in feelings {
+            let session = ToolSession(tool: tool)
+            session.feeling = feeling
+            sessions.append(session)
+        }
     }
 }

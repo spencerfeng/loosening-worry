@@ -39,6 +39,19 @@ struct SessionStoreTests {
         #expect(saved.feeling == .same)
     }
 
+    @Test
+    func `a tool's feelings leave out other tools and runs left unanswered`() throws {
+        let first = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
+        try store.setFeeling(.lighter, on: first)
+        try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
+        let breathe = try store.record(.breathe, startedAt: start, duration: .seconds(60), loop: nil)
+        try store.setFeeling(.heavier, on: breathe)
+        let last = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
+        try store.setFeeling(.same, on: last)
+
+        #expect(try store.feelings(for: .curious).sorted { $0.rawValue < $1.rawValue } == [.lighter, .same])
+    }
+
     /// A tool started from Nice catch belongs to the loop just logged.
     @Test
     func `a session can belong to a loop`() throws {

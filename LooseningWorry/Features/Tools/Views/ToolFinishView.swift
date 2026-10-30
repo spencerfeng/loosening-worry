@@ -46,7 +46,12 @@ struct ToolFinishView: View {
                         getHelp: { isShowingHelp = true },
                     )
                     .id(feeling)
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 8)))
+                    .transition(reveal)
+                }
+
+                if let tally = model.lighterTally {
+                    LighterTallyCard(tool: model.tool, tally: tally)
+                        .transition(reveal)
                 }
             }
             .padding(.horizontal, 20)
@@ -98,6 +103,11 @@ struct ToolFinishView: View {
         .sheet(isPresented: $isShowingHelp) {
             HelpView()
         }
+    }
+
+    /// How the answer's message and tally come in: rising into place, or only fading with Reduce Motion.
+    private var reveal: AnyTransition {
+        reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 8))
     }
 }
 
@@ -175,6 +185,36 @@ private struct FeelingFace: Shape {
             path.addCurve(to: CGPoint(x: 27, y: 28), control1: CGPoint(x: 15, y: 25), control2: CGPoint(x: 25, y: 25))
         }
         return path.applying(CGAffineTransform(scaleX: scale, y: scale))
+    }
+}
+
+/// "Get curious has left you lighter 5 of 7 times", on the tool's tint behind the Lighter face.
+private struct LighterTallyCard: View {
+    let tool: QuickTool
+    let tally: LighterTally
+
+    var body: some View {
+        HStack(spacing: 14) {
+            FeelingFace(feeling: .lighter)
+                .stroke(style: StrokeStyle(lineWidth: 2.8, lineCap: .round))
+                .frame(width: 26, height: 26)
+                .foregroundStyle(.theme(tool.ink))
+                .frame(width: 40, height: 40)
+                .background(.theme(.surface), in: .circle)
+                .accessibilityHidden(true)
+            Text(text)
+                .font(.theme(.body))
+                .foregroundStyle(.theme(.textPrimary))
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.vertical, 16)
+        .padding(.horizontal, 18)
+        .background(.theme(tool.tint), in: .rect(cornerRadius: 20))
+        .accessibilityElement(children: .combine)
+    }
+
+    private var text: AttributedString {
+        tally.sentence(naming: tool).restylingEmphasis(font: .theme(.headline), color: .theme(tool.onTint))
     }
 }
 

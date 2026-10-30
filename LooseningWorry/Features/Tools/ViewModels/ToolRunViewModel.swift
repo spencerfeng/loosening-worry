@@ -51,6 +51,8 @@ final class ToolRunViewModel {
     /// The motion clock's counterparts, which Back 15 leaves alone.
     private var motionSince: Date?
     private var motionBefore = Duration.zero
+    /// This tool's feelings from before this run, read as it finishes.
+    private var earlierFeelings: [Feeling] = []
 
     /// The prompts are chosen here, so a guided tool shows its first one from the moment it opens.
     init(
@@ -112,6 +114,13 @@ final class ToolRunViewModel {
     /// Every prompt of the session, in order.
     var prompts: [ToolPrompt] {
         script.prompts
+    }
+
+    /// How often this tool has left the person lighter, counting the answer showing now. A run that wasn't saved
+    /// isn't counted, as it won't be there to count next time.
+    var lighterTally: LighterTally? {
+        guard let feeling, session != nil else { return nil }
+        return LighterTally(feelings: earlierFeelings + [feeling])
     }
 
     /// After feeling heavier, a tool to try next, offered beside Get help: Breathe, or Get curious after Breathe.
@@ -256,11 +265,24 @@ final class ToolRunViewModel {
         }
     }
 
+    /// Once only: finishing again would read back the answer just saved as an earlier one.
     private func finish(now: Date) {
+        guard stage == .running else { return }
+        readEarlierFeelings()
         record(now: now)
         runningSince = nil
         motionSince = nil
         stage = .finished
+    }
+
+    /// Read before this run is saved, so its own answer is counted only once.
+    private func readEarlierFeelings() {
+        do {
+            earlierFeelings = try sessions.feelings(for: tool)
+        } catch {
+            Self.logger.error("Couldn't read the tool's earlier feelings: \(error)")
+            earlierFeelings = []
+        }
     }
 
     /// Saves the run as a session once it has really started: Play or a first tap, or for a paged tool, the person

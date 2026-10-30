@@ -47,6 +47,13 @@ When the number is styled apart from its words (Nice catch's "**4** loops notice
 `AttributedString(localized: LocalizedStringResource(key, defaultValue: "**\(count)** …"))` instead. The catalog entry
 is the same hand-written plural, with the `**` kept in each variation; the view restyles the strongly emphasized run.
 
+When the string carries more than one value, only one of which decides the plural (the finish screen's "**Get curious** has
+left you lighter **5 of 7** times."), the entry keeps one `stringUnit` with positional arguments and a substitution for just
+the word that varies: `"**%1$@** has left you lighter **%2$lld of %3$lld** %#@times@."`, with `substitutions.times`
+(`argNum` 3, `formatSpecifier` `lld`) holding `variations.plural` `one` "time" and `other` "times". Keep every `**` in the
+main string, never inside a variation, so the bold runs can't depend on which plural form is chosen. `LighterTallyTests`
+checks the singular, which only the catalog can supply.
+
 The pre-commit hook keeps the stored form honest: when the catalog is staged it runs
 `Scripts/normalize-string-catalog.swift`, which reorders entries into Xcode's collation and
 re-stages the file. The script moves entries as raw text rather than re-serialising them, so

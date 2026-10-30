@@ -3110,6 +3110,38 @@
         }
       }
     },
+    "tool.finish.lighterTally" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$@** has left you lighter **%2$lld\u00A0of\u00A0%3$lld** %#@times@."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 3,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "tool.finish.notSaved" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
