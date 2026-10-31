@@ -32,6 +32,8 @@ targets:
           - Figtree-SemiBold.ttf
           - Figtree-Bold.ttf
           - Figtree-ExtraBold.ttf
+        # Shown the first time the app lock asks for Face ID.
+        NSFaceIDUsageDescription: Face ID keeps your loops and notes private.
         # CloudKit pushes remote changes silently; this lets SwiftData pick them up in the background.
         UIBackgroundModes:
           - remote-notification

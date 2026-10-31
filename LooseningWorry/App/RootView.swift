@@ -6,14 +6,27 @@ struct RootView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @Bindable var model: RootViewModel
+    @State private var lock = AppLockViewModel(
+        settings: LockSettings(defaults: .standard),
+        authenticator: LocalDeviceAuthenticator(),
+    )
+    @State private var lockCover = LockCoverWindow()
 
     var body: some View {
-        if model.isOnboarding {
-            OnboardingView(settings: ReminderSettings(defaults: .standard), scheduler: reminderScheduler) {
-                model.finishOnboarding()
+        Group {
+            if model.isOnboarding {
+                OnboardingView(settings: ReminderSettings(defaults: .standard), scheduler: reminderScheduler) {
+                    model.finishOnboarding()
+                }
+            } else {
+                tabs
             }
-        } else {
-            tabs
+        }
+        .onChange(of: lock.isCovered, initial: true) { _, covered in
+            lockCover.show(covered, lock: lock)
+        }
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            Task { await lock.sceneChanged(to: phase, at: .now) }
         }
     }
 
@@ -54,7 +67,7 @@ struct RootView: View {
             ToolRunView(tool: tool, sessions: SessionStore(context: modelContext))
         }
         .sheet(isPresented: $model.isSettingsPresented, onDismiss: model.screenClosed) {
-            SettingsView(scheduler: reminderScheduler)
+            SettingsView(scheduler: reminderScheduler, lock: lock)
         }
         .sheet(isPresented: $model.isHelpPresented, onDismiss: model.screenClosed) {
             HelpView()

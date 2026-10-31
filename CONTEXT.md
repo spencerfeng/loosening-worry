@@ -14,6 +14,10 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   course it names the next lesson; after it, it invites them to log a loop. Code calls it the reminder
   (`ReminderSettings`, `ReminderScheduler`); the person only ever sees "check-in". It's kept on each device, since
   each device asks for its own notification permission.
+- **Lock**: the optional cover that asks for Face ID, Touch ID, Optic ID or the passcode, whichever the device uses,
+  before the app shows anything. It asks when the app opens and when it comes back after more than a minute away (the
+  grace minute, `AppLockViewModel.grace`). While the app is away it shows only the icon, so the app switcher shows
+  nothing private. It's kept on each device, and turns itself off if the device's passcode is removed.
 - **Onboarding**: the five screens a device opens on until it has been through them once: what the app is for, what a
   loop is, how to use the app, what it isn't and where Help is, then the check-in time. Teaching is left to the
   lessons.

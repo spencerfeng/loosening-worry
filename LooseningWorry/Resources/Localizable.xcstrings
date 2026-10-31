@@ -1353,6 +1353,61 @@
         }
       }
     },
+    "lock.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlock to see your loops and lessons."
+          }
+        }
+      }
+    },
+    "lock.reason" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlock Loosening Worry"
+          }
+        }
+      }
+    },
+    "lock.reason.turnOn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Turn on the lock for Loosening Worry"
+          }
+        }
+      }
+    },
+    "lock.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Loosening Worry is locked"
+          }
+        }
+      }
+    },
+    "lock.unlock" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unlock"
+          }
+        }
+      }
+    },
     "Log a loop" : {
 
     },
@@ -2429,6 +2484,105 @@
         }
       }
     },
+    "settings.lock.faceID" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lock with Face ID"
+          }
+        }
+      }
+    },
+    "settings.lock.faceID.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asks for Face ID, or your passcode, when you open Loosening Worry or come back after a minute away."
+          }
+        }
+      }
+    },
+    "settings.lock.noPasscode" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Set a passcode in iOS Settings to lock Loosening Worry."
+          }
+        }
+      }
+    },
+    "settings.lock.opticID" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lock with Optic ID"
+          }
+        }
+      }
+    },
+    "settings.lock.opticID.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asks for Optic ID, or your passcode, when you open Loosening Worry or come back after a minute away."
+          }
+        }
+      }
+    },
+    "settings.lock.passcode" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lock with passcode"
+          }
+        }
+      }
+    },
+    "settings.lock.passcode.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asks for your passcode when you open Loosening Worry or come back after a minute away."
+          }
+        }
+      }
+    },
+    "settings.lock.touchID" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lock with Touch ID"
+          }
+        }
+      }
+    },
+    "settings.lock.touchID.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asks for Touch ID, or your passcode, when you open Loosening Worry or come back after a minute away."
+          }
+        }
+      }
+    },
     "settings.notificationsOff" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2462,6 +2616,28 @@
         }
       }
     },
+    "settings.options.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add, hide or bring back the triggers, behaviors and results you log."
+          }
+        }
+      }
+    },
+    "settings.privacy" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Privacy"
+          }
+        }
+      }
+    },
     "settings.reminder" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2480,6 +2656,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Couldn't set the check-in. Try again."
+          }
+        }
+      }
+    },
+    "settings.reminder.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A gentle nudge each day to pause and notice what worry's been up to."
           }
         }
       }
