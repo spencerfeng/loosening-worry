@@ -99,7 +99,8 @@ private struct NiceCatchCelebration: View {
                 .animation(reduceMotion ? nil : .easeOut(duration: 0.6).delay(0.12), value: popped)
             Image(systemName: "checkmark")
                 .font(.system(size: 34, weight: .heavy))
-                .foregroundStyle(.theme(.textOnAccent))
+                // The green is light in dark mode, so the tick takes the page's own color to stand out on it.
+                .foregroundStyle(.theme(.background))
                 .frame(width: 80, height: 80)
                 .background(.theme(.greenStrong), in: .circle)
                 .shadow(color: .theme(.greenStrong).opacity(0.35), radius: 10, y: 8)
@@ -204,7 +205,7 @@ private struct WeeklyCount: View {
                 Text(verbatim: "+1")
                     .font(.theme(.footnote))
                     .fontWeight(.heavy)
-                    .foregroundStyle(.theme(.greenStrong))
+                    .foregroundStyle(.theme(.greenOnTint))
                     .padding(.vertical, 2)
                     .padding(.horizontal, 8)
                     .background(.theme(.greenTint), in: .capsule)

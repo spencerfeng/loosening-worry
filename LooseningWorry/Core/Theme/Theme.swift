@@ -31,6 +31,9 @@ extension Theme {
         case accentShadow
         /// The dashed outline of an accent action that adds something, such as "+ Add your own".
         case accentOutline
+        /// Accent fills that carry small white text, such as Home's Log banner. Darker than `accent` in dark mode,
+        /// where `accent` is too light for small white text (ADR 0006).
+        case accentFill
         // Hues, named by colour, not by the tool that uses them
         case greenStrong, greenTint, greenOnTint
         case amberStrong, amberTint, amberOnTint
@@ -63,6 +66,7 @@ extension Theme {
             case .accentBorder: .accentBorder
             case .accentShadow: .accentShadow
             case .accentOutline: .accentOutline
+            case .accentFill: .accentFill
             case .greenStrong: .greenStrong
             case .greenTint: .greenTint
             case .greenOnTint: .greenOnTint

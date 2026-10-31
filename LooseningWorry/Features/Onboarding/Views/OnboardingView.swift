@@ -62,34 +62,49 @@ struct OnboardingView: View {
     }
 }
 
-/// One screen: its picture panel, then its title and line. It scrolls when large text needs the room.
+/// One screen: its picture panel, then its title and line. It scrolls when large text needs the room; at the largest
+/// sizes the words come first, as the panel alone would fill the screen and push them under the button.
 private struct OnboardingPage: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let step: OnboardingStep
     let model: OnboardingViewModel
 
     var body: some View {
         ScrollView {
             VStack(spacing: 28) {
-                panel
-                    .frame(maxWidth: .infinity, minHeight: 320)
-                    .padding(16)
-                    .background(.theme(.accentTint), in: .rect(cornerRadius: 32))
-                VStack(spacing: 10) {
-                    Text(step.title)
-                        .font(.theme(.title))
-                        .foregroundStyle(.theme(.textPrimary))
-                        .accessibilityAddTraits(.isHeader)
-                    Text(step.line)
-                        .font(.theme(.headline))
-                        .fontWeight(.regular)
-                        .foregroundStyle(.theme(.textSecondary))
+                if dynamicTypeSize.isAccessibilitySize {
+                    titleAndLine
+                    framedPanel
+                } else {
+                    framedPanel
+                    titleAndLine
                 }
-                .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
         }
         .scrollBounceBehavior(.basedOnSize)
+    }
+
+    private var framedPanel: some View {
+        panel
+            .frame(maxWidth: .infinity, minHeight: 320)
+            .padding(16)
+            .background(.theme(.accentTint), in: .rect(cornerRadius: 32))
+    }
+
+    private var titleAndLine: some View {
+        VStack(spacing: 10) {
+            Text(step.title)
+                .font(.theme(.title))
+                .foregroundStyle(.theme(.textPrimary))
+                .accessibilityAddTraits(.isHeader)
+            Text(step.line)
+                .font(.theme(.headline))
+                .fontWeight(.regular)
+                .foregroundStyle(.theme(.textSecondary))
+        }
+        .multilineTextAlignment(.center)
     }
 
     @ViewBuilder private var panel: some View {

@@ -56,12 +56,11 @@ private struct PresetCard: View {
                     .fontWeight(.heavy)
                 Text(preset.time.date().formatted(date: .omitted, time: .shortened))
                     .font(.theme(.footnote))
-                    .opacity(0.8)
             }
             .foregroundStyle(.theme(isPicked ? .textOnAccent : .textPrimary))
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity, minHeight: 112)
-            .background(.theme(isPicked ? .accent : .surface), in: .rect(cornerRadius: 20))
+            .background(.theme(isPicked ? .accentFill : .surface), in: .rect(cornerRadius: 20))
             .shadow(color: isPicked ? .theme(.accentShadow) : .clear, radius: 8, y: 6)
             .contentShape(.rect(cornerRadius: 20))
         }

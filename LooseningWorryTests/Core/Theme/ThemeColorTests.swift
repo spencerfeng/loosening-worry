@@ -18,6 +18,8 @@ struct ThemeColorTests {
         .border: ("E6E3DE", "3A3936"),
         .borderSubtle: ("EFEDE9", "34332F"),
         .accent: ("2E6AE6", "4C82F0"),
+        // Not in the canvas: the light blue in dark mode too, so small white text on it reaches 4.5:1 (ADR 0006).
+        .accentFill: ("2E6AE6", "2E6AE6"),
         .accentText: ("2558C9", "8DB0F7"),
         .accentPressed: ("1D47A6", "A9C3F8"),
         .accentTint: ("E4EDFD", "1E2B47"),

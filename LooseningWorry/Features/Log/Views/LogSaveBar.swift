@@ -16,7 +16,8 @@ struct LogSaveBar: View {
             if failed {
                 Text(Self.failedMessage)
                     .font(.theme(.caption))
-                    .foregroundStyle(.theme(.redStrong))
+                    // `redStrong` is too light for small text on the page; the on-tint red is dark enough on it too.
+                    .foregroundStyle(.theme(.redOnTint))
                     // Announced when it appears.
                     .accessibilityHidden(true)
             }

@@ -179,7 +179,7 @@ private struct LogBanner: View {
         .padding(.vertical, 14)
         .padding(.leading, 18)
         .padding(.trailing, 14)
-        .background(.theme(.accent), in: .rect(cornerRadius: 20))
+        .background(.theme(.accentFill), in: .rect(cornerRadius: 20))
     }
 }
 

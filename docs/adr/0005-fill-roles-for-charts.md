@@ -14,7 +14,7 @@ The Insights screen in the design canvas draws its top-trigger bars in amber `#F
 (`#2E8A5C`) are much darker, so the bars and the ring look heavier than the design.
 
 The `Strong` roles can't simply get lighter. They also color text and icons on white and on the hue's
-tint: the quick-tool icons, Nice catch's "+1". The design's brighter values wouldn't have enough contrast there.
+tint: the quick-tool icons, and at the time Nice catch's "+1" (now `greenOnTint`, ADR 0006). The design's brighter values wouldn't have enough contrast there.
 
 ## Decision
 
@@ -31,5 +31,5 @@ appearances. Violet needs no fill role: the canvas uses `violetStrong` in light 
 
 - Insights' trigger bars and habit ring match the canvas.
 - Breathe's circle and Nice catch's badge are `#4CB782` in the canvas too, but they still use
-  `greenStrong`. Moving them to `greenFill` is a separate decision, because Nice catch's badge has a white
-  tick on it.
+  `greenStrong`. Moving them to `greenFill` is a separate decision, because Nice catch's badge has a tick on
+  it (`background` ink since ADR 0006) and Breathe's circle has words.

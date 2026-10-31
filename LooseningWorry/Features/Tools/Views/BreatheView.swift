@@ -128,7 +128,8 @@ private struct BreathCircle: View {
                     if showsWords {
                         Text(BreatheView.words(for: phase))
                             .font(.theme(.title2))
-                            .foregroundStyle(.theme(.textOnAccent))
+                            // The green is light in dark mode, so the words take the page's own color to read on it.
+                            .foregroundStyle(.theme(.background))
                             .minimumScaleFactor(0.6)
                             .lineLimit(1)
                             .padding(.horizontal, 24 * scale)
