@@ -79,9 +79,9 @@ private struct HomeHeader: View {
 
     private var greeting: LocalizedStringResource {
         switch HomeContent.greeting(at: now, calendar: .current) {
-        case .morning: LocalizedStringResource("home.greeting.morning", defaultValue: "Good morning")
-        case .afternoon: LocalizedStringResource("home.greeting.afternoon", defaultValue: "Good afternoon")
-        case .evening: LocalizedStringResource("home.greeting.evening", defaultValue: "Good evening")
+        case .morning: LocalizedStringResource("home.greeting.morning", defaultValue: "Good\nmorning")
+        case .afternoon: LocalizedStringResource("home.greeting.afternoon", defaultValue: "Good\nafternoon")
+        case .evening: LocalizedStringResource("home.greeting.evening", defaultValue: "Good\nevening")
         }
     }
 }

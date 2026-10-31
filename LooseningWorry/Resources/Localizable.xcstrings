@@ -572,7 +572,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Good afternoon"
+            "value" : "Good\nafternoon"
           }
         }
       }
@@ -583,7 +583,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Good evening"
+            "value" : "Good\nevening"
           }
         }
       }
@@ -594,7 +594,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Good morning"
+            "value" : "Good\nmorning"
           }
         }
       }
