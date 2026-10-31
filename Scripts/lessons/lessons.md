@@ -38,7 +38,7 @@ Sometime today, notice one moment when worry starts up on its own. You don't nee
 
 **Footer (Day 1 only)**
 
-Loosening Worry is a self-help course, not a treatment or a diagnosis. If anxiety is making daily life very hard, or you're in crisis, open Help for support lines.
+Loosening Worry is a self-help app, not therapy or a diagnosis. If anxiety is making daily life very hard, or you're in crisis, open Help for support lines.
 
 ## Day 2 · Your brain loves loops
 
