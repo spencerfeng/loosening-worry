@@ -9,6 +9,8 @@ enum AppTab: Hashable {
 /// The tab bar and the one screen iOS shows over it at a time: the logger, a lesson, a tool, Settings or Help.
 @Observable @MainActor
 final class RootViewModel {
+    /// Onboarding shows instead of the tabs until this device has been through it once.
+    private(set) var isOnboarding: Bool
     private(set) var selectedTab: AppTab = .home
     var isLogSheetPresented = false
     /// The lesson open in the reader, over whichever tab it was opened from.
@@ -18,6 +20,20 @@ final class RootViewModel {
     var isHelpPresented = false
     /// What opens once the screen showing now has closed; iOS ignores a new screen while another is still going.
     private var next: Next?
+
+    private let onboarding: OnboardingRecord
+
+    init(onboarding: OnboardingRecord = .standard) {
+        self.onboarding = onboarding
+        isOnboarding = !onboarding.isFinished
+    }
+
+    /// Onboarding ends on Home, where the next lesson, Day 1 for someone new, sits at the top.
+    func finishOnboarding() {
+        onboarding.isFinished = true
+        selectedTab = .home
+        isOnboarding = false
+    }
 
     private enum Next {
         case logger
@@ -42,8 +58,9 @@ final class RootViewModel {
     }
 
     /// Tapping the daily reminder opens the lesson it names, or the logger once the course is done, over any tab.
+    /// During onboarding there are no tabs to open it over, so the tap only brings the app forward.
     func openNotification(identifier: String, lessonDay: Int?) {
-        guard identifier == ReminderNotification.identifier else { return }
+        guard identifier == ReminderNotification.identifier, !isOnboarding else { return }
         if let lessonDay, let lesson = LessonCatalog.bundled.lesson(day: lessonDay) {
             show(.lesson(lesson))
         } else {
@@ -114,7 +131,7 @@ final class RootViewModel {
         case .task(.logLoop): isLogSheetPresented = true
         case .task(.openInsights): selectedTab = .insights
         case let .task(.tool(tool)): openTool(tool)
-        case .task(.openSettings), .task(.setReminder): openSettings()
+        case .task(.openSettings): openSettings()
         }
     }
 }

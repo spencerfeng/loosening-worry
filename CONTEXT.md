@@ -10,6 +10,13 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   hue is not the tool's identity.
 - **Help**: the crisis-support path, reached from the Help button and the "Get help" link. It has its own
   colour role, kept separate from any tool's hue.
+- **Check-in**: the daily notification, at a time the person picks during onboarding or in Settings. During the
+  course it names the next lesson; after it, it invites them to log a loop. Code calls it the reminder
+  (`ReminderSettings`, `ReminderScheduler`); the person only ever sees "check-in". It's kept on each device, since
+  each device asks for its own notification permission.
+- **Onboarding**: the five screens a device opens on until it has been through them once: what the app is for, what a
+  loop is, how to use the app, what it isn't and where Help is, then the check-in time. Teaching is left to the
+  lessons.
 - **Option**: one choice in the logger for a loop's trigger, behavior or result. Triggers and behaviors are ranked
   by the person's history (see **Ranking**), six at a time with More for the rest. For results the logger shows the
   starters (the core results, in a fixed order) first, then the person's own in the order they were added, so step 3

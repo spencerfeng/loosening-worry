@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Settings, opened from the gear on Home or a lesson's task: the daily reminder, the person's options and a way to
+/// Settings, opened from the gear on Home or a lesson's task: the daily check-in, the person's options and a way to
 /// Help. Later sections (Face ID, export, purchases, About) join as their own sections. All wording is a draft.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -21,7 +21,7 @@ struct SettingsView: View {
             List {
                 Section {
                     Toggle(isOn: reminderSwitch) {
-                        Text(LocalizedStringResource("settings.reminder", defaultValue: "Daily reminder"))
+                        Text(LocalizedStringResource("settings.reminder", defaultValue: "Daily check-in"))
                     }
                     if model.isReminderOn {
                         DatePicker(selection: reminderTime, displayedComponents: .hourAndMinute) {
@@ -34,13 +34,13 @@ struct SettingsView: View {
                     if model.reminderFailed {
                         Text(LocalizedStringResource(
                             "settings.reminder.failed",
-                            defaultValue: "Couldn't set the reminder. Try again.",
+                            defaultValue: "Couldn't set the check-in. Try again.",
                         ))
                         .font(.theme(.footnote))
                         .foregroundStyle(.theme(.redOnTint))
                     }
                 } header: {
-                    Text(LocalizedStringResource("settings.reminders", defaultValue: "Reminders"))
+                    Text(LocalizedStringResource("settings.reminders", defaultValue: "Notifications"))
                 }
 
                 Section {
@@ -120,7 +120,7 @@ private struct NotificationsOffNote: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LocalizedStringResource(
                 "settings.notificationsOff",
-                defaultValue: "Notifications are off for Loosening Worry. Turn them on in Settings to get reminders.",
+                defaultValue: "Notifications are off for Loosening Worry. Turn them on in Settings for your check-in.",
             ))
             .font(.theme(.footnote))
             .foregroundStyle(.theme(.textSecondary))

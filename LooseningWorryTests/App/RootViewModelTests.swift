@@ -5,7 +5,7 @@ import Testing
 struct RootViewModelTests {
     @Test
     func `starts on Home with the Log sheet closed`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         #expect(model.selectedTab == .home)
         #expect(model.isLogSheetPresented == false)
@@ -13,7 +13,7 @@ struct RootViewModelTests {
 
     @Test(arguments: [AppTab.learn, .insights, .home])
     func `selecting a destination tab switches to it`(tab: AppTab) {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         model.select(.learn)
         model.select(tab)
@@ -24,7 +24,7 @@ struct RootViewModelTests {
 
     @Test
     func `selecting Log opens the sheet without leaving the current tab`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         model.select(.insights)
 
         model.select(.log)
@@ -35,7 +35,7 @@ struct RootViewModelTests {
 
     @Test
     func `closing the Log sheet returns to the tab it opened over`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         model.select(.insights)
         model.select(.log)
 
@@ -47,7 +47,7 @@ struct RootViewModelTests {
     /// Nice catch's weekly count leads to Insights, closing the logger on the way.
     @Test
     func `showing Insights from the logger closes it and switches to Insights`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         model.select(.log)
 
         model.showInsights()
@@ -58,7 +58,7 @@ struct RootViewModelTests {
 
     @Test
     func `tapping the daily reminder opens the logger`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         model.select(.learn)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: nil)
@@ -69,7 +69,7 @@ struct RootViewModelTests {
 
     @Test
     func `tapping a lesson reminder opens that lesson`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: 3)
 
@@ -79,7 +79,7 @@ struct RootViewModelTests {
 
     @Test
     func `tapping any other notification leaves the app as it was`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         model.openNotification(identifier: "something.else", lessonDay: nil)
 
@@ -93,7 +93,7 @@ struct RootViewModelTests {
 
     @Test
     func `opening a lesson shows it in the reader`() throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         try model.openLesson(lesson(2))
 
@@ -109,13 +109,12 @@ struct RootViewModelTests {
         (.tool(.noteIt), .tool(.noteIt)),
         (.tool(.beKind), .tool(.beKind)),
         (.openSettings, .settings),
-        (.setReminder, .settings),
     ])
     func `finishing a lesson with its task opens the task once the reader has closed`(
         action: LessonAction,
         destination: Destination,
     ) throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try model.openLesson(lesson(2))
 
         model.finishLesson(then: action)
@@ -128,7 +127,7 @@ struct RootViewModelTests {
 
     @Test
     func `finishing a lesson without its task just closes the reader`() throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try model.openLesson(lesson(2))
 
         model.finishLesson(then: nil)
@@ -141,7 +140,7 @@ struct RootViewModelTests {
 
     @Test
     func `going back to Learn from a finished lesson closes the reader and shows Learn`() throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try model.openLesson(lesson(2))
 
         model.backToLearn()
@@ -155,7 +154,7 @@ struct RootViewModelTests {
     /// The reminder can open the logger while a finished lesson is still closing; its task mustn't open afterwards.
     @Test
     func `a reminder opening the logger drops a finished lesson's task`() throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try model.openLesson(lesson(2))
         model.finishLesson(then: .tool(.breathe))
 
@@ -169,7 +168,7 @@ struct RootViewModelTests {
     /// iOS ignores a new screen while another is still closing, so the reminder closes what's open and waits for it.
     @Test(arguments: Covering.allCases)
     func `the daily reminder over another screen opens the logger once that screen has gone`(covering: Covering) throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try covering.open(in: model)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: nil)
@@ -182,7 +181,7 @@ struct RootViewModelTests {
 
     @Test(arguments: Covering.allCases)
     func `a lesson reminder over another screen opens the lesson once that screen has gone`(covering: Covering) throws {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
         try covering.open(in: model)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: 3)
@@ -195,7 +194,7 @@ struct RootViewModelTests {
 
     @Test
     func `opening Help shows it over the tabs`() {
-        let model = RootViewModel()
+        let model = RootViewModel(onboarding: .finished)
 
         model.openHelp()
 

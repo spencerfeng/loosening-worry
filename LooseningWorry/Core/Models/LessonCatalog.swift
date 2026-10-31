@@ -41,7 +41,7 @@ struct LessonCard: Decodable, Equatable, Sendable {
     let body: String
     /// How long "Try it now" takes.
     let seconds: Int?
-    /// What today's task button opens.
+    /// What today's task button opens; none for a task done away from the app, like Day 1's.
     let action: LessonAction?
     /// A line under today's task; only day 1 has one.
     let footer: String?
@@ -58,7 +58,7 @@ extension Lesson: Identifiable {
 /// Where today's task button goes once the lesson is done. In `lessons.json` it's a word: a tool's own name, such as
 /// "breathe", or one of the other places.
 enum LessonAction: Equatable, Sendable {
-    case logLoop, openInsights, openSettings, setReminder
+    case logLoop, openInsights, openSettings
     case tool(QuickTool)
 }
 
@@ -74,7 +74,6 @@ extension LessonAction: Decodable {
         case "logLoop": self = .logLoop
         case "openInsights": self = .openInsights
         case "openSettings": self = .openSettings
-        case "setReminder": self = .setReminder
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unknown task \(name)")
         }

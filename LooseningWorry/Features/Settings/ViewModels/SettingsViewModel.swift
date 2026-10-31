@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-/// Settings: the daily reminder, and links to the person's options and to Help.
+/// Settings: the daily reminder (the check-in, to the person), and links to the person's options and to Help.
 @Observable @MainActor
 final class SettingsViewModel {
     /// What the person chose. The switch and time show it straight away, while the change is still being applied.
@@ -55,7 +55,7 @@ final class SettingsViewModel {
         while isReminderOn != settings.isOn || reminderTime != settings.time {
             let (on, time) = (isReminderOn, reminderTime)
             if on, !settings.isOn || time != settings.time {
-                guard await isAllowed() else {
+                guard await scheduler.isAllowed() else {
                     notificationsOff = true
                     isReminderOn = false
                     settings.time = time
@@ -84,15 +84,6 @@ final class SettingsViewModel {
         } catch {
             reminderFailed = true
             return false
-        }
-    }
-
-    /// Asks only if the person hasn't decided yet; iOS shows its prompt once per app.
-    private func isAllowed() async -> Bool {
-        switch await scheduler.permissionStatus() {
-        case .allowed: true
-        case .denied: false
-        case .notAsked: await scheduler.askPermission()
         }
     }
 }

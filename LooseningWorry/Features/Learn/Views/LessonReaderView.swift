@@ -392,7 +392,6 @@ extension LessonAction {
         case .openInsights: LocalizedStringResource("lesson.action.insights", defaultValue: "Open Insights")
         case let .tool(tool): tool.name
         case .openSettings: LocalizedStringResource("lesson.action.settings", defaultValue: "Open Settings")
-        case .setReminder: LocalizedStringResource("lesson.action.reminder", defaultValue: "Set my reminder")
         }
     }
 
@@ -402,7 +401,6 @@ extension LessonAction {
         case .openInsights: "chart.bar"
         case let .tool(tool): tool.symbol
         case .openSettings: "gearshape"
-        case .setReminder: "bell"
         }
     }
 }

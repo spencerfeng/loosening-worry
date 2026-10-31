@@ -290,7 +290,7 @@ private struct WeekLine: View {
 
 #if DEBUG
     #Preview {
-        HomeView(root: RootViewModel())
+        HomeView(root: RootViewModel(onboarding: .finished))
             .modelContainer(AppModelContainer.preview)
     }
 #endif

@@ -42,6 +42,18 @@ protocol ReminderScheduler {
     func cancel()
 }
 
+extension ReminderScheduler {
+    /// Whether the reminder may be scheduled. Asks only if the person hasn't decided yet; iOS shows its prompt once
+    /// per app.
+    func isAllowed() async -> Bool {
+        switch await permissionStatus() {
+        case .allowed: true
+        case .denied: false
+        case .notAsked: await askPermission()
+        }
+    }
+}
+
 /// The reminder switch and time, kept on this device only: each device asks for its own notification permission,
 /// so a synced setting could say "on" where nothing will arrive.
 struct ReminderSettings {

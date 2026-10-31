@@ -41,9 +41,8 @@
       },
       {
         "kind": "task",
-        "title": "Set your daily reminder time",
-        "body": "Pick a time each day for your 5-minute lesson. Choose a moment that already happens daily, like after breakfast or on your commute, so the lesson rides along with an existing routine.",
-        "action": "setReminder",
+        "title": "Catch worry switching on",
+        "body": "Sometime today, notice one moment when worry starts up on its own. You don't need to do anything about it. Just say to yourself, \"There it is.\"",
         "footer": "Loosening Worry is a self-help course, not a treatment or a diagnosis. If anxiety is making daily life very hard, or you're in crisis, open Help for support lines.",
         "tint": "blue"
       }
@@ -1463,7 +1462,7 @@
       },
       {
         "kind": "task",
-        "title": "Check your daily reminder",
+        "title": "Check your daily check-in",
         "body": "It's in Settings. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.",
         "action": "openSettings",
         "tint": "blue"

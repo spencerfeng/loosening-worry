@@ -44,8 +44,24 @@ struct LessonCatalogTests {
             "Day \(lesson.day)",
         )
         #expect(lesson.cards.first { $0.kind == .tryIt }?.seconds != nil, "Day \(lesson.day)")
-        let task = lesson.cards.last
-        #expect(task?.title != nil && task?.action != nil, "Day \(lesson.day)")
+        #expect(lesson.cards.last?.title != nil, "Day \(lesson.day)")
+    }
+
+    /// Onboarding sets the daily check-in, so Day 1's task is one to do away from the app: there's nothing to open.
+    @Test
+    func `the first day's task is to notice worry switching on`() throws {
+        let task = try #require(LessonCatalog.bundled.lesson(day: 1)?.cards.last)
+
+        #expect(task.title == "Catch worry switching on")
+        #expect(task.body.contains("There it is."))
+        #expect(task.action == nil)
+        #expect(task.footer != nil)
+    }
+
+    /// Every task after Day 1 takes the person somewhere in the app.
+    @Test(arguments: LessonCatalog.bundled.lessons.dropFirst())
+    func `later tasks open something`(lesson: Lesson) {
+        #expect(lesson.cards.last?.action != nil, "Day \(lesson.day)")
     }
 
     @Test
@@ -72,7 +88,6 @@ struct LessonCatalogTests {
         ("logLoop", LessonAction.logLoop),
         ("openInsights", .openInsights),
         ("openSettings", .openSettings),
-        ("setReminder", .setReminder),
         ("curious", .tool(.curious)),
         ("breathe", .tool(.breathe)),
         ("noteIt", .tool(.noteIt)),

@@ -1155,17 +1155,6 @@
         }
       }
     },
-    "lesson.action.reminder" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Set my reminder"
-          }
-        }
-      }
-    },
     "lesson.action.settings" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1953,6 +1942,424 @@
     "Not answered yet" : {
 
     },
+    "onboarding.checkIn.evening" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Evening"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When do you usually have a few minutes?"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.midday" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Midday"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.morning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Morning"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.note" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Change it anytime in Settings."
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.notNow" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Not now"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.time" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check-in time"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Daily check-in"
+          }
+        }
+      }
+    },
+    "onboarding.checkIn.turnOn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Turn on check-in"
+          }
+        }
+      }
+    },
+    "onboarding.continue" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "onboarding.getStarted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get started"
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.help" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Help is one tap away"
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.help.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Crisis lines, any time. Top right of Home."
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Two things before you start."
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.selfHelp" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Self-help, not therapy"
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.selfHelp.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It doesn't replace a doctor or therapist."
+          }
+        }
+      }
+    },
+    "onboarding.goodToKnow.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Good to know"
+          }
+        }
+      }
+    },
+    "onboarding.gotIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Got it"
+          }
+        }
+      }
+    },
+    "onboarding.loop.behavior" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You do"
+          }
+        }
+      }
+    },
+    "onboarding.loop.behavior.example" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Go over tomorrow"
+          }
+        }
+      }
+    },
+    "onboarding.loop.description" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A loop: lying awake, then going over tomorrow, then feeling more awake, and round again."
+          }
+        }
+      }
+    },
+    "onboarding.loop.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Spot the loop, and it starts to loosen."
+          }
+        }
+      }
+    },
+    "onboarding.loop.result" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It gives you"
+          }
+        }
+      }
+    },
+    "onboarding.loop.result.example" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More awake"
+          }
+        }
+      }
+    },
+    "onboarding.loop.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Worry runs in loops"
+          }
+        }
+      }
+    },
+    "onboarding.loop.trigger" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sets you off"
+          }
+        }
+      }
+    },
+    "onboarding.loop.trigger.example" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lying awake"
+          }
+        }
+      }
+    },
+    "onboarding.step" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "onboarding.uses.catch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Catch it"
+          }
+        }
+      }
+    },
+    "onboarding.uses.catch.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Log a loop in 20 seconds"
+          }
+        }
+      }
+    },
+    "onboarding.uses.ease" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ease it"
+          }
+        }
+      }
+    },
+    "onboarding.uses.ease.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try a quick tool"
+          }
+        }
+      }
+    },
+    "onboarding.uses.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Plus a short lesson each day."
+          }
+        }
+      }
+    },
+    "onboarding.uses.see" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "See it"
+          }
+        }
+      }
+    },
+    "onboarding.uses.see.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Spot your patterns"
+          }
+        }
+      }
+    },
+    "onboarding.uses.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When worry shows up"
+          }
+        }
+      }
+    },
+    "onboarding.welcome.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Notice it. Get curious. Let it go."
+          }
+        }
+      }
+    },
+    "onboarding.welcome.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Worry, loosened"
+          }
+        }
+      }
+    },
     "Open" : {
 
     },
@@ -2028,7 +2435,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Notifications are off for Loosening Worry. Turn them on in Settings to get reminders."
+            "value" : "Notifications are off for Loosening Worry. Turn them on in Settings for your check-in."
           }
         }
       }
@@ -2061,7 +2468,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Daily reminder"
+            "value" : "Daily check-in"
           }
         }
       }
@@ -2072,7 +2479,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Couldn't set the reminder. Try again."
+            "value" : "Couldn't set the check-in. Try again."
           }
         }
       }
@@ -2094,7 +2501,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Reminders"
+            "value" : "Notifications"
           }
         }
       }
@@ -3115,7 +3522,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "**%1$@** has left you lighter **%2$lld\u00A0of\u00A0%3$lld** %#@times@."
+            "value" : "**%1$@** has left you lighter **%2$lld of %3$lld** %#@times@."
           },
           "substitutions" : {
             "times" : {

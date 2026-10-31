@@ -8,6 +8,16 @@ struct RootView: View {
     @Bindable var model: RootViewModel
 
     var body: some View {
+        if model.isOnboarding {
+            OnboardingView(settings: ReminderSettings(defaults: .standard), scheduler: reminderScheduler) {
+                model.finishOnboarding()
+            }
+        } else {
+            tabs
+        }
+    }
+
+    private var tabs: some View {
         TabView(selection: Binding(get: { model.selectedTab }, set: { model.select($0) })) {
             Tab("Home", systemImage: "house", value: .home) {
                 HomeView(root: model)
@@ -84,7 +94,7 @@ struct RootView: View {
 
 #if DEBUG
     #Preview {
-        RootView(model: RootViewModel())
+        RootView(model: RootViewModel(onboarding: .finished))
             .modelContainer(AppModelContainer.preview)
     }
 #endif
