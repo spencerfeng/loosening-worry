@@ -89,6 +89,19 @@ skipped. If the build extracted no `Localizable` keys the two key checks fail ra
 set. A separate test fails if `project.yml` stops setting `SWIFT_EMIT_LOC_STRINGS: YES`, which an
 incremental build would otherwise hide behind the previous build's `.stringsdata`.
 
+## Lessons (`LooseningWorry/Resources/lessons.json`)
+
+`lessons.json` is generated; don't edit it by hand. The words live in `Scripts/lessons/lessons.md`, one section per
+day, and the drawings in `Scripts/lesson-art/art.py`. After changing either:
+
+```bash
+python3 Scripts/lesson-art/generate.py   # drawings into the asset catalog, and each card's tint
+python3 Scripts/lessons/generate.py      # lesson words into lessons.json, tints included
+```
+
+Either order works, as each script sets the tints. `LessonCatalogTests` checks the result: thirty days, the card
+template, and an illustration for every tinted card.
+
 ## XcodeBuildMCP Integration
 **IMPORTANT**: This project uses XcodeBuildMCP for all Xcode operations.
 - Build: `mcp__xcodebuildmcp__build_sim_name_proj`

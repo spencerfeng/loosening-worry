@@ -233,7 +233,10 @@ ART['day1.example'] = (VT, '<rect x="70" y="40" width="150" height="104" rx="14"
     + f'<path d="M234 122 l12 -14 12 14 12 -14 12 14" fill="none" stroke="{A}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'
     + spark(282, 160, V, 0.7))
 ART['day1.try'] = (AT, pin(130, 86, 1.9, V) + clock(222, 92, 38, A) + spark(80, 50, G, 0.8) + spark(282, 156, V, 0.7) + spark(176, 40, A, 0.6))
-ART['day1.task'] = (BT, bell(160, 90, 1.7, A) + clock(232, 132, 26, V) + spark(92, 54, V, 0.8) + spark(270, 54, G, 0.7) + spark(84, 150, A, 0.6))
+ART['day1.task'] = (BT, f'<path d="M180 128L214 162" stroke="{B}" stroke-width="16" stroke-linecap="round"/>'
+    + f'<circle cx="146" cy="94" r="50" fill="{W}" stroke="{B}" stroke-width="10"/><circle cx="146" cy="94" r="30" fill="{A}"/>' + bolt(146, 94, W, 1.25)
+    + f'<rect x="216" y="34" width="78" height="46" rx="20" fill="{W}"/><path d="M226 74 l-10 18 22-12z" fill="{W}"/>' + dots3(255, 57, V, 14, 5)
+    + spark(70, 50, V, 0.8) + spark(270, 150, G, 0.8) + spark(66, 150, A, 0.6))
 
 # Day 2 · Your brain loves loops
 ART['day2.hook'] = (VT, phone(131, 22, 80, 156, V)
