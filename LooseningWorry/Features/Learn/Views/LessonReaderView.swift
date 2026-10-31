@@ -325,6 +325,7 @@ private struct NextUp: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(LocalizedStringResource("lesson.done.next", defaultValue: "Up next · Day \(card.lesson.day)"))
+                    .fontWeight(.bold)
                     .foregroundStyle(.theme(.violetOnTint))
                 Spacer()
                 Text(LocalizedStringResource("home.lesson.minutes", defaultValue: "\(card.lesson.minutes) min read"))

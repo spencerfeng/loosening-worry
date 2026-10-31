@@ -65,6 +65,7 @@ private struct LogDetailsCard: View {
                 HStack(alignment: .firstTextBaseline) {
                     Text(Self.anxietyLabel)
                         .font(.theme(.footnote))
+                        .fontWeight(.bold)
                         .foregroundStyle(.theme(.textSecondary))
                     Spacer()
                     Group {
@@ -91,6 +92,7 @@ private struct LogDetailsCard: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(Self.noteLabel)
                     .font(.theme(.footnote))
+                    .fontWeight(.bold)
                     .foregroundStyle(.theme(.textSecondary))
                     // The field carries the same label for VoiceOver.
                     .accessibilityHidden(true)

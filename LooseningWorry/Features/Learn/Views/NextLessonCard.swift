@@ -22,6 +22,7 @@ struct NextLessonCard: View {
             VStack(alignment: .leading, spacing: 12) {
                 topRow {
                     Text(dayLine)
+                        .fontWeight(.bold)
                         .foregroundStyle(.theme(.violetOnTint))
                     if !dynamicTypeSize.isAccessibilitySize {
                         Spacer()
