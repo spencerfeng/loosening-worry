@@ -40,18 +40,16 @@ targets:
     entitlements:
       path: LooseningWorry/LooseningWorry.entitlements
       properties:
-        aps-environment: development
-        # Must match AppModelContainer.iCloudContainer.
+        aps-environment: $(APS_ENVIRONMENT)
+        # Must match AppModelContainer.iCloudContainer. Debug and Release share it, as they share the person's data.
         com.apple.developer.icloud-container-identifiers:
           - iCloud.com.spencerfeng.looseningworry
         com.apple.developer.icloud-services:
           - CloudKit
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.spencerfeng.looseningworry
         PRODUCT_NAME: LooseningWorry
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Loosening Worry
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
@@ -60,6 +58,17 @@ targets:
         ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
         SWIFT_EMIT_LOC_STRINGS: YES
         LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+      # A local (Debug) build installs beside the App Store one under its own id. Its name starts with Dev, so
+      # the home screen still shows which is which when it cuts the name short.
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.spencerfeng.looseningworry.dev
+          INFOPLIST_KEY_CFBundleDisplayName: Dev Loosening Worry
+          APS_ENVIRONMENT: development
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.spencerfeng.looseningworry
+          INFOPLIST_KEY_CFBundleDisplayName: Loosening Worry
+          APS_ENVIRONMENT: production
 
   LooseningWorryTests:
     type: bundle.unit-test
