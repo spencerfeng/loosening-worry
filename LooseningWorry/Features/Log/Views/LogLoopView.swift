@@ -16,7 +16,7 @@ struct LogLoopView: View {
 
     var body: some View {
         // Swapped in without a transition: a leaving view stays on screen until the animations inside it finish, and
-        // the cheer's sparkle runs for over two seconds. Nice catch animates its own entrance.
+        // the cheer's clap is still playing. Nice catch animates its own entrance.
         if let niceCatch = model.niceCatch {
             NiceCatchView(niceCatch: niceCatch, showInsights: showInsights) {
                 dismiss()
@@ -420,30 +420,31 @@ private struct LogCheerBadge: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let cheer: LogCheer
-    /// Bumped on appear to play the sparkle; the badge is rebuilt for every cheer, so it plays once per pick.
-    @State private var sparkles = 0
+    /// Bumped on appear to play the clap; the badge is rebuilt for every cheer, so it plays once per pick.
+    @State private var claps = 0
 
     var body: some View {
         HStack(spacing: 8) {
-            SparkleShape()
+            Image(systemName: "hands.clap.fill")
+                .font(.system(size: 15, weight: .semibold))
                 .frame(width: 18, height: 18)
-                .keyframeAnimator(initialValue: SparklePose(), trigger: sparkles) { content, pose in
+                .keyframeAnimator(initialValue: ClapPose(), trigger: claps) { content, pose in
                     content
                         .rotationEffect(pose.rotation)
                         .scaleEffect(pose.scale)
                 } keyframes: { _ in
-                    // Tilts and grows, then settles, twice.
+                    // Two quick claps: it tips and swells, then settles, twice.
                     KeyframeTrack(\.rotation) {
-                        CubicKeyframe(.degrees(20), duration: 0.6)
-                        CubicKeyframe(.zero, duration: 0.6)
-                        CubicKeyframe(.degrees(20), duration: 0.6)
-                        CubicKeyframe(.zero, duration: 0.6)
+                        CubicKeyframe(.degrees(-12), duration: 0.15)
+                        CubicKeyframe(.zero, duration: 0.15)
+                        CubicKeyframe(.degrees(-12), duration: 0.15)
+                        CubicKeyframe(.zero, duration: 0.15)
                     }
                     KeyframeTrack(\.scale) {
-                        CubicKeyframe(1.2, duration: 0.6)
-                        CubicKeyframe(1, duration: 0.6)
-                        CubicKeyframe(1.2, duration: 0.6)
-                        CubicKeyframe(1, duration: 0.6)
+                        CubicKeyframe(1.25, duration: 0.15)
+                        CubicKeyframe(1, duration: 0.15)
+                        CubicKeyframe(1.25, duration: 0.15)
+                        CubicKeyframe(1, duration: 0.15)
                     }
                 }
             Text(cheer.message)
@@ -458,32 +459,14 @@ private struct LogCheerBadge: View {
         .shadow(color: .theme(.accentShadow).opacity(0.14), radius: 7, y: 4)
         .onAppear {
             if !reduceMotion {
-                sparkles += 1
+                claps += 1
             }
         }
         .accessibilityHidden(true)
     }
 }
 
-/// The design's sparkle: a four-point star with a small dot below right, drawn on a 24-point grid.
-private struct SparkleShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        let unit = min(rect.width, rect.height) / 24
-        func point(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
-            CGPoint(x: rect.minX + x * unit, y: rect.minY + y * unit)
-        }
-        var path = Path()
-        path.addLines([
-            point(12, 2), point(14.2, 8.3), point(20, 10), point(14.2, 11.7),
-            point(12, 18), point(9.8, 11.7), point(4, 10), point(9.8, 8.3),
-        ])
-        path.closeSubpath()
-        path.addEllipse(in: CGRect(origin: point(17, 17), size: CGSize(width: 4 * unit, height: 4 * unit)))
-        return path
-    }
-}
-
-private struct SparklePose {
+private struct ClapPose {
     var rotation = Angle.zero
     var scale: CGFloat = 1
 }
