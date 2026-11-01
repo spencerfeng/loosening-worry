@@ -74,6 +74,22 @@ editing the instructions, before each release. Running it doesn't spoil it. Lett
 Refresh the final set once it has been consulted many times or its failures studied closely, or when people start
 using the feature in ways it doesn't cover: move its cases into practice and write new final ones.
 
+## Running it
+
+The `LooseningWorryEvals` scheme runs the cases against Apple's on-device model, through the Evaluations framework.
+Run it on an iPhone with Apple Intelligence on, unlocked: the simulator's model is far slower and its timings mean
+nothing.
+
+```bash
+xcodebuild test -project LooseningWorry.xcodeproj -scheme LooseningWorryEvals \
+  -destination 'platform=iOS,id=<iPhone UDID>' -allowProvisioningUpdates -collect-test-diagnostics never
+```
+
+Only the practice set runs. Add `TEST_RUNNER_EVAL_FINAL=1` before `xcodebuild` to run the final set too. The test
+fails until the ship bar is met; the console prints each score, and Xcode's test report has the Evaluations report
+with every sentence, what was read, and why it scored as it did. A sentence the model refuses, or its guardrails
+stop, reads as nothing, as it does in the app.
+
 ## Adding cases
 
 Add a case when a real sentence goes wrong, from testing or from beta testers who agree to share it with names and

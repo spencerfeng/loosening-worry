@@ -84,7 +84,34 @@ targets:
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/LooseningWorry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LooseningWorry
         BUNDLE_LOADER: $(TEST_HOST)
 
+  # Scores describe-a-loop against Apple's on-device model (Evals/loop-logging). It needs the model, so it has its own
+  # scheme and runs on an iPhone, never in the everyday test run.
+  LooseningWorryEvals:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - LooseningWorryEvals
+      - path: Evals/loop-logging/cases.json
+        buildPhase: resources
+    dependencies:
+      - target: LooseningWorry
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spencerfeng.looseningworry.evals
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/LooseningWorry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LooseningWorry
+        BUNDLE_LOADER: $(TEST_HOST)
+
 schemes:
+  LooseningWorryEvals:
+    build:
+      targets:
+        LooseningWorry: all
+        LooseningWorryEvals: [test]
+    test:
+      targets:
+        - LooseningWorryEvals
+
   LooseningWorry:
     build:
       targets:
