@@ -19,12 +19,17 @@ struct FoundationModelsLoopInterpreter: LoopInterpreter {
             schema: LoopModelSchema.schema(for: options),
             options: GenerationOptions(samplingMode: .greedy),
         )
-        return try LoopModelSchema.reading(from: response.content, options: options)
+        return try LoopModelSchema.reading(from: response.content, options: options, sentence: sentence)
     }
 }
 
-/// What the model is asked for: each step's answer chosen from the person's options in their own words, or `notSaid`,
-/// and for a step none fits, a new option in the person's words.
+/// What the model is asked for: for each step, the words that tell it quoted from the sentence, then its answer chosen
+/// from the person's options in their own words, or `notSaid`; and for a step none fits, a new option in their words.
+///
+/// Left to judge whether the words tell a step, the model guesses from what usually happens: "couldn't stop googling
+/// my symptoms" ends in More worry. Quoting is a task it does better, and a quote can be checked: a step counts only
+/// when
+/// its quote is really in the sentence.
 enum LoopModelSchema {
     /// The answer for a step the words don't tell. Bracketed, so it can't be mistaken for an option someone named
     /// "none".
@@ -35,8 +40,9 @@ enum LoopModelSchema {
     static let instructions = """
     A person describes a moment of worry in their own words. Fill in three steps from what they wrote:
     trigger, what set the worry off; behavior, what they did about it; result, how they felt afterward.
-    For each step pick the closest option, or "(not said)" when their words don't say. Never guess a step they \
-    didn't mention. Pick "Not sure" for the result only when they say they couldn't tell how they felt.
+    For each step, first copy the exact words from their text that tell it, or leave the quote empty when no words \
+    do. Never guess a step they didn't write about. Then pick the closest option, or "(not said)" when the quote \
+    is empty. Pick "Not sure" for the result only when they say they couldn't tell how they felt.
     When their words clearly tell a step but no option fits, answer "(not said)" and suggest a new option for it: \
     one to three words taken from what they wrote, capitalized like a title. Otherwise suggest nothing.
     """
@@ -49,6 +55,12 @@ enum LoopModelSchema {
     static func schema(for options: [OptionKind: [OptionChoice]]) throws -> GenerationSchema {
         let properties = OptionKind.allCases.flatMap { step in
             [
+                // Asked before the answer, so the model looks for the words before a likely option can tempt it.
+                DynamicGenerationSchema.Property(
+                    name: quoteProperty(for: step),
+                    description: quoteDescriptions[step],
+                    schema: DynamicGenerationSchema(type: String.self),
+                ),
                 DynamicGenerationSchema.Property(
                     name: step.rawValue,
                     description: stepDescriptions[step],
@@ -71,14 +83,25 @@ enum LoopModelSchema {
         )
     }
 
-    /// Maps the model's answer back to ids. A label that isn't an option, or `notSaid`, picks nothing. New options are
-    /// kept as the model gave them, trimmed, even for a step that got a pick, so the eval can count that mistake; the
-    /// logger never offers those. One that's blank or longer than `newOptionMaxWords` is dropped.
-    static func reading(from content: GeneratedContent, options: [OptionKind: [OptionChoice]]) throws -> LoopReading {
+    /// Maps the model's answer back to ids. A step picks nothing unless its quote is in `sentence`, whatever option
+    /// came
+    /// with it; nor does a label that isn't an option, or `notSaid`. New options are kept as the model gave them,
+    /// trimmed, even for a step that got a pick, so the eval can count that mistake; the logger never offers those. One
+    /// that's blank or longer than `newOptionMaxWords` is dropped.
+    static func reading(
+        from content: GeneratedContent,
+        options: [OptionKind: [OptionChoice]],
+        sentence: String,
+    ) throws -> LoopReading {
         var reading = LoopReading()
+        let words = comparable(sentence)
         for step in OptionKind.allCases {
+            let quote = try comparable(content.value(String.self, forProperty: quoteProperty(for: step)))
             let label = try content.value(String.self, forProperty: step.rawValue)
-            if let choice = options[step]?.first(where: { $0.label == label }) {
+            if
+                !quote.isEmpty, words.contains(quote),
+                let choice = options[step]?.first(where: { $0.label == label })
+            {
                 reading.picks[step] = choice.id
             }
             let suggested = try content.value(String?.self, forProperty: newOptionProperty(for: step))?
@@ -93,9 +116,29 @@ enum LoopModelSchema {
         return reading
     }
 
+    /// Text as a quote is compared: lowercase, with curly apostrophes straightened, runs of spaces made one, and no
+    /// punctuation or spaces at either end. The model often trims or tidies what it copies.
+    private static func comparable(_ text: String) -> String {
+        text.lowercased()
+            .replacingOccurrences(of: "\u{2019}", with: "'")
+            .split(whereSeparator: \.isWhitespace)
+            .joined(separator: " ")
+            .trimmingCharacters(in: .punctuationCharacters.union(.whitespaces).union(.symbols))
+    }
+
+    private static func quoteProperty(for step: OptionKind) -> String {
+        step.rawValue + "Quote"
+    }
+
     private static func newOptionProperty(for step: OptionKind) -> String {
         "new" + step.rawValue.prefix(1).uppercased() + step.rawValue.dropFirst()
     }
+
+    private static let quoteDescriptions: [OptionKind: String] = [
+        .trigger: "The exact words from their text that say what set the worry off, or empty.",
+        .behavior: "The exact words from their text that say what they did about the worry, or empty.",
+        .result: "The exact words from their text that say how they felt afterward, or empty.",
+    ]
 
     private static let stepDescriptions: [OptionKind: String] = [
         .trigger: "What set the worry off.",
