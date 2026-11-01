@@ -35,9 +35,9 @@ enum LoopModelSchema {
     static let instructions = """
     A person describes a moment of worry in their own words. Fill in three steps from what they wrote:
     trigger, what set the worry off; behavior, what they did about it; result, how they felt afterward.
-    For each step pick the closest option, or "none" when their words don't say. Never guess a step they \
+    For each step pick the closest option, or "(not said)" when their words don't say. Never guess a step they \
     didn't mention. Pick "Not sure" for the result only when they say they couldn't tell how they felt.
-    When their words clearly tell a step but no option fits, leave it "none" and suggest a new option for it: \
+    When their words clearly tell a step but no option fits, answer "(not said)" and suggest a new option for it: \
     one to three words taken from what they wrote, capitalized like a title. Otherwise suggest nothing.
     """
 
