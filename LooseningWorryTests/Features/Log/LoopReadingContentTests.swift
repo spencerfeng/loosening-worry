@@ -21,7 +21,7 @@ struct LoopReadingContentTests {
     ) -> GeneratedContent {
         var properties: [(String, any ConvertibleToGeneratedContent)] = []
         for step in OptionKind.allCases {
-            let (quote, answer) = steps[step] ?? ("", LoopModelSchema.notSaid)
+            let (quote, answer) = steps[step] ?? ("", LoopModelSchema.somethingElse)
             properties += [(step.rawValue + "Quote", quote), (step.rawValue, answer)]
         }
         properties += newOptions.map { ($0.key, $0.value) }
@@ -29,17 +29,27 @@ struct LoopReadingContentTests {
     }
 
     @Test
-    func `each quoted step's answer maps back to its option's id, and not said to no pick`() throws {
+    func `each quoted step's answer maps back to its option's id, and an empty quote to no pick`() throws {
         let content = content([
             .trigger: ("Exams on Friday", "Exams"),
             .behavior: ("kept checking the timetable", "Kept checking"),
-            .result: ("", LoopModelSchema.notSaid),
+            .result: ("", LoopModelSchema.somethingElse),
         ])
 
         let reading = try LoopModelSchema.reading(from: content, options: options, sentence: sentence)
 
         #expect(reading.picks == [.trigger: "custom.1", .behavior: "behavior.keptChecking"])
         #expect(reading.newOptions.isEmpty)
+    }
+
+    /// Words that tell a step no option fits leave it for the person to pick.
+    @Test
+    func `a quoted step answered something else gets no pick`() throws {
+        let content = content([.trigger: ("Exams on Friday", LoopModelSchema.somethingElse)])
+
+        let reading = try LoopModelSchema.reading(from: content, options: options, sentence: sentence)
+
+        #expect(reading.picks.isEmpty)
     }
 
     /// The model guesses a step from what usually happens; with nothing to quote, the guess is dropped.
@@ -109,7 +119,7 @@ struct LoopReadingContentTests {
         #expect(reading.newOptions == [.behavior: "Kept checking phone"])
     }
 
-    /// Someone could call an option of their own "none"; the answer for "not said" must never be taken for it.
+    /// Someone could call an option of their own "none"; it's picked like any other.
     @Test
     func `an option labeled none is an option like any other`() throws {
         let own: [OptionKind: [OptionChoice]] = [.trigger: [OptionChoice(id: "custom.none", label: "none")]]
@@ -118,7 +128,7 @@ struct LoopReadingContentTests {
         let reading = try LoopModelSchema.reading(from: content, options: own, sentence: sentence)
 
         #expect(reading.picks == [.trigger: "custom.none"])
-        #expect(LoopModelSchema.choices(for: .trigger, in: own) == ["none", LoopModelSchema.notSaid])
+        #expect(LoopModelSchema.choices(for: .trigger, in: own) == ["none", LoopModelSchema.somethingElse])
     }
 
     @Test
@@ -127,7 +137,7 @@ struct LoopReadingContentTests {
     }
 
     @Test
-    func `the schema offers each step's labels and not said`() {
-        #expect(LoopModelSchema.choices(for: .trigger, in: options) == ["Exams", "Work", LoopModelSchema.notSaid])
+    func `the schema offers each step's labels and something else`() {
+        #expect(LoopModelSchema.choices(for: .trigger, in: options) == ["Exams", "Work", LoopModelSchema.somethingElse])
     }
 }

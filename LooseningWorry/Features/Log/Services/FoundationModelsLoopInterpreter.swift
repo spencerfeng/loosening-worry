@@ -24,16 +24,16 @@ struct FoundationModelsLoopInterpreter: LoopInterpreter {
 }
 
 /// What the model is asked for: for each step, the words that tell it quoted from the sentence, then its answer chosen
-/// from the person's options in their own words, or `notSaid`; and for a step none fits, a new option in their words.
+/// from the person's options in their own words, or `somethingElse`; and for a step none fits, a new option in their
+/// words.
 ///
 /// Left to judge whether the words tell a step, the model guesses from what usually happens: "couldn't stop googling
 /// my symptoms" ends in More worry. Quoting is a task it does better, and a quote can be checked: a step counts only
-/// when
-/// its quote is really in the sentence.
+/// when its quote is really in the sentence.
 enum LoopModelSchema {
-    /// The answer for a step the words don't tell. Bracketed, so it can't be mistaken for an option someone named
-    /// "none".
-    static let notSaid = "(not said)"
+    /// The answer when the quote is empty or no option means the same as it. Worded like an option: the model
+    /// shunned an answer that wasn't, such as "(not said)", and squeezed the words into a starter instead.
+    static let somethingElse = "Something else"
     /// The longest new option offered, in words; the description asks for this, and longer ones are dropped.
     static let newOptionMaxWords = 3
 
@@ -41,15 +41,16 @@ enum LoopModelSchema {
     A person describes a moment of worry in their own words. Fill in three steps from what they wrote:
     trigger, what set the worry off; behavior, what they did about it; result, how they felt afterward.
     For each step, first copy the exact words from their text that tell it, or leave the quote empty when no words \
-    do. Never guess a step they didn't write about. Then pick the closest option, or "(not said)" when the quote \
-    is empty. Pick "Not sure" for the result only when they say they couldn't tell how they felt.
-    When their words clearly tell a step but no option fits, answer "(not said)" and suggest a new option for it: \
+    do. Never guess a step they didn't write about. Then pick the option that means the same as the quote, or \
+    "Something else" when the quote is empty or none does. Pick "Not sure" for the result only when they say they \
+    couldn't tell how they felt.
+    When their words clearly tell a step but no option fits, answer "Something else" and suggest a new option for it: \
     one to three words taken from what they wrote, capitalized like a title. Otherwise suggest nothing.
     """
 
-    /// The answers the schema allows for `step`: its options' labels, then `notSaid`.
+    /// The answers the schema allows for `step`: its options' labels, then `somethingElse`.
     static func choices(for step: OptionKind, in options: [OptionKind: [OptionChoice]]) -> [String] {
-        (options[step] ?? []).map(\.label) + [notSaid]
+        (options[step] ?? []).map(\.label) + [somethingElse]
     }
 
     static func schema(for options: [OptionKind: [OptionChoice]]) throws -> GenerationSchema {
@@ -85,7 +86,7 @@ enum LoopModelSchema {
 
     /// Maps the model's answer back to ids. A step picks nothing unless its quote is in `sentence`, whatever option
     /// came
-    /// with it; nor does a label that isn't an option, or `notSaid`. New options are kept as the model gave them,
+    /// with it; nor does a label that isn't an option, or `somethingElse`. New options are kept as the model gave them,
     /// trimmed, even for a step that got a pick, so the eval can count that mistake; the logger never offers those. One
     /// that's blank or longer than `newOptionMaxWords` is dropped.
     static func reading(
