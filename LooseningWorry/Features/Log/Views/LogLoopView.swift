@@ -8,9 +8,10 @@ struct LogLoopView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
-    @State private var model = LogLoopViewModel()
+    @State private var model = LogLoopViewModel(interpreter: FoundationModelsLoopInterpreter())
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
+    @State private var isShowingHelp = false
     /// Closes the logger and switches to Insights, from Nice catch's weekly count.
     let showInsights: () -> Void
 
@@ -31,6 +32,23 @@ struct LogLoopView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
+                        if model.showsHelp {
+                            LogHelpRow { isShowingHelp = true }
+                        }
+                        if model.showsDescribe {
+                            LogDescribeField(
+                                text: $model.described,
+                                canFillIn: model.canFillIn,
+                                isFillingIn: model.isFillingIn,
+                                couldntTell: model.couldntTell,
+                            ) {
+                                Task {
+                                    await model.fillIn(saved: savedOptions)
+                                }
+                            }
+                            LogOrDivider()
+                                .padding(.vertical, -6)
+                        }
                         LogSummaryCard(model: model) { step in
                             withAnimation(stepAnimation) { model.goTo(step) }
                         }
@@ -59,6 +77,7 @@ struct LogLoopView: View {
                                 isAddingOwn: model.isAddingOwn,
                                 draft: $model.draft,
                                 canAddOwn: model.canAddOwn,
+                                suggestedOption: model.suggestedOption(for: step),
                             ) { choice in
                                 withAnimation(stepAnimation) { model.pick(choice) }
                             } showMore: {
@@ -69,9 +88,11 @@ struct LogLoopView: View {
                                 model.toggleAddOwn()
                             } addOwn: {
                                 withAnimation(stepAnimation) {
-                                    model.addOwn(existing: choices) { kind, label in
-                                        try OptionStore(context: modelContext).addOwn(label, kind: kind)
-                                    }
+                                    model.addOwn(existing: choices, save: saveOwnOption)
+                                }
+                            } addSuggested: {
+                                withAnimation(stepAnimation) {
+                                    model.addSuggestedOption(existing: choices, save: saveOwnOption)
                                 }
                             }
                             .id(step)
@@ -114,6 +135,9 @@ struct LogLoopView: View {
                 }
             }
             .background(.theme(.background))
+            .sheet(isPresented: $isShowingHelp) {
+                HelpView()
+            }
             .navigationDestination(item: $editing) { kind in
                 EditOptionsView(kind: kind)
             }
@@ -136,6 +160,12 @@ struct LogLoopView: View {
                     AccessibilityNotification.Announcement(announcement).post()
                 }
             }
+            .onChange(of: model.couldntTell) { _, couldntTell in
+                if couldntTell {
+                    AccessibilityNotification.Announcement(String(localized: LogDescribeField.couldntTellMessage))
+                        .post()
+                }
+            }
             .onChange(of: model.saveFailed) { _, failed in
                 if failed {
                     AccessibilityNotification.Announcement(String(localized: LogSaveBar.failedMessage)).post()
@@ -151,6 +181,11 @@ struct LogLoopView: View {
             }
             .sensoryFeedback(.selection, trigger: model.pickCount)
         }
+    }
+
+    /// Saves an option the person added, typed or suggested from their words, to their list.
+    private func saveOwnOption(_ kind: OptionKind, _ label: String) throws -> OptionChoice {
+        try OptionStore(context: modelContext).addOwn(label, kind: kind)
     }
 
     /// Shown when an added option was picked but couldn't be saved to the person's list.
@@ -259,157 +294,6 @@ private struct LogProgressBar: View {
         case .answered, .reopened: 1
         case .current: 0.35
         case .upcoming: 0
-        }
-    }
-}
-
-/// One row per step; tapping a row reopens that step.
-private struct LogSummaryCard: View {
-    let model: LogLoopViewModel
-    let reopen: (OptionKind) -> Void
-
-    var body: some View {
-        VStack(spacing: 2) {
-            ForEach(OptionKind.allCases, id: \.self) { step in
-                LogSummaryRow(
-                    step: step,
-                    answer: model.answer(for: step)?.label,
-                    progress: model.progress(for: step),
-                    popTrigger: model.cheer?.step == step ? model.pickCount : nil,
-                ) {
-                    reopen(step)
-                }
-            }
-        }
-        .padding(6)
-        .background(.theme(.surface), in: .rect(cornerRadius: 22))
-        .overlay {
-            RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle))
-        }
-    }
-}
-
-private struct LogSummaryRow: View {
-    let step: OptionKind
-    let answer: String?
-    let progress: StepProgress
-    /// The latest pick when it answered this step, so re-answering the step pops its tick again.
-    let popTrigger: Int?
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 12) {
-                marker
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(step.logCopy.summaryLabel)
-                        .textCase(.uppercase)
-                        .font(.theme(.footnote))
-                        .tracking(0.6)
-                        .foregroundStyle(.theme(.textSecondary))
-                    value
-                }
-                Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .frame(minHeight: 60)
-            .background(progress.isCurrent ? .theme(.accentWash) : .clear, in: .rect(cornerRadius: 16))
-            .overlay {
-                if progress.isCurrent {
-                    RoundedRectangle(cornerRadius: 16).strokeBorder(.theme(.accentBorder), lineWidth: 1.5)
-                }
-            }
-            .contentShape(.rect(cornerRadius: 16))
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(progress.isCurrent ? .isSelected : [])
-    }
-
-    private var marker: some View {
-        ZStack {
-            switch progress {
-            case .answered, .reopened:
-                TickDot(popTrigger: popTrigger)
-            case .current:
-                numberDot(fill: .theme(.surface), ink: .theme(.accentText))
-                    .overlay { Circle().strokeBorder(.theme(.accent), lineWidth: 2) }
-            case .upcoming:
-                numberDot(fill: .theme(.borderSubtle), ink: .theme(.textTertiary))
-            }
-        }
-        .frame(width: 26, height: 26)
-        // Colors cross-fade; that is not motion, so it stays under Reduce Motion.
-        .animation(.easeOut(duration: 0.2), value: progress)
-        .accessibilityHidden(true)
-    }
-
-    private func numberDot(fill: Color, ink: Color) -> some View {
-        Text(step.stepNumber, format: .number)
-            .font(.theme(.footnote))
-            .foregroundStyle(ink)
-            .frame(width: 26, height: 26)
-            .background(fill, in: .circle)
-    }
-
-    @ViewBuilder private var value: some View {
-        if let answer {
-            Text(answer)
-                .font(.theme(.headline))
-                .foregroundStyle(.theme(.textPrimary))
-        } else {
-            Group {
-                if progress.isCurrent {
-                    Text("Choose below")
-                } else {
-                    Text(verbatim: "—")
-                        .accessibilityLabel("Not answered yet")
-                }
-            }
-            .font(.theme(.headline))
-            .foregroundStyle(.theme(.textTertiary))
-        }
-    }
-}
-
-/// The answered step's tick. It pops in, growing past full size and settling back, each time the step is answered.
-private struct TickDot: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    let popTrigger: Int?
-    @State private var pops = 0
-    /// A new tick grows in from small; a tick that is already showing just bulges, so it never jumps.
-    @State private var popStart: CGFloat = 0.4
-
-    var body: some View {
-        ZStack {
-            Circle().fill(.theme(.accent))
-            Image(systemName: "checkmark")
-                .font(.system(size: 12, weight: .heavy))
-                .foregroundStyle(.theme(.textOnAccent))
-        }
-        .shadow(color: .theme(.accentShadow).opacity(0.35), radius: 3, y: 2)
-        .keyframeAnimator(initialValue: CGFloat(1), trigger: pops) { content, scale in
-            content.scaleEffect(scale)
-        } keyframes: { _ in
-            KeyframeTrack {
-                MoveKeyframe(popStart)
-                CubicKeyframe(1.15, duration: 0.224)
-                CubicKeyframe(1, duration: 0.096)
-            }
-        }
-        .onAppear { pop(from: 0.4) }
-        .onChange(of: popTrigger) { _, trigger in
-            if trigger != nil {
-                pop(from: 1)
-            }
-        }
-    }
-
-    private func pop(from scale: CGFloat) {
-        if !reduceMotion {
-            popStart = scale
-            pops += 1
         }
     }
 }

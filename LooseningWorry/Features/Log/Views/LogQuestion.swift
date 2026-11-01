@@ -18,12 +18,15 @@ struct LogQuestion: View {
     let isAddingOwn: Bool
     @Binding var draft: String
     let canAddOwn: Bool
+    /// A new option Fill in offers in the person's words; added only when tapped.
+    let suggestedOption: String?
     let pick: (OptionChoice) -> Void
     let showMore: () -> Void
     /// Opens Edit options on this step's tab.
     let edit: () -> Void
     let toggleAddOwn: () -> Void
     let addOwn: () -> Void
+    let addSuggested: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -48,7 +51,18 @@ struct LogQuestion: View {
                     .font(.theme(.body))
                     .foregroundStyle(.theme(.textSecondary))
             }
+            if suggestedOption != nil {
+                Text(LocalizedStringResource("log.suggestedOption", defaultValue: "Suggested from your words"))
+                    .font(.theme(.caption))
+                    .fontWeight(.bold)
+                    .foregroundStyle(.theme(.accentText))
+                    .padding(.bottom, -6)
+                    .accessibilityHidden(true)
+            }
             FlowLayout(spacing: 8) {
+                if let suggestedOption {
+                    SuggestedOptionChip(label: suggestedOption, action: addSuggested)
+                }
                 ForEach(choices, id: \.label) { choice in
                     OptionChip(label: choice.label, isSelected: choice.id == selectedID) {
                         pick(choice)
@@ -64,6 +78,38 @@ struct LogQuestion: View {
                     .id(Self.addOwnFieldID)
             }
         }
+    }
+}
+
+/// A new option from the person's own words, dashed like "+ Add your own" because tapping it adds to their list.
+private struct SuggestedOptionChip: View {
+    let label: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Image(systemName: "plus")
+                    .fontWeight(.bold)
+                    .accessibilityHidden(true)
+                Text(label)
+            }
+            .font(.theme(.headline))
+            .foregroundStyle(.theme(.accentText))
+            .padding(.horizontal, 18)
+            .frame(minHeight: 48)
+            .background(.theme(.accentWash), in: .capsule)
+            .overlay {
+                Capsule().strokeBorder(.theme(.accent), style: StrokeStyle(lineWidth: 1.5, dash: [5, 4]))
+            }
+            .contentShape(.capsule)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(LocalizedStringResource("log.suggestedOption.add", defaultValue: "Add \(label)")))
+        .accessibilityHint(Text(LocalizedStringResource(
+            "log.suggestedOption.hint",
+            defaultValue: "Suggested from your words. Saved to your list for next time.",
+        )))
     }
 }
 

@@ -21,7 +21,8 @@ face by exact PostScript name. We do not use the variable font.
 Every text style scales with Dynamic Type. It is declared with `Font.custom(_:size:relativeTo:)`, using
 the mockup size as the default and the closest system text style as the scaling reference.
 
-Styles take Apple's text style names. Each one scales relative to the system style of the same name:
+Styles take Apple's text style names. Each one scales relative to the system style of the same name, except
+`badge`, which has no system namesake at its size and scales with `caption`, also 12 points by default:
 
 | Style | Size / weight | Use |
 |---|---|---|
@@ -36,6 +37,7 @@ Styles take Apple's text style names. Each one scales relative to the system sty
 | `footnote` | 13 / SemiBold | Metadata |
 | `caption` | 13 / Regular | Notes under a field |
 | `caption2` | 11 / SemiBold | Tab-bar labels |
+| `badge` | 12 / Bold | Labels on a tinted pill, like the logger's "Suggested" |
 
 ## Consequences
 

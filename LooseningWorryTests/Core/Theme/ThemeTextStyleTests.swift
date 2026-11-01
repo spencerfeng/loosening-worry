@@ -15,6 +15,7 @@ struct ThemeTextStyleTests {
         .footnote: .init(face: .semiBold, size: 13, scalesWith: .footnote),
         .caption: .init(face: .regular, size: 13, scalesWith: .caption),
         .caption2: .init(face: .semiBold, size: 11, scalesWith: .caption2),
+        .badge: .init(face: .bold, size: 12, scalesWith: .caption),
     ]
 
     @Test
