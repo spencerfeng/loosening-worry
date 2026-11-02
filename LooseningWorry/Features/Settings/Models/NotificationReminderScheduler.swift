@@ -33,7 +33,7 @@ struct NotificationReminderScheduler: ReminderScheduler {
     }
 
     func scheduleDaily(at time: ReminderTime) async throws {
-        let lesson = await nextLesson()
+        let lesson = nextLesson()
         try await center.add(ReminderNotification.request(at: time, next: lesson))
     }
 
