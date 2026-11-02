@@ -7,6 +7,16 @@ import FoundationModels
 struct LoopLoggingEvaluation: Evaluation {
     let split: LoopCase.Split
     private let file: CaseFile
+    private let model: Model
+
+    /// The model scored. The Private Cloud Compute one, which the logger reads with first, unless `EVAL_MODEL` is
+    /// `onDevice`: the phone's own model, which reads when the cloud can't. Each is scored alone: falling back would
+    /// hide which one answered. Set it with `TEST_RUNNER_EVAL_MODEL`, as `xcodebuild` passes only `TEST_RUNNER_`
+    /// variables to the tests, without the prefix.
+    enum Model: String {
+        case cloud
+        case onDevice
+    }
 
     struct ModelUnavailable: Error {}
 
@@ -18,6 +28,12 @@ struct LoopLoggingEvaluation: Evaluation {
             // Without the cases there's nothing to score; the scoring tests say why.
             fatalError("Couldn't read cases.json: \(error)")
         }
+        let name = ProcessInfo.processInfo.environment["EVAL_MODEL"] ?? Model.cloud.rawValue
+        guard let model = Model(rawValue: name) else {
+            // A misspelled name would otherwise score the cloud model under the wrong label.
+            fatalError("Unknown EVAL_MODEL \(name); use cloud or onDevice.")
+        }
+        self.model = model
     }
 
     var dataset: some Loader<LoopCase> {
@@ -31,7 +47,7 @@ struct LoopLoggingEvaluation: Evaluation {
         let reading: LoopReading
         var failure: String?
         do {
-            reading = try await Self.read(sample.text, options: options)
+            reading = try await Self.read(sample.text, options: options, with: model)
         } catch let error as LanguageModelError {
             // A refusal or a guardrail reads as nothing, as it does in the logger, which then says it couldn't tell;
             // leaving the case out would flatter the score. Anything else is the eval's own failure.
@@ -49,8 +65,15 @@ struct LoopLoggingEvaluation: Evaluation {
     }
 
     @MainActor
-    private static func read(_ text: String, options: [OptionKind: [OptionChoice]]) async throws -> LoopReading {
-        let interpreter = FoundationModelsLoopInterpreter()
+    private static func read(
+        _ text: String,
+        options: [OptionKind: [OptionChoice]],
+        with model: Model,
+    ) async throws -> LoopReading {
+        let interpreter: LoopInterpreter = switch model {
+        case .cloud: PrivateCloudLoopInterpreter()
+        case .onDevice: OnDeviceLoopInterpreter()
+        }
         guard interpreter.isAvailable else { throw ModelUnavailable() }
         return try await interpreter.read(text, options: options)
     }

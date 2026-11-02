@@ -1,6 +1,6 @@
 @testable import LooseningWorry
 
-/// Stands in for the on-device model: reads every sentence as told, or fails.
+/// Stands in for Apple's models: reads every sentence as told, or fails.
 @MainActor
 final class FakeLoopInterpreter: LoopInterpreter {
     var isAvailable = true

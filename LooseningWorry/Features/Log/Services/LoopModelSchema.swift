@@ -1,28 +1,6 @@
 import Foundation
 import FoundationModels
 
-/// Reads a described loop with Apple's on-device model. Nothing leaves the device.
-@MainActor
-struct FoundationModelsLoopInterpreter: LoopInterpreter {
-    private let model = SystemLanguageModel.default
-
-    /// Checked each time it's asked, so the field appears once the model is ready or Apple Intelligence is turned on.
-    var isAvailable: Bool {
-        model.availability == .available && model.supportsLocale()
-    }
-
-    func read(_ sentence: String, options: [OptionKind: [OptionChoice]]) async throws -> LoopReading {
-        // A fresh session each time, so one loop's words never color the next.
-        let session = LanguageModelSession(model: model, instructions: LoopModelSchema.instructions)
-        let response = try await session.respond(
-            to: sentence,
-            schema: LoopModelSchema.schema(for: options),
-            options: GenerationOptions(samplingMode: .greedy),
-        )
-        return try LoopModelSchema.reading(from: response.content, options: options, sentence: sentence)
-    }
-}
-
 /// What the model is asked for: for each step, the words that tell it quoted from the sentence, then its answer chosen
 /// from the person's options in their own words, or `somethingElse`; and for a step none fits, a new option in their
 /// words.
@@ -47,6 +25,22 @@ enum LoopModelSchema {
     When their words clearly tell a step but no option fits, answer "Something else" and suggest a new option for it: \
     one to three words taken from what they wrote, capitalized like a title. Otherwise suggest nothing.
     """
+
+    /// Reads `sentence` with `model`, in a fresh session so one loop's words never color the next.
+    @MainActor
+    static func read(
+        _ sentence: String,
+        options: [OptionKind: [OptionChoice]],
+        with model: some LanguageModel,
+    ) async throws -> LoopReading {
+        let session = LanguageModelSession(model: model, instructions: instructions)
+        let response = try await session.respond(
+            to: sentence,
+            schema: schema(for: options),
+            options: GenerationOptions(samplingMode: .greedy),
+        )
+        return try reading(from: response.content, options: options, sentence: sentence)
+    }
 
     /// The answers the schema allows for `step`: its options' labels, then `somethingElse`.
     static func choices(for step: OptionKind, in options: [OptionKind: [OptionChoice]]) -> [String] {

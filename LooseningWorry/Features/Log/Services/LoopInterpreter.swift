@@ -1,5 +1,4 @@
-/// Reads a sentence describing a loop into the person's options. The real one is Apple's on-device model; tests use a
-/// fake.
+/// Reads a sentence describing a loop into the person's options. The real ones are Apple's models; tests use a fake.
 @MainActor
 protocol LoopInterpreter {
     /// Whether it can read at all on this device now.

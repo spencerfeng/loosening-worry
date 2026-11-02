@@ -46,6 +46,9 @@ targets:
           - iCloud.com.spencerfeng.looseningworry
         com.apple.developer.icloud-services:
           - CloudKit
+        # The logger reads described loops with Apple's Private Cloud Compute model first. A managed entitlement
+        # Apple grants on request; each App ID needs it turned on.
+        com.apple.developer.private-cloud-compute: true
     settings:
       base:
         PRODUCT_NAME: LooseningWorry
@@ -84,8 +87,8 @@ targets:
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/LooseningWorry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LooseningWorry
         BUNDLE_LOADER: $(TEST_HOST)
 
-  # Scores describe-a-loop against Apple's on-device model (Evals/loop-logging). It needs the model, so it has its own
-  # scheme and runs on an iPhone, never in the everyday test run.
+  # Scores describe-a-loop against Apple's models (Evals/loop-logging). It needs them, so it has its own scheme and
+  # runs on an iPhone, never in the everyday test run.
   LooseningWorryEvals:
     type: bundle.unit-test
     platform: iOS

@@ -8,7 +8,9 @@ struct LogLoopView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
-    @State private var model = LogLoopViewModel(interpreter: FoundationModelsLoopInterpreter())
+    @State private var model = LogLoopViewModel(
+        interpreter: CloudFirstLoopInterpreter(cloud: PrivateCloudLoopInterpreter(), device: OnDeviceLoopInterpreter())
+    )
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
     @State private var isShowingHelp = false

@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// Where the person can describe the whole loop in their own words instead of picking each step. One line that grows as
-/// they type, up to four, with a round Fill in button once there are words. The line under it says the words stay on
-/// the phone while typing, then what Fill in is doing.
+/// they type, up to four, with a round Fill in button once there are words. The line under it says the words are kept
+/// private while typing, then what Fill in is doing.
 struct LogDescribeField: View {
     @Binding var text: String
     let canFillIn: Bool
@@ -102,7 +102,7 @@ struct LogDescribeField: View {
                 .foregroundStyle(.theme(.textSecondary))
         } else if isFocused {
             Label {
-                Text(LocalizedStringResource("log.describe.private", defaultValue: "Stays on this phone"))
+                Text(LocalizedStringResource("log.describe.private", defaultValue: "Private to you. Never stored."))
             } icon: {
                 Image(systemName: "lock")
                     .font(.system(size: 11, weight: .semibold))
