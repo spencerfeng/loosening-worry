@@ -44,13 +44,11 @@ struct LogDescribeField: View {
             .padding(.trailing, 8)
             .padding(.vertical, 8)
             .frame(minHeight: 48)
-            .background(.theme(.surface), in: .rect(cornerRadius: 24))
-            .overlay {
-                RoundedRectangle(cornerRadius: 24).strokeBorder(
-                    isFocused || isFillingIn ? .theme(.accent) : .theme(.border),
-                    lineWidth: isFocused || isFillingIn ? 1.5 : 1,
-                )
-            }
+            .cardSurface(
+                cornerRadius: 24,
+                outline: isFocused || isFillingIn ? .accent : .border,
+                lineWidth: isFocused || isFillingIn ? 1.5 : 1,
+            )
             .contentShape(.rect(cornerRadius: 24))
             .onTapGesture { isFocused = true }
             status
@@ -162,8 +160,7 @@ struct LogHelpRow: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
             .frame(minHeight: 48)
-            .background(.theme(.surface), in: .rect(cornerRadius: 16))
-            .overlay { RoundedRectangle(cornerRadius: 16).strokeBorder(.theme(.border)) }
+            .cardSurface(cornerRadius: 16, outline: .border)
             .contentShape(.rect(cornerRadius: 16))
         }
         .buttonStyle(.plain)

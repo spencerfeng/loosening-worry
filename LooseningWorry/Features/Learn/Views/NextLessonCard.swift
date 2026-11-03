@@ -56,8 +56,7 @@ struct NextLessonCard: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 18)
-            .background(.theme(.surface), in: .rect(cornerRadius: 22))
-            .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle)) }
+            .cardSurface(cornerRadius: 22)
             .contentShape(.rect(cornerRadius: 22))
         }
         .buttonStyle(.plain)

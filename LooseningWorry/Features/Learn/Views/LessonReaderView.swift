@@ -348,8 +348,7 @@ private struct NextUp: View {
         .multilineTextAlignment(.leading)
         .padding(.vertical, 16)
         .padding(.horizontal, 18)
-        .background(.theme(.surface), in: .rect(cornerRadius: 22))
-        .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 22)
         .accessibilityElement(children: .combine)
     }
 }

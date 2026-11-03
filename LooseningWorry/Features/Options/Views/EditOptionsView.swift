@@ -203,8 +203,7 @@ private struct AddOptionCard: View {
             .buttonStyle(.plain)
         }
         .padding(12)
-        .background(.theme(.surface), in: .rect(cornerRadius: 18))
-        .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.accent), lineWidth: 2) }
+        .cardSurface(cornerRadius: 18, outline: .accent, lineWidth: 2)
         .onAppear { isFocused = true }
         .onChange(of: error) { _, error in
             if let error {
@@ -256,8 +255,7 @@ private struct OptionSection: View {
                     OptionRow(row: row, remove: remove, restore: restore)
                 }
             }
-            .background(.theme(.surface), in: .rect(cornerRadius: 18))
-            .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+            .cardSurface(cornerRadius: 18)
             .clipShape(.rect(cornerRadius: 18))
         }
     }

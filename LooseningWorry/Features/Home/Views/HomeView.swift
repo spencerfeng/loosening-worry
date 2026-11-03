@@ -222,8 +222,7 @@ private struct CheckInRow: View {
             .padding(.leading, 10)
             .padding(.trailing, 14)
             .frame(minHeight: 60)
-            .background(.theme(.surface), in: .rect(cornerRadius: 18))
-            .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+            .cardSurface(cornerRadius: 18)
             .contentShape(.rect(cornerRadius: 18))
         }
         .buttonStyle(.plain)
@@ -281,12 +280,7 @@ private struct ToolTile: View {
 
     private var label: some View {
         HStack(spacing: 10) {
-            Image(systemName: tool.symbol)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.theme(tool.ink))
-                .frame(width: 36, height: 36)
-                .background(.theme(tool.tint), in: .rect(cornerRadius: 12))
-                .accessibilityHidden(true)
+            ToolBadge(tool: tool)
             Text(tool.name)
                 .font(.theme(.subheadline))
                 .foregroundStyle(.theme(.textPrimary))
@@ -295,8 +289,7 @@ private struct ToolTile: View {
         .padding(.vertical, 10)
         .padding(.horizontal, 12)
         .frame(minHeight: 58)
-        .background(.theme(.surface), in: .rect(cornerRadius: 18))
-        .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 18)
         .contentShape(.rect(cornerRadius: 18))
     }
 }

@@ -237,8 +237,7 @@ private struct OutcomeMessage: View {
             }
         }
         .padding(18)
-        .background(.theme(.surface), in: .rect(cornerRadius: 20))
-        .overlay { RoundedRectangle(cornerRadius: 20).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 20)
         .accessibilityElement(children: .contain)
     }
 }
@@ -269,8 +268,7 @@ private struct OtherTools: View {
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .frame(minHeight: 52)
-                    .background(.theme(.surface), in: .rect(cornerRadius: 16))
-                    .overlay { RoundedRectangle(cornerRadius: 16).strokeBorder(.theme(.borderSubtle)) }
+                    .cardSurface(cornerRadius: 16)
                     .contentShape(.rect(cornerRadius: 16))
                 }
                 .buttonStyle(.plain)

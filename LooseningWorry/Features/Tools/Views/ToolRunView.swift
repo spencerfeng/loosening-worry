@@ -276,8 +276,7 @@ private struct ToolControls<Side: View>: View {
             }
         }
         .padding(18)
-        .background(.theme(.surface), in: .rect(cornerRadius: 24))
-        .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 24)
         .padding(.horizontal, 20)
         .padding(.bottom, 12)
         // A tool's words scroll under the bar at large text sizes; this keeps them out of the gaps around it.

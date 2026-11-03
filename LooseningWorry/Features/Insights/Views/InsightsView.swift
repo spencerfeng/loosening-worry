@@ -369,8 +369,7 @@ private struct InsightsCard<Content: View>: View {
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.theme(.surface), in: .rect(cornerRadius: 22))
-        .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 22)
     }
 }
 

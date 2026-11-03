@@ -20,10 +20,7 @@ struct LogSummaryCard: View {
             }
         }
         .padding(6)
-        .background(.theme(.surface), in: .rect(cornerRadius: 22))
-        .overlay {
-            RoundedRectangle(cornerRadius: 22).strokeBorder(.theme(.borderSubtle))
-        }
+        .cardSurface(cornerRadius: 22)
     }
 }
 

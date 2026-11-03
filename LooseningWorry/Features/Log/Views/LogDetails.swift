@@ -110,8 +110,7 @@ private struct LogDetailsCard: View {
             }
         }
         .padding(16)
-        .background(.theme(.surface), in: .rect(cornerRadius: 20))
-        .overlay { RoundedRectangle(cornerRadius: 20).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 20)
     }
 
     private var anxietyRange: ClosedRange<Double> {

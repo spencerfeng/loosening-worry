@@ -203,8 +203,7 @@ private struct WeeklyCount: View {
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 16)
-            .background(.theme(.surface), in: .rect(cornerRadius: 20))
-            .overlay { RoundedRectangle(cornerRadius: 20).strokeBorder(.theme(.borderSubtle)) }
+            .cardSurface(cornerRadius: 20)
             .contentShape(.rect(cornerRadius: 20))
         }
         .buttonStyle(.plain)

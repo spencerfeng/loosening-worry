@@ -16,12 +16,7 @@ struct ToolCard: View {
 
     private var label: some View {
         HStack(spacing: 12) {
-            Image(systemName: tool.symbol)
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.theme(tool.ink))
-                .frame(width: 40, height: 40)
-                .background(.theme(tool.tint), in: .rect(cornerRadius: 12))
-                .accessibilityHidden(true)
+            ToolBadge(tool: tool, size: .card)
             VStack(alignment: .leading, spacing: 2) {
                 Text(tool.name)
                     .font(.theme(.headline))
@@ -36,8 +31,7 @@ struct ToolCard: View {
         .padding(.vertical, 12)
         .padding(.horizontal, 14)
         .frame(minHeight: 64)
-        .background(.theme(.surface), in: .rect(cornerRadius: 18))
-        .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+        .cardSurface(cornerRadius: 18)
         .contentShape(.rect(cornerRadius: 18))
         .accessibilityElement(children: .combine)
     }

@@ -176,8 +176,7 @@ private struct FriendPage: View {
             .focused($isWriting)
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .background(.theme(.surface), in: .rect(cornerRadius: 20))
-            .overlay { RoundedRectangle(cornerRadius: 20).strokeBorder(.theme(.border)) }
+            .cardSurface(cornerRadius: 20, outline: .border)
             .submitLabel(.done)
             // Return closes the keyboard rather than starting a new line.
             .onChange(of: beKind.ownWords) { _, words in
@@ -217,8 +216,7 @@ private struct BeKindReading: View {
                     }
                     .padding(16)
                     .frame(maxWidth: .infinity)
-                    .background(.theme(.surface), in: .rect(cornerRadius: 20))
-                    .overlay { RoundedRectangle(cornerRadius: 20).strokeBorder(.theme(.borderSubtle)) }
+                    .cardSurface(cornerRadius: 20)
                 }
             }
         } controls: {
