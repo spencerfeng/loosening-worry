@@ -94,7 +94,7 @@ struct CheckInFinishedView: View {
     }
 }
 
-/// The suggested tool as a card, the other three as chips, and the way into the logger.
+/// The suggested tool as a card, the other three as tiles, and the way into the logger.
 private struct TryATool: View {
     let tool: QuickTool
     let start: (QuickTool) -> Void
@@ -104,15 +104,9 @@ private struct TryATool: View {
         VStack(alignment: .leading, spacing: 10) {
             SectionLabel(LocalizedStringResource("checkIn.finished.tryATool", defaultValue: "Try a tool"))
             ToolCard(tool: tool, detail: tool.checkInReason) { start(tool) }
-            FlowLayout(spacing: 8) {
-                Text(LocalizedStringResource("checkIn.finished.or", defaultValue: "Or:"))
-                    .font(.theme(.callout))
-                    .foregroundStyle(.theme(.textTertiary))
-                    .frame(minHeight: 44)
-                ForEach(QuickTool.allCases.filter { $0 != tool }, id: \.self) { other in
-                    ChipButton(other.name) { start(other) }
-                }
-            }
+            SectionLabel(LocalizedStringResource("checkIn.finished.orTry", defaultValue: "Or try"))
+                .padding(.top, 6)
+            OtherTools(tools: QuickTool.allCases.filter { $0 != tool }, start: start)
             Button(action: logLoop) {
                 Text(LocalizedStringResource("checkIn.finished.logLoop", defaultValue: "Caught in a loop? Log it"))
                     .font(.theme(.callout))
@@ -121,6 +115,46 @@ private struct TryATool: View {
                     .contentShape(.rect)
             }
             .buttonStyle(.plain)
+        }
+    }
+}
+
+/// The other three tools as equal tiles in a row, each tool's icon over its name; stacked at the largest text sizes so
+/// the names aren't cut off.
+private struct OtherTools: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    let tools: [QuickTool]
+    let start: (QuickTool) -> Void
+
+    var body: some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 10))
+            : AnyLayout(HStackLayout(alignment: .top, spacing: 10))
+        layout {
+            ForEach(tools) { tool in
+                Button { start(tool) } label: {
+                    VStack(spacing: 8) {
+                        Image(systemName: tool.symbol)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.theme(tool.ink))
+                            .frame(width: 36, height: 36)
+                            .background(.theme(tool.tint), in: .rect(cornerRadius: 12))
+                            .accessibilityHidden(true)
+                        Text(tool.name)
+                            .font(.theme(.footnote))
+                            .fontWeight(.bold)
+                            .foregroundStyle(.theme(.textPrimary))
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 88)
+                    .padding(.horizontal, 6)
+                    .background(.theme(.surface), in: .rect(cornerRadius: 18))
+                    .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+                    .contentShape(.rect(cornerRadius: 18))
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 }

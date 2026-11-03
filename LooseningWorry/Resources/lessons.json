@@ -1463,7 +1463,7 @@
       {
         "kind": "task",
         "title": "Check your daily reminder",
-        "body": "It's in Settings. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.",
+        "body": "It's in Settings. From now on it asks how you are instead of naming a lesson, and opens a check-in. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.",
         "action": "openSettings",
         "tint": "blue"
       }

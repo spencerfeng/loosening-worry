@@ -1022,6 +1022,6 @@ Of everything in the course, what's the one thing you most want to keep doing?
 
 **Today's task**
 
-It's in Settings. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.
+It's in Settings. From now on it asks how you are instead of naming a lesson, and opens a check-in. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.
 
 *Button: Open Settings*

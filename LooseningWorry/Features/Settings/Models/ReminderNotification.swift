@@ -1,7 +1,7 @@
 import Foundation
 import UserNotifications
 
-/// The daily reminder as the system shows it: the next lesson during the course, an invitation to log after it.
+/// The daily reminder as the system shows it: the next lesson during the course, an invitation to check in after it.
 enum ReminderNotification {
     /// One identifier for every reminder, so scheduling again replaces it and tapping it can be recognized.
     static let identifier = "reminder.daily"
@@ -20,11 +20,8 @@ enum ReminderNotification {
             )
             content.userInfo = [lessonDayKey: next.day]
         } else {
-            content.title = String(localized: "reminder.title", defaultValue: "Caught a loop today?")
-            content.body = String(
-                localized: "reminder.body",
-                defaultValue: "Take 20 seconds to log it, or try a quick tool if worry's around now.",
-            )
+            content.title = String(localized: "reminder.checkIn.title", defaultValue: "How are you right now?")
+            content.body = String(localized: "reminder.checkIn.body", defaultValue: "Take a few seconds to check in.")
         }
         content.sound = .default
         let trigger = UNCalendarNotificationTrigger(

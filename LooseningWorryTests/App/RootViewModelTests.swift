@@ -57,13 +57,14 @@ struct RootViewModelTests {
     }
 
     @Test
-    func `tapping the daily reminder opens the logger`() {
+    func `tapping the reminder after the course opens a check-in`() {
         let model = RootViewModel(onboarding: .finished)
         model.select(.learn)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: nil)
 
-        #expect(model.isLogSheetPresented)
+        #expect(model.isCheckInPresented)
+        #expect(!model.isLogSheetPresented)
         #expect(model.selectedTab == .learn)
     }
 
@@ -167,16 +168,18 @@ struct RootViewModelTests {
 
     /// iOS ignores a new screen while another is still closing, so the reminder closes what's open and waits for it.
     @Test(arguments: Covering.allCases)
-    func `the daily reminder over another screen opens the logger once that screen has gone`(covering: Covering) throws {
+    func `after the course, the reminder over another screen opens a check-in once that's gone`(
+        covering: Covering
+    ) throws {
         let model = RootViewModel(onboarding: .finished)
         try covering.open(in: model)
 
         model.openNotification(identifier: ReminderNotification.identifier, lessonDay: nil)
         #expect(!covering.isOpen(in: model))
-        #expect(!model.isLogSheetPresented)
+        #expect(!model.isCheckInPresented)
 
         model.screenClosed()
-        #expect(model.isLogSheetPresented)
+        #expect(model.isCheckInPresented)
     }
 
     @Test(arguments: Covering.allCases)
@@ -193,6 +196,55 @@ struct RootViewModelTests {
     }
 
     @Test
+    func `opening a check-in shows it over the tab it was opened from`() {
+        let model = RootViewModel(onboarding: .finished)
+
+        model.openCheckIn()
+
+        #expect(model.isCheckInPresented)
+        #expect(model.selectedTab == .home)
+    }
+
+    @Test(arguments: Covering.allCases)
+    func `a check-in over another screen opens once that screen has gone`(covering: Covering) throws {
+        let model = RootViewModel(onboarding: .finished)
+        try covering.open(in: model)
+
+        model.openCheckIn()
+        #expect(!covering.isOpen(in: model))
+        #expect(!model.isCheckInPresented)
+
+        model.screenClosed()
+        #expect(model.isCheckInPresented)
+    }
+
+    @Test
+    func `logging a loop from a check-in closes it and opens the logger once it has gone`() {
+        let model = RootViewModel(onboarding: .finished)
+        model.openCheckIn()
+
+        model.logLoopFromCheckIn()
+        #expect(!model.isCheckInPresented)
+        #expect(!model.isLogSheetPresented)
+
+        model.screenClosed()
+        #expect(model.isLogSheetPresented)
+    }
+
+    /// With no check-in to close, nothing would ever open the waiting logger but some unrelated screen closing.
+    @Test
+    func `logging a loop from a check-in that isn't open leaves nothing waiting`() {
+        let model = RootViewModel(onboarding: .finished)
+        model.logLoopFromCheckIn()
+
+        model.openSettings()
+        model.isSettingsPresented = false
+        model.screenClosed()
+
+        #expect(!model.isLogSheetPresented)
+    }
+
+    @Test
     func `opening Help shows it over the tabs`() {
         let model = RootViewModel(onboarding: .finished)
 
@@ -203,12 +255,13 @@ struct RootViewModelTests {
 
     /// One screen over the tabs, as the reminder might find the app.
     enum Covering: CaseIterable {
-        case logger, lesson, tool, settings, help
+        case logger, checkIn, lesson, tool, settings, help
 
         @MainActor
         func open(in model: RootViewModel) throws {
             switch self {
             case .logger: model.select(.log)
+            case .checkIn: model.openCheckIn()
             case .lesson: try model.openLesson(#require(LessonCatalog.bundled.lesson(day: 5)))
             case .tool: model.openTool(.breathe)
             case .settings: model.openSettings()
@@ -220,6 +273,7 @@ struct RootViewModelTests {
         func isOpen(in model: RootViewModel) -> Bool {
             switch self {
             case .logger: model.isLogSheetPresented
+            case .checkIn: model.isCheckInPresented
             case .lesson: model.readingLesson != nil
             case .tool: model.runningTool != nil
             case .settings: model.isSettingsPresented

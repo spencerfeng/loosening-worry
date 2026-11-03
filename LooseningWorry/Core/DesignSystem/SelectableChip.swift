@@ -28,25 +28,6 @@ struct SelectableChip: View {
     }
 }
 
-/// A capsule that does something straight away rather than staying picked, such as the check-in's other tools. Looks
-/// like an unpicked `SelectableChip`.
-struct ChipButton: View {
-    let label: LocalizedStringResource
-    let action: () -> Void
-
-    init(_ label: LocalizedStringResource, action: @escaping () -> Void) {
-        self.label = label
-        self.action = action
-    }
-
-    var body: some View {
-        Button(action: action) {
-            Text(label).chip(isSelected: false)
-        }
-        .buttonStyle(.plain)
-    }
-}
-
 private extension Text {
     func chip(isSelected: Bool) -> some View {
         font(.theme(.headline))

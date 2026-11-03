@@ -46,4 +46,17 @@ enum HomeContent {
             tools: sessions.count { thisWeek.contains($0.startedAt) },
         )
     }
+
+    /// Today's check-ins, for the Check in row: how many, and when the latest was.
+    struct CheckInsToday: Equatable {
+        let count: Int
+        let last: Date?
+    }
+
+    /// Check-ins since today began, up to now.
+    static func checkInsToday(_ checkIns: [CheckIn], now: Date, calendar: Calendar) -> CheckInsToday {
+        let today = calendar.startOfDay(for: now) ... now
+        let times = checkIns.map(\.createdAt).filter(today.contains)
+        return CheckInsToday(count: times.count, last: times.max())
+    }
 }

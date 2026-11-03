@@ -66,6 +66,11 @@ struct RootView: View {
         .fullScreenCover(item: $model.runningTool, onDismiss: model.screenClosed) { tool in
             ToolRunView(tool: tool, sessions: SessionStore(context: modelContext))
         }
+        .sheet(isPresented: $model.isCheckInPresented, onDismiss: model.screenClosed) {
+            CheckInView {
+                model.logLoopFromCheckIn()
+            }
+        }
         .sheet(isPresented: $model.isSettingsPresented, onDismiss: model.screenClosed) {
             SettingsView(scheduler: reminderScheduler, lock: lock)
         }

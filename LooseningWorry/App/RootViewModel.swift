@@ -6,13 +6,15 @@ enum AppTab: Hashable {
     case log
 }
 
-/// The tab bar and the one screen iOS shows over it at a time: the logger, a lesson, a tool, Settings or Help.
+/// The tab bar and the one screen iOS shows over it at a time: the logger, a check-in, a lesson, a tool, Settings or
+/// Help.
 @Observable @MainActor
 final class RootViewModel {
     /// Onboarding shows instead of the tabs until this device has been through it once.
     private(set) var isOnboarding: Bool
     private(set) var selectedTab: AppTab = .home
     var isLogSheetPresented = false
+    var isCheckInPresented = false
     /// The lesson open in the reader, over whichever tab it was opened from.
     var readingLesson: Lesson?
     var runningTool: QuickTool?
@@ -37,6 +39,7 @@ final class RootViewModel {
 
     private enum Next {
         case logger
+        case checkIn
         case lesson(Lesson)
         case task(LessonAction)
     }
@@ -57,15 +60,27 @@ final class RootViewModel {
         selectedTab = .insights
     }
 
-    /// Tapping the daily reminder opens the lesson it names, or the logger once the course is done, over any tab.
+    /// Tapping the daily reminder opens the lesson it names, or a check-in once the course is done, over any tab.
     /// During onboarding there are no tabs to open it over, so the tap only brings the app forward.
     func openNotification(identifier: String, lessonDay: Int?) {
         guard identifier == ReminderNotification.identifier, !isOnboarding else { return }
         if let lessonDay, let lesson = LessonCatalog.bundled.lesson(day: lessonDay) {
             show(.lesson(lesson))
         } else {
-            show(.logger)
+            show(.checkIn)
         }
+    }
+
+    /// Opens a check-in over whichever tab is showing, closing any other screen first.
+    func openCheckIn() {
+        show(.checkIn)
+    }
+
+    /// The check-in's "Log it": closes the check-in; the logger opens in `screenClosed()` once it has gone.
+    func logLoopFromCheckIn() {
+        guard isCheckInPresented else { return }
+        next = .logger
+        isCheckInPresented = false
     }
 
     func openLesson(_ lesson: Lesson) {
@@ -105,7 +120,9 @@ final class RootViewModel {
     }
 
     private var isShowingScreen: Bool {
-        isLogSheetPresented || readingLesson != nil || runningTool != nil || isSettingsPresented || isHelpPresented
+        isLogSheetPresented || isCheckInPresented || readingLesson != nil || runningTool != nil ||
+            isSettingsPresented ||
+            isHelpPresented
     }
 
     /// Opens `screen` now, or closes what's showing and opens it once that has gone. Anything already waiting, such
@@ -113,6 +130,7 @@ final class RootViewModel {
     private func show(_ screen: Next) {
         if isShowingScreen {
             isLogSheetPresented = false
+            isCheckInPresented = false
             readingLesson = nil
             runningTool = nil
             isSettingsPresented = false
@@ -127,6 +145,7 @@ final class RootViewModel {
     private func open(_ screen: Next) {
         switch screen {
         case .logger: isLogSheetPresented = true
+        case .checkIn: isCheckInPresented = true
         case let .lesson(lesson): openLesson(lesson)
         case .task(.logLoop): isLogSheetPresented = true
         case .task(.openInsights): selectedTab = .insights

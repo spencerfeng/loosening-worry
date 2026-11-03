@@ -16,11 +16,11 @@ struct ReminderNotificationTests {
     }
 
     @Test
-    func `after the course the reminder invites a log, every day at the chosen time`() throws {
+    func `after the course the reminder invites a check-in, every day at the chosen time`() throws {
         let request = ReminderNotification.request(at: ReminderTime(hour: 7, minute: 30), next: nil)
 
-        #expect(request.content.title == "Caught a loop today?")
-        #expect(request.content.body == "Take 20 seconds to log it, or try a quick tool if worry's around now.")
+        #expect(request.content.title == "How are you right now?")
+        #expect(request.content.body == "Take a few seconds to check in.")
         let trigger = try #require(request.trigger as? UNCalendarNotificationTrigger)
         #expect(trigger.repeats)
         #expect(trigger.dateComponents.hour == 7)

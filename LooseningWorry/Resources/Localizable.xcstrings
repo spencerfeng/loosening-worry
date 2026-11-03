@@ -139,13 +139,13 @@
         }
       }
     },
-    "checkIn.finished.or" : {
+    "checkIn.finished.orTry" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Or:"
+            "value" : "Or try"
           }
         }
       }
@@ -1233,6 +1233,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Feeling it now?"
+          }
+        }
+      }
+    },
+    "home.checkIn.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Opens a check-in"
+          }
+        }
+      }
+    },
+    "home.checkIn.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "None yet today"
+          }
+        }
+      }
+    },
+    "home.checkIn.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check in"
+          }
+        }
+      }
+    },
+    "home.checkIn.today" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld today · last at %2$@"
           }
         }
       }
@@ -3320,13 +3364,24 @@
         }
       }
     },
-    "reminder.body" : {
+    "reminder.checkIn.body" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Take 20 seconds to log it, or try a quick tool if worry's around now."
+            "value" : "Take a few seconds to check in."
+          }
+        }
+      }
+    },
+    "reminder.checkIn.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How are you right now?"
           }
         }
       }
@@ -3349,17 +3404,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Day %lld is ready"
-          }
-        }
-      }
-    },
-    "reminder.title" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Caught a loop today?"
           }
         }
       }

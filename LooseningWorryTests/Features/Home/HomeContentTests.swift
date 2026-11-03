@@ -110,4 +110,41 @@ struct HomeContentTests {
 
         #expect(week == HomeContent.WeekSummary(loops: 1, tools: 0))
     }
+
+    // MARK: - Check-ins today
+
+    private static func checkIn(at date: Date) -> CheckIn {
+        let checkIn = CheckIn(CheckInAnswer(pleasantness: .neutral, feelings: []))
+        checkIn.createdAt = date
+        return checkIn
+    }
+
+    @Test
+    func `yesterday's check-ins don't count toward today`() throws {
+        let now = try Self.date(day: 21, hour: 9)
+
+        let today = try HomeContent.checkInsToday(
+            [Self.checkIn(at: Self.date(day: 20, hour: 22))],
+            now: now,
+            calendar: Self.calendar,
+        )
+
+        #expect(today == HomeContent.CheckInsToday(count: 0, last: nil))
+    }
+
+    @Test
+    func `today counts every check-in since midnight and shows the latest`() throws {
+        let now = try Self.date(day: 21, hour: 14)
+        let checkIns = try [
+            Self.checkIn(at: Self.date(day: 21, hour: 0)),
+            Self.checkIn(at: Self.date(day: 21, hour: 13)),
+            Self.checkIn(at: Self.date(day: 21, hour: 8)),
+            // From a device whose clock runs fast: not yet.
+            Self.checkIn(at: Self.date(day: 21, hour: 15)),
+        ]
+
+        let today = HomeContent.checkInsToday(checkIns, now: now, calendar: Self.calendar)
+
+        #expect(try today == HomeContent.CheckInsToday(count: 3, last: Self.date(day: 21, hour: 13)))
+    }
 }

@@ -1,12 +1,13 @@
 import SwiftData
 import SwiftUI
 
-/// Home: a greeting, a way into the logger, today's lesson, the quick tools and a line about the week.
+/// Home: a greeting, a way into the logger, a check-in and today's lesson, the quick tools and a line about the week.
 struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query private var loops: [Loop]
     @Query private var sessions: [ToolSession]
     @Query private var lessonProgress: [LessonProgress]
+    @Query private var checkIns: [CheckIn]
 
     /// Opens the logger, other tabs, lessons, tools, Settings and Help.
     let root: RootViewModel
@@ -39,12 +40,17 @@ struct HomeView: View {
                     }
                 }
                 LogBanner { root.select(.log) }
+                Text(LocalizedStringResource("home.forYou", defaultValue: "For you today"))
+                    .font(.theme(.title3))
+                    .foregroundStyle(.theme(.textPrimary))
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.bottom, -6)
+                // Up to the actual time, like the week line below: a check-in just saved is later than the timeline's
+                // minute, and would otherwise not count until the next one.
+                CheckInRow(today: HomeContent.checkInsToday(checkIns, now: .now, calendar: .current)) {
+                    root.openCheckIn()
+                }
                 if let card = HomeContent.nextLesson(progress: lessonProgress, catalog: .bundled) {
-                    Text(LocalizedStringResource("home.forYou", defaultValue: "For you today"))
-                        .font(.theme(.title3))
-                        .foregroundStyle(.theme(.textPrimary))
-                        .accessibilityAddTraits(.isHeader)
-                        .padding(.bottom, -6)
                     NextLessonCard(card: card) { root.openLesson(card.lesson) }
                 }
                 QuickToolsGrid { root.openTool($0) }
@@ -180,6 +186,57 @@ private struct LogBanner: View {
         .padding(.leading, 18)
         .padding(.trailing, 14)
         .background(.theme(.accentFill), in: .rect(cornerRadius: 20))
+    }
+}
+
+/// Opens a check-in, with how many there have been today and when the last was. There can be any number a day.
+private struct CheckInRow: View {
+    let today: HomeContent.CheckInsToday
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(.theme(.accentText))
+                    .frame(width: 40, height: 40)
+                    .background(.theme(.accentTint), in: .rect(cornerRadius: 13))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(LocalizedStringResource("home.checkIn.title", defaultValue: "Check in"))
+                        .font(.theme(.headline))
+                        .foregroundStyle(.theme(.textPrimary))
+                    Text(line)
+                        .font(.theme(.caption))
+                        .foregroundStyle(.theme(.textTertiary))
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.forward")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(.theme(.textTertiary))
+                    .accessibilityHidden(true)
+            }
+            .multilineTextAlignment(.leading)
+            .padding(.vertical, 10)
+            .padding(.leading, 10)
+            .padding(.trailing, 14)
+            .frame(minHeight: 60)
+            .background(.theme(.surface), in: .rect(cornerRadius: 18))
+            .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
+            .contentShape(.rect(cornerRadius: 18))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(Text(LocalizedStringResource("home.checkIn.hint", defaultValue: "Opens a check-in")))
+    }
+
+    private var line: LocalizedStringResource {
+        guard let last = today.last else {
+            return LocalizedStringResource("home.checkIn.none", defaultValue: "None yet today")
+        }
+        let time = last.formatted(date: .omitted, time: .shortened)
+        return LocalizedStringResource("home.checkIn.today", defaultValue: "\(today.count) today · last at \(time)")
     }
 }
 
