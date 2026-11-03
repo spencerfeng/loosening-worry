@@ -43,7 +43,6 @@ struct NiceCatchTests {
         let suggestion = NiceCatch(loop: Self.loop(), loopsThisWeek: 1).suggestion
 
         #expect(suggestion.tool == .curious)
-        #expect(suggestion.name.key == "tool.curious.name")
         #expect(suggestion.detail.key == "tool.curious.detail")
     }
 }

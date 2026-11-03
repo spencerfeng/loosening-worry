@@ -123,14 +123,18 @@ struct LogLoopView: View {
             }
             // Stays under the header while the questions scroll.
             .safeAreaInset(edge: .top, spacing: 0) {
-                LogProgressBar(model: model)
+                StepProgressBar(steps: OptionKind.allCases.map { model.progress(for: $0) })
                     .padding(.horizontal, 20)
                     .padding(.top, 14)
                     .background(.theme(.background))
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 if model.currentStep == nil {
-                    LogSaveBar(failed: model.saveFailed, canSave: model.canSave) {
+                    PrimaryActionBar(
+                        title: LocalizedStringResource("log.save", defaultValue: "Save loop"),
+                        failure: model.saveFailed ? Self.saveFailedMessage : nil,
+                        isEnabled: model.canSave,
+                    ) {
                         let store = LoopStore(context: modelContext)
                         model.save { try store.add($0) } loopsThisWeek: { try store.loopsThisWeek() }
                     }
@@ -149,7 +153,11 @@ struct LogLoopView: View {
                     Button(role: .close) { dismiss() }
                 }
                 ToolbarItem(placement: .principal) {
-                    LogHeader(step: model.currentStep)
+                    FlowHeader(
+                        title: "Log a loop",
+                        detail: model.currentStep.map { "Step \($0.stepNumber) of \(OptionKind.allCases.count)" }
+                            ?? "All done",
+                    )
                 }
             }
             .onChange(of: model.pickCount) {
@@ -170,7 +178,7 @@ struct LogLoopView: View {
             }
             .onChange(of: model.saveFailed) { _, failed in
                 if failed {
-                    AccessibilityNotification.Announcement(String(localized: LogSaveBar.failedMessage)).post()
+                    AccessibilityNotification.Announcement(String(localized: Self.saveFailedMessage)).post()
                 }
             }
             .onAppear {
@@ -184,6 +192,11 @@ struct LogLoopView: View {
             .sensoryFeedback(.selection, trigger: model.pickCount)
         }
     }
+
+    static let saveFailedMessage = LocalizedStringResource(
+        "log.save.failed",
+        defaultValue: "Couldn't save this loop. Please try again.",
+    )
 
     /// Saves an option the person added, typed or suggested from their words, to their list.
     private func saveOwnOption(_ kind: OptionKind, _ label: String) throws -> OptionChoice {
@@ -228,75 +241,6 @@ struct LogLoopView: View {
             insertion: reduceMotion ? .opacity : .offset(x: 28).combined(with: .opacity),
             removal: .identity,
         )
-    }
-}
-
-private struct LogHeader: View {
-    let step: OptionKind?
-
-    var body: some View {
-        VStack(spacing: 2) {
-            Text("Log a loop")
-                .font(.theme(.headline))
-                .foregroundStyle(.theme(.textPrimary))
-            Group {
-                if let step {
-                    Text("Step \(step.stepNumber) of \(OptionKind.allCases.count)")
-                } else {
-                    Text("All done")
-                }
-            }
-            .font(.theme(.footnote))
-            .foregroundStyle(.theme(.textSecondary))
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isHeader)
-    }
-}
-
-/// One segment per step: full once answered, partly filled while current. The header already says which step, so
-/// VoiceOver skips it.
-private struct LogProgressBar: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    let model: LogLoopViewModel
-
-    var body: some View {
-        HStack(spacing: 6) {
-            ForEach(OptionKind.allCases, id: \.self) { step in
-                Capsule()
-                    .fill(.theme(.border))
-                    .overlay(alignment: .leading) {
-                        GeometryReader { proxy in
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [.theme(.accentSoft), .theme(.accent)],
-                                        startPoint: .leading,
-                                        endPoint: .trailing,
-                                    )
-                                )
-                                .frame(width: proxy.size.width * fill(for: model.progress(for: step)))
-                        }
-                    }
-                    .frame(height: 6)
-            }
-        }
-        // A width change is movement even when slow, so under Reduce Motion the segments jump instead.
-        .transaction { transaction in
-            if transaction.animation != nil {
-                transaction.animation = reduceMotion ? nil : .easeOut(duration: 0.3)
-            }
-        }
-        .accessibilityHidden(true)
-    }
-
-    private func fill(for progress: StepProgress) -> CGFloat {
-        switch progress {
-        case .answered, .reopened: 1
-        case .current: 0.35
-        case .upcoming: 0
-        }
     }
 }
 

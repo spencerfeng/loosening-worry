@@ -12,12 +12,22 @@ enum Pleasantness: String, CaseIterable, Codable, Sendable {
     case pleasant
     case veryPleasant
 
+    /// Which side of neutral a step is on.
+    enum Side {
+        case unpleasant, neutral, pleasant
+    }
+
+    var side: Side {
+        switch self {
+        case .veryUnpleasant, .unpleasant, .slightlyUnpleasant: .unpleasant
+        case .neutral: .neutral
+        case .slightlyPleasant, .pleasant, .veryPleasant: .pleasant
+        }
+    }
+
     /// Whether the step is below neutral.
     var isUnpleasant: Bool {
-        switch self {
-        case .veryUnpleasant, .unpleasant, .slightlyUnpleasant: true
-        case .neutral, .slightlyPleasant, .pleasant, .veryPleasant: false
-        }
+        side == .unpleasant
     }
 
     /// The step as the check-in shows it, translated.

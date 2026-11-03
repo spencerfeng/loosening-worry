@@ -1,10 +1,10 @@
-/// Where one of a loop's steps stands in the logger.
+/// Where one step of a flow stands: the logger's three, the check-in's two.
 enum StepProgress: Equatable {
     /// Answered, and not being asked.
     case answered
     /// Being asked for the first time.
     case current
-    /// Answered, and opened again from the summary card to change the answer.
+    /// Answered, and opened again to change the answer, as from the logger's summary card.
     case reopened
     /// Not reached yet.
     case upcoming

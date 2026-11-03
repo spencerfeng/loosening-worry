@@ -23,7 +23,6 @@ struct NiceCatch {
     /// A tool to try, with the words that offer it.
     struct ToolSuggestion {
         let tool: QuickTool
-        let name: LocalizedStringResource
         let detail: LocalizedStringResource
     }
 
@@ -32,7 +31,6 @@ struct NiceCatch {
     private static func suggestion(for _: Loop) -> ToolSuggestion {
         ToolSuggestion(
             tool: .curious,
-            name: QuickTool.curious.name,
             detail: LocalizedStringResource("tool.curious.detail", defaultValue: "90 sec · explore the feeling"),
         )
     }

@@ -7,6 +7,270 @@
     "All done" : {
 
     },
+    "checkIn.back" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Back"
+          }
+        }
+      }
+    },
+    "checkIn.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "checkIn.done.neutral" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Noticing how you are, whatever it is, is the practice."
+          }
+        }
+      }
+    },
+    "checkIn.done.pleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Noticing a good moment counts too. Your brain learns from what feels good."
+          }
+        }
+      }
+    },
+    "checkIn.done.unpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Thanks for naming it. That alone gives you a little space from it."
+          }
+        }
+      }
+    },
+    "checkIn.feelings.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pick any that fit. Naming it is already a step back from it."
+          }
+        }
+      }
+    },
+    "checkIn.feelings.more" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More"
+          }
+        }
+      }
+    },
+    "checkIn.feelings.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What best describes this feeling?"
+          }
+        }
+      }
+    },
+    "checkIn.finished.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "checkIn.finished.help" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "If it feels like too much, Help has people you can talk to."
+          }
+        }
+      }
+    },
+    "checkIn.finished.help.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Opens Help"
+          }
+        }
+      }
+    },
+    "checkIn.finished.logLoop" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Caught in a loop? Log it"
+          }
+        }
+      }
+    },
+    "checkIn.finished.or" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Or:"
+          }
+        }
+      }
+    },
+    "checkIn.finished.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Checked in"
+          }
+        }
+      }
+    },
+    "checkIn.finished.tryATool" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Try a tool"
+          }
+        }
+      }
+    },
+    "checkIn.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Next"
+          }
+        }
+      }
+    },
+    "checkIn.pleasantness.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Overall, from unpleasant to pleasant."
+          }
+        }
+      }
+    },
+    "checkIn.pleasantness.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How are you feeling right now?"
+          }
+        }
+      }
+    },
+    "checkIn.reason.beKind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meet the harsh inner voice with warmth"
+          }
+        }
+      }
+    },
+    "checkIn.reason.breathe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Slow down with your breath"
+          }
+        }
+      }
+    },
+    "checkIn.reason.curious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Look at the worry instead of being pulled along by it"
+          }
+        }
+      }
+    },
+    "checkIn.reason.noteIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Name what's here, one word at a time"
+          }
+        }
+      }
+    },
+    "checkIn.save.failed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save this check-in. Please try again."
+          }
+        }
+      }
+    },
+    "checkIn.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check-in"
+          }
+        }
+      }
+    },
     "Choose below" : {
 
     },

@@ -64,7 +64,7 @@ struct LogQuestion: View {
                     SuggestedOptionChip(label: suggestedOption, action: addSuggested)
                 }
                 ForEach(choices, id: \.label) { choice in
-                    OptionChip(label: choice.label, isSelected: choice.id == selectedID) {
+                    SelectableChip(verbatim: choice.label, isSelected: choice.id == selectedID) {
                         pick(choice)
                     }
                 }
@@ -221,28 +221,5 @@ private struct AddOwnField: View {
                 .accessibilityHidden(true)
         }
         .onAppear { isFocused = true }
-    }
-}
-
-private struct OptionChip: View {
-    let label: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(label)
-                .font(.theme(.headline))
-                .foregroundStyle(isSelected ? .theme(.textOnAccent) : .theme(.textPrimary))
-                .padding(.horizontal, 18)
-                .frame(minHeight: 48)
-                .background(isSelected ? .theme(.accent) : .theme(.surface), in: .capsule)
-                .overlay {
-                    Capsule().strokeBorder(isSelected ? .theme(.accent) : .theme(.border))
-                }
-                .contentShape(.capsule)
-        }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

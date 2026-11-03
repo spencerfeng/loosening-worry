@@ -51,7 +51,7 @@ struct SettingsView: View {
                         .foregroundStyle(.theme(.redOnTint))
                     }
                 } header: {
-                    SettingsHeader(LocalizedStringResource("settings.reminders", defaultValue: "Notifications"))
+                    SectionLabel(LocalizedStringResource("settings.reminders", defaultValue: "Notifications"))
                 } footer: {
                     SettingsFooter(LocalizedStringResource(
                         "settings.reminder.footer",
@@ -97,7 +97,7 @@ struct SettingsView: View {
                     }
                     .settingsRow()
                 } header: {
-                    SettingsHeader(LocalizedStringResource("settings.support", defaultValue: "Support"))
+                    SectionLabel(LocalizedStringResource("settings.support", defaultValue: "Support"))
                 }
                 // Undoes most of the wider gap Your options takes, so Support sits like Privacy.
                 .listSectionSpacing(2)
@@ -189,7 +189,7 @@ private struct LockSection: View {
             .disabled(lock.method == nil)
             .settingsRow()
         } header: {
-            SettingsHeader(LocalizedStringResource("settings.privacy", defaultValue: "Privacy"))
+            SectionLabel(LocalizedStringResource("settings.privacy", defaultValue: "Privacy"))
         } footer: {
             SettingsFooter(lock.method?.footer ?? LocalizedStringResource(
                 "settings.lock.noPasscode",
@@ -283,24 +283,6 @@ private extension View {
     /// The design's row spacing: 11 points above and below, so an icon row is 56 points.
     func settingsRow() -> some View {
         listRowInsets(.vertical, 11)
-    }
-}
-
-/// A section's name above its card: small, bold, uppercase and gray.
-private struct SettingsHeader: View {
-    let text: LocalizedStringResource
-
-    init(_ text: LocalizedStringResource) {
-        self.text = text
-    }
-
-    var body: some View {
-        Text(text)
-            .textCase(.uppercase)
-            .font(.theme(.footnote))
-            .fontWeight(.bold)
-            .tracking(0.6)
-            .foregroundStyle(.theme(.textTertiary))
     }
 }
 

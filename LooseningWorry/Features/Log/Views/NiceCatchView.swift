@@ -44,24 +44,14 @@ struct NiceCatchView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(alignment: .leading, spacing: 12) {
-                Text(LocalizedStringResource("niceCatch.suggestion", defaultValue: "Try something more rewarding"))
-                    .textCase(.uppercase)
-                    .font(.theme(.footnote))
-                    .fontWeight(.bold)
-                    .tracking(0.6)
-                    .foregroundStyle(.theme(.textTertiary))
-                    .accessibilityAddTraits(.isHeader)
-                ToolSuggestionCard(suggestion: niceCatch.suggestion) { runningTool = niceCatch.suggestion.tool }
-                Button(action: done) {
-                    Text(LocalizedStringResource("niceCatch.done", defaultValue: "Done"))
-                        .font(.theme(.headline))
-                        .foregroundStyle(.theme(.textPrimary))
-                        .frame(maxWidth: .infinity, minHeight: 52)
-                        .background(.theme(.surface), in: .capsule)
-                        .overlay { Capsule().strokeBorder(.theme(.border)) }
-                        .contentShape(.capsule)
+                SectionLabel(LocalizedStringResource(
+                    "niceCatch.suggestion",
+                    defaultValue: "Try something more rewarding",
+                ))
+                ToolCard(tool: niceCatch.suggestion.tool, detail: niceCatch.suggestion.detail) {
+                    runningTool = niceCatch.suggestion.tool
                 }
-                .buttonStyle(.plain)
+                SecondaryButton(title: LocalizedStringResource("niceCatch.done", defaultValue: "Done"), action: done)
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
@@ -230,47 +220,6 @@ private struct WeeklyCount: View {
             )
         )
         .restylingEmphasis(font: .theme(.title3), color: .theme(.accentText))
-    }
-}
-
-/// The suggested tool, as a card that starts it.
-private struct ToolSuggestionCard: View {
-    let suggestion: NiceCatch.ToolSuggestion
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            label
-        }
-        .buttonStyle(.plain)
-    }
-
-    private var label: some View {
-        HStack(spacing: 12) {
-            Image(systemName: suggestion.tool.symbol)
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.theme(suggestion.tool.ink))
-                .frame(width: 40, height: 40)
-                .background(.theme(suggestion.tool.tint), in: .rect(cornerRadius: 12))
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(suggestion.name)
-                    .font(.theme(.headline))
-                    .foregroundStyle(.theme(.textPrimary))
-                Text(suggestion.detail)
-                    .font(.theme(.caption))
-                    .foregroundStyle(.theme(.textTertiary))
-            }
-            Spacer(minLength: 0)
-        }
-        .multilineTextAlignment(.leading)
-        .padding(.vertical, 12)
-        .padding(.horizontal, 14)
-        .frame(minHeight: 64)
-        .background(.theme(.surface), in: .rect(cornerRadius: 18))
-        .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(.theme(.borderSubtle)) }
-        .contentShape(.rect(cornerRadius: 18))
-        .accessibilityElement(children: .combine)
     }
 }
 

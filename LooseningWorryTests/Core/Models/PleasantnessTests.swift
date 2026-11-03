@@ -11,6 +11,13 @@ struct PleasantnessTests {
         ])
     }
 
+    @Test
+    func `the three steps below neutral are unpleasant, the three above pleasant`() {
+        #expect(Pleasantness.allCases.map(\.side) == [
+            .unpleasant, .unpleasant, .unpleasant, .neutral, .pleasant, .pleasant, .pleasant,
+        ])
+    }
+
     /// A check-in stores these, so none may change once released.
     @Test
     func `each step has a stable id`() {
