@@ -24,7 +24,7 @@ struct SessionStoreTests {
         #expect(session.tool == .breathe)
         #expect(session.startedAt == start)
         #expect(session.durationSeconds == 62)
-        #expect(session.feeling == nil)
+        #expect(session.outcome == nil)
         #expect(session.loop == nil)
     }
 
@@ -32,24 +32,24 @@ struct SessionStoreTests {
     func `the feeling answered is saved with the session, and a changed answer replaces it`() throws {
         let session = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
 
-        try store.setFeeling(.lighter, on: session)
-        try store.setFeeling(.same, on: session)
+        try store.setOutcome(.lighter, on: session)
+        try store.setOutcome(.same, on: session)
 
         let saved = try #require(try container.mainContext.fetch(FetchDescriptor<ToolSession>()).first)
-        #expect(saved.feeling == .same)
+        #expect(saved.outcome == .same)
     }
 
     @Test
     func `a tool's feelings leave out other tools and runs left unanswered`() throws {
         let first = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
-        try store.setFeeling(.lighter, on: first)
+        try store.setOutcome(.lighter, on: first)
         try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
         let breathe = try store.record(.breathe, startedAt: start, duration: .seconds(60), loop: nil)
-        try store.setFeeling(.heavier, on: breathe)
+        try store.setOutcome(.heavier, on: breathe)
         let last = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
-        try store.setFeeling(.same, on: last)
+        try store.setOutcome(.same, on: last)
 
-        #expect(try store.feelings(for: .curious).sorted { $0.rawValue < $1.rawValue } == [.lighter, .same])
+        #expect(try store.outcomes(for: .curious).sorted { $0.rawValue < $1.rawValue } == [.lighter, .same])
     }
 
     /// A tool started from Nice catch belongs to the loop just logged.

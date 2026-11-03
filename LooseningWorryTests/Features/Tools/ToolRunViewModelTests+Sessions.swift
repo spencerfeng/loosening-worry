@@ -61,7 +61,7 @@ extension ToolRunViewModelTests {
         model.choose(.lighter)
         model.choose(.same)
 
-        #expect(sessions.sessions.map(\.feeling) == [.same])
+        #expect(sessions.sessions.map(\.outcome) == [.same])
     }
 
     @Test
@@ -77,7 +77,7 @@ extension ToolRunViewModelTests {
         model.choose(.lighter)
 
         #expect(sessions.sessions.map(\.tool) == [.curious, .breathe])
-        #expect(sessions.sessions.map(\.feeling) == [.heavier, .lighter])
+        #expect(sessions.sessions.map(\.outcome) == [.heavier, .lighter])
     }
 
     @Test
@@ -106,14 +106,14 @@ extension ToolRunViewModelTests {
         model.choose(.lighter)
 
         #expect(model.stage == .finished)
-        #expect(model.feeling == .lighter)
+        #expect(model.outcome == .lighter)
         #expect(model.saveFailure == .session)
     }
 
     /// The session saved; only the answer didn't, so the screen says that, not that the session failed.
     @Test
     func `an answer that couldn't be saved is told apart from the session`() {
-        sessions.failingFeeling = true
+        sessions.failingOutcome = true
         let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
@@ -121,7 +121,7 @@ extension ToolRunViewModelTests {
         model.choose(.lighter)
 
         #expect(sessions.sessions.count == 1)
-        #expect(model.saveFailure == .feeling)
+        #expect(model.saveFailure == .outcome)
     }
 
     /// The time actually spent, which Back 15 doesn't take away from.
@@ -155,7 +155,7 @@ extension ToolRunViewModelTests {
 
         model.choose(.same)
 
-        #expect(model.feeling == .same)
+        #expect(model.outcome == .same)
         #expect(sessions.sessions.isEmpty)
         #expect(model.saveFailure == nil)
     }

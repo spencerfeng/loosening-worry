@@ -6,9 +6,9 @@ import SwiftData
 protocol SessionRecording {
     @discardableResult
     func record(_ tool: QuickTool, startedAt: Date, duration: Duration, loop: Loop?) throws -> ToolSession
-    func setFeeling(_ feeling: Feeling, on session: ToolSession) throws
+    func setOutcome(_ outcome: ToolOutcome, on session: ToolSession) throws
     /// The answers to "How do you feel now?" after runs of `tool`; runs left unanswered have none.
-    func feelings(for tool: QuickTool) throws -> [Feeling]
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome]
 }
 
 /// Saves each run of a tool once it ends, and the person's answer to "How do you feel now?". Each change is saved
@@ -34,22 +34,22 @@ struct SessionStore: SessionRecording {
 
     /// Saves the answer to "How do you feel now?"; answering again replaces it. If saving fails the answer goes back
     /// to what was saved, so it isn't saved later by mistake.
-    func setFeeling(_ feeling: Feeling, on session: ToolSession) throws {
-        let saved = session.feeling
-        session.feeling = feeling
+    func setOutcome(_ outcome: ToolOutcome, on session: ToolSession) throws {
+        let saved = session.outcome
+        session.outcome = outcome
         do {
             try context.save()
         } catch {
-            session.feeling = saved
+            session.outcome = saved
             throw error
         }
     }
 
     /// Filtered here rather than in a predicate, which can't reliably compare enum properties; a person's runs number
     /// in the hundreds at most.
-    func feelings(for tool: QuickTool) throws -> [Feeling] {
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome] {
         try context.fetch(FetchDescriptor<ToolSession>())
             .filter { $0.tool == tool }
-            .compactMap(\.feeling)
+            .compactMap(\.outcome)
     }
 }

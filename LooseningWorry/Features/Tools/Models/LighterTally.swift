@@ -13,10 +13,10 @@ struct LighterTally: Equatable {
 
     /// None until three runs are answered, as "1 of 1 times" says nothing yet. None while fewer than half were
     /// lighter either: it's there to encourage, and a low count could read as doing it wrong.
-    init?(feelings: [Feeling]) {
-        let lighter = feelings.count { $0 == .lighter }
-        guard feelings.count >= 3, lighter * 2 >= feelings.count else { return nil }
-        self.init(lighter: lighter, answered: feelings.count)
+    init?(outcomes: [ToolOutcome]) {
+        let lighter = outcomes.count { $0 == .lighter }
+        guard outcomes.count >= 3, lighter * 2 >= outcomes.count else { return nil }
+        self.init(lighter: lighter, answered: outcomes.count)
     }
 
     /// "**Get curious** has left you lighter **5 of 7** times.", with the name and count in bold for the card to

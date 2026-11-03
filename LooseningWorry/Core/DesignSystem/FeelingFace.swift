@@ -3,7 +3,7 @@ import SwiftUI
 /// The design's faces, for the finish screen's feelings and onboarding's loop: a circle and two eyes, with a smile,
 /// a flat mouth or a frown.
 struct FeelingFace: Shape {
-    let feeling: Feeling
+    let feeling: ToolOutcome
 
     func path(in rect: CGRect) -> Path {
         // Drawn on the design's 40 by 40 grid, then scaled to fit.

@@ -66,7 +66,7 @@
             session.loop = newestFirst.first
             session.startedAt = hoursAgo(1)
             session.durationSeconds = 120
-            session.feeling = .lighter
+            session.outcome = .lighter
             context.insert(session)
 
             for day in 1 ... 3 {

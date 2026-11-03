@@ -8,7 +8,7 @@ final class FakeSessionRecorder: SessionRecording {
     /// Fails to save sessions.
     var failing = false
     /// Saves sessions, but fails to save the feeling.
-    var failingFeeling = false
+    var failingOutcome = false
     /// Fails to read earlier feelings.
     var failingReads = false
 
@@ -23,25 +23,25 @@ final class FakeSessionRecorder: SessionRecording {
         return session
     }
 
-    func setFeeling(_ feeling: Feeling, on session: ToolSession) throws {
-        if failing || failingFeeling {
+    func setOutcome(_ outcome: ToolOutcome, on session: ToolSession) throws {
+        if failing || failingOutcome {
             throw Failed()
         }
-        session.feeling = feeling
+        session.outcome = outcome
     }
 
-    func feelings(for tool: QuickTool) throws -> [Feeling] {
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome] {
         if failingReads {
             throw Failed()
         }
-        return sessions.filter { $0.tool == tool }.compactMap(\.feeling)
+        return sessions.filter { $0.tool == tool }.compactMap(\.outcome)
     }
 
-    /// Runs of `tool` from before, one per feeling; `nil` is a run left unanswered.
-    func saveEarlier(_ tool: QuickTool, feelings: [Feeling?]) {
-        for feeling in feelings {
+    /// Runs of `tool` from before, one per outcome; `nil` is a run left unanswered.
+    func saveEarlier(_ tool: QuickTool, outcomes: [ToolOutcome?]) {
+        for outcome in outcomes {
             let session = ToolSession(tool: tool)
-            session.feeling = feeling
+            session.outcome = outcome
             sessions.append(session)
         }
     }

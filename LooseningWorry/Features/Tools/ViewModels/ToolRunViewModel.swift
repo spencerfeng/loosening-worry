@@ -12,14 +12,14 @@ final class ToolRunViewModel {
 
     /// What couldn't be saved, for the finish screen to say.
     enum SaveFailure {
-        case session, feeling
+        case session, outcome
     }
 
     private(set) var tool: QuickTool
     private(set) var stage = Stage.running
     private(set) var elapsed = Duration.zero
     /// The answer to "How do you feel now?"; the person can leave it unanswered.
-    private(set) var feeling: Feeling?
+    private(set) var outcome: ToolOutcome?
     /// Whether the timer has been started yet, so Play can say Start rather than Resume.
     private(set) var hasStarted = false
     /// Whether the run ended because a timed tool's time was up, rather than on End.
@@ -42,7 +42,7 @@ final class ToolRunViewModel {
     /// Whether the person has engaged with a paged tool, which runs from the moment it opens; only then is it a
     /// session.
     private var hasEngaged = false
-    /// The run saved as it ended, which the feeling is saved with.
+    /// The run saved as it ended, which the outcome is saved with.
     private var session: ToolSession?
     /// When the timer last started running; `nil` until Play, and while paused.
     private var runningSince: Date?
@@ -51,8 +51,8 @@ final class ToolRunViewModel {
     /// The motion clock's counterparts, which Back 15 leaves alone.
     private var motionSince: Date?
     private var motionBefore = Duration.zero
-    /// This tool's feelings from before this run, read as it finishes.
-    private var earlierFeelings: [Feeling] = []
+    /// This tool's outcomes from before this run, read as it finishes.
+    private var earlierOutcomes: [ToolOutcome] = []
 
     /// The prompts are chosen here, so a guided tool shows its first one from the moment it opens.
     init(
@@ -119,13 +119,13 @@ final class ToolRunViewModel {
     /// How often this tool has left the person lighter, counting the answer showing now. A run that wasn't saved
     /// isn't counted, as it won't be there to count next time.
     var lighterTally: LighterTally? {
-        guard let feeling, session != nil else { return nil }
-        return LighterTally(feelings: earlierFeelings + [feeling])
+        guard let outcome, session != nil else { return nil }
+        return LighterTally(outcomes: earlierOutcomes + [outcome])
     }
 
     /// After feeling heavier, a tool to try next, offered beside Get help: Breathe, or Get curious after Breathe.
     var suggestedTool: QuickTool? {
-        guard feeling == .heavier else { return nil }
+        guard outcome == .heavier else { return nil }
         return tool == .breathe ? .curious : .breathe
     }
 
@@ -205,7 +205,7 @@ final class ToolRunViewModel {
         elapsed = .zero
         elapsedBefore = .zero
         motionBefore = .zero
-        feeling = nil
+        outcome = nil
         hasStarted = false
         finishedOnTime = false
         hasEngaged = false
@@ -224,14 +224,14 @@ final class ToolRunViewModel {
     }
 
     /// The answer to "How do you feel now?", saved with the session.
-    func choose(_ feeling: Feeling) {
-        self.feeling = feeling
+    func choose(_ outcome: ToolOutcome) {
+        self.outcome = outcome
         guard let session else { return }
         do {
-            try sessions.setFeeling(feeling, on: session)
+            try sessions.setOutcome(outcome, on: session)
         } catch {
-            Self.logger.error("Couldn't save the feeling with the session: \(error)")
-            saveFailure = .feeling
+            Self.logger.error("Couldn't save the outcome with the session: \(error)")
+            saveFailure = .outcome
         }
     }
 
@@ -268,7 +268,7 @@ final class ToolRunViewModel {
     /// Once only: finishing again would read back the answer just saved as an earlier one.
     private func finish(now: Date) {
         guard stage == .running else { return }
-        readEarlierFeelings()
+        readEarlierOutcomes()
         record(now: now)
         runningSince = nil
         motionSince = nil
@@ -276,12 +276,12 @@ final class ToolRunViewModel {
     }
 
     /// Read before this run is saved, so its own answer is counted only once.
-    private func readEarlierFeelings() {
+    private func readEarlierOutcomes() {
         do {
-            earlierFeelings = try sessions.feelings(for: tool)
+            earlierOutcomes = try sessions.outcomes(for: tool)
         } catch {
-            Self.logger.error("Couldn't read the tool's earlier feelings: \(error)")
-            earlierFeelings = []
+            Self.logger.error("Couldn't read the tool's earlier outcomes: \(error)")
+            earlierOutcomes = []
         }
     }
 

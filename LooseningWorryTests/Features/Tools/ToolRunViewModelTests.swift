@@ -134,12 +134,12 @@ final class ToolRunViewModelTests {
         let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
-        #expect(model.feeling == nil)
+        #expect(model.outcome == nil)
 
         model.choose(.lighter)
         model.choose(.same)
 
-        #expect(model.feeling == .same)
+        #expect(model.outcome == .same)
     }
 
     @Test(arguments: [
@@ -158,8 +158,8 @@ final class ToolRunViewModelTests {
         #expect(model.suggestedTool == suggested)
     }
 
-    @Test(arguments: [Feeling?.none, .lighter, .same])
-    func `only feeling heavier suggests another tool`(feeling: Feeling?) {
+    @Test(arguments: [ToolOutcome?.none, .lighter, .same])
+    func `only feeling heavier suggests another tool`(feeling: ToolOutcome?) {
         let model = model(.curious)
         model.play(now: start)
         model.end(now: start.addingTimeInterval(30))
@@ -186,7 +186,7 @@ final class ToolRunViewModelTests {
         #expect(model.stage == .running)
         #expect(model.hasStarted == false)
         #expect(model.elapsed == .zero)
-        #expect(model.feeling == nil)
+        #expect(model.outcome == nil)
 
         model.play(now: later)
         model.tick(now: later.addingTimeInterval(5))

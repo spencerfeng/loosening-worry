@@ -138,15 +138,79 @@ struct ModelPersistenceTests {
         #expect(override.starter == nil)
     }
 
-    @Test(arguments: [QuickTool.curious, .breathe, .noteIt, .beKind], [Feeling.lighter, .same, .heavier])
-    func `a tool session reads back with its tool and feeling`(tool: QuickTool, feeling: Feeling) throws {
+    @Test(arguments: [QuickTool.curious, .breathe, .noteIt, .beKind], [ToolOutcome.lighter, .same, .heavier])
+    func `a tool session reads back with its tool and outcome`(tool: QuickTool, outcome: ToolOutcome) throws {
         let session = ToolSession(tool: tool)
-        session.feeling = feeling
+        session.outcome = outcome
 
         let reader = try save(session)
         let fetched = try #require(try reader.fetch(FetchDescriptor<ToolSession>()).only)
 
         #expect(fetched.tool == tool)
-        #expect(fetched.feeling == feeling)
+        #expect(fetched.outcome == outcome)
+    }
+
+    @Test
+    func `a check-in reads back with how it felt and the words picked, in order`() throws {
+        let createdAt = Date(timeIntervalSince1970: 1_800_000_000)
+        let checkIn = CheckIn(CheckInAnswer(pleasantness: .unpleasant, feelings: [.overwhelmed, .anxious]))
+        checkIn.createdAt = createdAt
+
+        let reader = try save(checkIn)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<CheckIn>()).only)
+
+        #expect(fetched.createdAt == createdAt)
+        #expect(fetched.pleasantness == .unpleasant)
+        #expect(fetched.feelings == [.overwhelmed, .anxious])
+    }
+
+    /// A newer version may add words; until this one knows them, they're left out rather than shown wrong.
+    @Test
+    func `a check-in skips words this version doesn't know`() {
+        let checkIn = CheckIn(CheckInAnswer(pleasantness: .neutral, feelings: [.calm]))
+
+        checkIn.feelingIDs.append("feeling.addedLater")
+
+        #expect(checkIn.feelings == [.calm])
+    }
+
+    /// A newer version may add a step to the scale; until this one knows it, the check-in has none rather than failing
+    /// to load.
+    @Test
+    func `a check-in from a step this version doesn't know has no pleasantness`() throws {
+        let checkIn = CheckIn(CheckInAnswer(pleasantness: .neutral, feelings: [.calm]))
+        checkIn.pleasantnessID = "addedLater"
+
+        let reader = try save(checkIn)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<CheckIn>()).only)
+
+        #expect(fetched.pleasantness == nil)
+        #expect(fetched.feelings == [.calm])
+    }
+
+    /// A newer version may add a tool; until this one knows it, the run has no tool rather than failing to load.
+    @Test
+    func `a tool session from a tool this version doesn't know has no tool`() throws {
+        let session = ToolSession(tool: .breathe)
+        session.toolID = "addedLater"
+
+        let reader = try save(session)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<ToolSession>()).only)
+
+        #expect(fetched.tool == nil)
+    }
+
+    /// A newer version may add an answer; until this one knows it, the run counts as unanswered rather than failing
+    /// to load.
+    @Test
+    func `a tool session with an answer this version doesn't know has no outcome`() throws {
+        let session = ToolSession(tool: .breathe)
+        session.outcomeID = "addedLater"
+
+        let reader = try save(session)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<ToolSession>()).only)
+
+        #expect(fetched.outcome == nil)
+        #expect(fetched.tool == .breathe)
     }
 }

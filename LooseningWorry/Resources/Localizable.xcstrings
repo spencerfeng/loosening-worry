@@ -310,6 +310,424 @@
         }
       }
     },
+    "feeling.amazed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Amazed"
+          }
+        }
+      }
+    },
+    "feeling.amused" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Amused"
+          }
+        }
+      }
+    },
+    "feeling.angry" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Angry"
+          }
+        }
+      }
+    },
+    "feeling.annoyed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Annoyed"
+          }
+        }
+      }
+    },
+    "feeling.anxious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Anxious"
+          }
+        }
+      }
+    },
+    "feeling.ashamed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ashamed"
+          }
+        }
+      }
+    },
+    "feeling.brave" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Brave"
+          }
+        }
+      }
+    },
+    "feeling.calm" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Calm"
+          }
+        }
+      }
+    },
+    "feeling.confident" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Confident"
+          }
+        }
+      }
+    },
+    "feeling.content" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Content"
+          }
+        }
+      }
+    },
+    "feeling.disappointed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disappointed"
+          }
+        }
+      }
+    },
+    "feeling.discouraged" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Discouraged"
+          }
+        }
+      }
+    },
+    "feeling.disgusted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disgusted"
+          }
+        }
+      }
+    },
+    "feeling.drained" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Drained"
+          }
+        }
+      }
+    },
+    "feeling.embarrassed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Embarrassed"
+          }
+        }
+      }
+    },
+    "feeling.excited" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Excited"
+          }
+        }
+      }
+    },
+    "feeling.frustrated" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Frustrated"
+          }
+        }
+      }
+    },
+    "feeling.grateful" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Grateful"
+          }
+        }
+      }
+    },
+    "feeling.guilty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Guilty"
+          }
+        }
+      }
+    },
+    "feeling.happy" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Happy"
+          }
+        }
+      }
+    },
+    "feeling.hopeful" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hopeful"
+          }
+        }
+      }
+    },
+    "feeling.hopeless" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hopeless"
+          }
+        }
+      }
+    },
+    "feeling.indifferent" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Indifferent"
+          }
+        }
+      }
+    },
+    "feeling.irritated" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Irritated"
+          }
+        }
+      }
+    },
+    "feeling.jealous" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Jealous"
+          }
+        }
+      }
+    },
+    "feeling.joyful" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Joyful"
+          }
+        }
+      }
+    },
+    "feeling.lonely" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Lonely"
+          }
+        }
+      }
+    },
+    "feeling.overwhelmed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Overwhelmed"
+          }
+        }
+      }
+    },
+    "feeling.passionate" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Passionate"
+          }
+        }
+      }
+    },
+    "feeling.peaceful" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Peaceful"
+          }
+        }
+      }
+    },
+    "feeling.proud" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Proud"
+          }
+        }
+      }
+    },
+    "feeling.relieved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Relieved"
+          }
+        }
+      }
+    },
+    "feeling.sad" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sad"
+          }
+        }
+      }
+    },
+    "feeling.satisfied" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Satisfied"
+          }
+        }
+      }
+    },
+    "feeling.scared" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Scared"
+          }
+        }
+      }
+    },
+    "feeling.stressed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stressed"
+          }
+        }
+      }
+    },
+    "feeling.surprised" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Surprised"
+          }
+        }
+      }
+    },
+    "feeling.worried" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Worried"
+          }
+        }
+      }
+    },
     "help.call" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2560,6 +2978,83 @@
     },
     "Open" : {
 
+    },
+    "pleasantness.neutral" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Neutral"
+          }
+        }
+      }
+    },
+    "pleasantness.pleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pleasant"
+          }
+        }
+      }
+    },
+    "pleasantness.slightlyPleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Slightly pleasant"
+          }
+        }
+      }
+    },
+    "pleasantness.slightlyUnpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Slightly unpleasant"
+          }
+        }
+      }
+    },
+    "pleasantness.unpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unpleasant"
+          }
+        }
+      }
+    },
+    "pleasantness.veryPleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Very pleasant"
+          }
+        }
+      }
+    },
+    "pleasantness.veryUnpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Very unpleasant"
+          }
+        }
+      }
     },
     "reminder.body" : {
       "extractionState" : "extracted_with_value",

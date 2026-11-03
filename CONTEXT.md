@@ -14,10 +14,11 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   row on Home (under "For you today", above the lesson) or from the reminder after the course. Two steps: how it feels
   overall, on Apple's seven-step State of Mind scale from very unpleasant to very pleasant, then any of HealthKit's 38
   State of Mind labels that describe it, with the ones that match the first answer listed first and the rest under
-  More. It can be done any number of times a day; Home shows today's count and the time of the last one. It never
-  leads to the lesson. When the feeling is on the unpleasant side, the finish screen suggests a tool chosen from the
-  words picked (worry words to Get curious, self-judgment to Be kind, heated words to Note it, drained to Breathe),
-  with the other tools and Log a loop beside it; on very unpleasant it also points to Help.
+  More. The words are fixed: unlike a loop's options, they can't be added to, hidden or reworded. It can be done any
+  number of times a day; Home shows today's count and the time of the last one. It never leads to the lesson. When the
+  feeling is on the unpleasant side, the finish screen suggests a tool chosen from the words picked (worry words to
+  Get curious, self-judgment to Be kind, heated words to Note it, drained to Breathe), with the other tools and Log a
+  loop beside it; on very unpleasant it also points to Help.
 - **Reminder**: the daily notification, at a time the person picks during onboarding or in Settings
   (`ReminderSettings`, `ReminderScheduler`). During the course it names the next lesson; once every lesson is done it
   invites them to log a loop. Planned with the check-in: after the course it will ask "How are you right now?" and

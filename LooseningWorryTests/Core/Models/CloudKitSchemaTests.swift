@@ -36,6 +36,15 @@ struct CloudKitSchemaTests {
     func `app schema holds every model`() {
         let names = Set(AppModelContainer.schema.entities.map(\.name))
 
-        #expect(names == ["LoopOption", "Loop", "ToolSession", "LessonProgress", "KeptPhrase"])
+        #expect(names == ["LoopOption", "Loop", "ToolSession", "LessonProgress", "KeptPhrase", "CheckIn"])
+    }
+
+    /// Synced records keep their attributes' names, so once released, renaming one would leave every earlier answer
+    /// behind.
+    @Test
+    func `a tool session stores its tool and outcome by id`() throws {
+        let session = try #require(AppModelContainer.schema.entities.first { $0.name == "ToolSession" })
+
+        #expect(Set(session.attributes.map(\.name)).isSuperset(of: ["toolID", "outcomeID"]))
     }
 }

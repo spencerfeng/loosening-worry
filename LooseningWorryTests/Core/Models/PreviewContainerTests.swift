@@ -72,7 +72,7 @@ struct PreviewContainerTests {
             .map(\.day)
             .sorted()
 
-        #expect(sessions.contains { $0.loop != nil && $0.feeling != nil })
+        #expect(sessions.contains { $0.loop != nil && $0.outcome != nil })
         try #require(completedDays.count >= 3)
         #expect(completedDays == Array(1 ... completedDays.count))
     }

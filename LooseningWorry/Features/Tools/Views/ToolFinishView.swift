@@ -24,7 +24,7 @@ struct ToolFinishView: View {
                 }
                 .multilineTextAlignment(.center)
 
-                FeelingPicker(feeling: model.feeling) { model.choose($0) }
+                OutcomePicker(outcome: model.outcome) { model.choose($0) }
 
                 // Quietly, so a failed save doesn't spoil the moment; the rest of the screen works as ever.
                 if let failure = model.saveFailure {
@@ -38,14 +38,14 @@ struct ToolFinishView: View {
                         .foregroundStyle(.theme(.textTertiary))
                 }
 
-                if let feeling = model.feeling {
-                    FeelingMessage(
-                        text: model.tool.finishMessage(for: feeling),
+                if let outcome = model.outcome {
+                    OutcomeMessage(
+                        text: model.tool.finishMessage(for: outcome),
                         suggestedTool: model.suggestedTool,
                         tryTool: { model.start($0, now: .now) },
                         getHelp: { isShowingHelp = true },
                     )
-                    .id(feeling)
+                    .id(outcome)
                     .transition(reveal)
                 }
 
@@ -56,7 +56,7 @@ struct ToolFinishView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 24)
-            .animation(.easeOut(duration: 0.3), value: model.feeling)
+            .animation(.easeOut(duration: 0.3), value: model.outcome)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 6) {
@@ -113,19 +113,19 @@ struct ToolFinishView: View {
 
 /// Lighter, About the same, Heavier: one choice, which can be changed. Side by side, or stacked as rows at
 /// accessibility sizes so the words aren't broken.
-private struct FeelingPicker: View {
+private struct OutcomePicker: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    let feeling: Feeling?
-    let choose: (Feeling) -> Void
+    let outcome: ToolOutcome?
+    let choose: (ToolOutcome) -> Void
 
     var body: some View {
         let isStacked = dynamicTypeSize.isAccessibilitySize
         let choices = isStacked ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
         let face = isStacked ? AnyLayout(HStackLayout(spacing: 12)) : AnyLayout(VStackLayout(spacing: 8))
         choices {
-            ForEach([Feeling.lighter, .same, .heavier], id: \.self) { option in
-                let isChosen = feeling == option
+            ForEach([ToolOutcome.lighter, .same, .heavier], id: \.self) { option in
+                let isChosen = outcome == option
                 Button {
                     choose(option)
                 } label: {
@@ -156,8 +156,8 @@ private struct FeelingPicker: View {
                 .accessibilityAddTraits(isChosen ? .isSelected : [])
             }
         }
-        .animation(.easeOut(duration: 0.15), value: feeling)
-        .sensoryFeedback(.selection, trigger: feeling)
+        .animation(.easeOut(duration: 0.15), value: outcome)
+        .sensoryFeedback(.selection, trigger: outcome)
     }
 }
 
@@ -192,7 +192,7 @@ private struct LighterTallyCard: View {
 }
 
 /// What the answer means; after Heavier, a tool to try and the way to Help.
-private struct FeelingMessage: View {
+private struct OutcomeMessage: View {
     let text: LocalizedStringResource
     let suggestedTool: QuickTool?
     let tryTool: (QuickTool) -> Void
@@ -280,7 +280,7 @@ private struct OtherTools: View {
     }
 }
 
-private extension Feeling {
+private extension ToolOutcome {
     var label: LocalizedStringResource {
         switch self {
         case .lighter: LocalizedStringResource("tool.feeling.lighter", defaultValue: "Lighter")
@@ -293,8 +293,8 @@ private extension Feeling {
 /// The finish screen's words for each answer. Lighter names what the tool gave; the others fit every tool, except
 /// that Heavier after Breathe points to curiosity rather than breathing again. All are drafts for the reviewer.
 private extension QuickTool {
-    func finishMessage(for feeling: Feeling) -> LocalizedStringResource {
-        switch (feeling, self) {
+    func finishMessage(for outcome: ToolOutcome) -> LocalizedStringResource {
+        switch (outcome, self) {
         case (.lighter, .curious):
             LocalizedStringResource(
                 "tool.finish.lighter.curious",
