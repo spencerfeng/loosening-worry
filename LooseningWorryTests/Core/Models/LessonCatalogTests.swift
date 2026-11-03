@@ -47,7 +47,7 @@ struct LessonCatalogTests {
         #expect(lesson.cards.last?.title != nil, "Day \(lesson.day)")
     }
 
-    /// Onboarding sets the daily check-in, so Day 1's task is one to do away from the app: there's nothing to open.
+    /// Onboarding sets the daily reminder, so Day 1's task is one to do away from the app: there's nothing to open.
     @Test
     func `the first day's task is to notice worry switching on`() throws {
         let task = try #require(LessonCatalog.bundled.lesson(day: 1)?.cards.last)

@@ -2140,105 +2140,6 @@
     "Not answered yet" : {
 
     },
-    "onboarding.checkIn.evening" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Evening"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.line" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When do you usually have a few minutes?"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.midday" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Midday"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.morning" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Morning"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.note" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Change it anytime in Settings."
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.notNow" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Not now"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.time" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Check-in time"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.title" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Daily check-in"
-          }
-        }
-      }
-    },
-    "onboarding.checkIn.turnOn" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Turn on check-in"
-          }
-        }
-      }
-    },
     "onboarding.continue" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2433,6 +2334,105 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Lying awake"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.evening" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Evening"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.line" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When do you usually have a few minutes?"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.midday" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Midday"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.morning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Morning"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.note" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Change it anytime in Settings."
+          }
+        }
+      }
+    },
+    "onboarding.reminder.notNow" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Not now"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.time" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Reminder time"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Daily reminder"
+          }
+        }
+      }
+    },
+    "onboarding.reminder.turnOn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Turn on reminder"
           }
         }
       }
@@ -2732,7 +2732,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Notifications are off for Loosening Worry. Turn them on in Settings for your check-in."
+            "value" : "Notifications are off for Loosening Worry. Turn them on in Settings for your reminder."
           }
         }
       }
@@ -2787,7 +2787,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Daily check-in"
+            "value" : "Daily reminder"
           }
         }
       }
@@ -2798,7 +2798,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Couldn't set the check-in. Try again."
+            "value" : "Couldn't set the reminder. Try again."
           }
         }
       }

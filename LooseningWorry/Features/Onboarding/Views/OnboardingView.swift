@@ -22,18 +22,18 @@ struct OnboardingView: View {
             VStack(spacing: 6) {
                 PageDots(current: model.step)
                     .padding(.bottom, 18)
-                if model.step == .checkIn {
+                if model.step == .reminder {
                     PrimaryButton(title: LocalizedStringResource(
-                        "onboarding.checkIn.turnOn",
-                        defaultValue: "Turn on check-in",
+                        "onboarding.reminder.turnOn",
+                        defaultValue: "Turn on reminder",
                     )) {
-                        Task { await model.turnOnCheckIn() }
+                        Task { await model.turnOnReminder() }
                     }
                     .disabled(model.isTurningOn)
                     Button {
-                        model.skipCheckIn()
+                        model.skipReminder()
                     } label: {
-                        Text(LocalizedStringResource("onboarding.checkIn.notNow", defaultValue: "Not now"))
+                        Text(LocalizedStringResource("onboarding.reminder.notNow", defaultValue: "Not now"))
                             .font(.theme(.callout))
                             .foregroundStyle(.theme(.accentText))
                             .frame(maxWidth: .infinity, minHeight: 44)
@@ -42,7 +42,7 @@ struct OnboardingView: View {
                     .buttonStyle(.plain)
                     .disabled(model.isTurningOn)
                     Text(LocalizedStringResource(
-                        "onboarding.checkIn.note",
+                        "onboarding.reminder.note",
                         defaultValue: "Change it anytime in Settings.",
                     ))
                     .font(.theme(.caption))
@@ -113,7 +113,7 @@ private struct OnboardingPage: View {
         case .loop: LoopArt()
         case .uses: UsesPanel()
         case .goodToKnow: GoodToKnowPanel()
-        case .checkIn: CheckInPicker(model: model)
+        case .reminder: ReminderPicker(model: model)
         }
     }
 }
@@ -166,7 +166,7 @@ private extension OnboardingStep {
         case .loop: LocalizedStringResource("onboarding.loop.title", defaultValue: "Worry runs in loops")
         case .uses: LocalizedStringResource("onboarding.uses.title", defaultValue: "When worry shows up")
         case .goodToKnow: LocalizedStringResource("onboarding.goodToKnow.title", defaultValue: "Good to know")
-        case .checkIn: LocalizedStringResource("onboarding.checkIn.title", defaultValue: "Daily check-in")
+        case .reminder: LocalizedStringResource("onboarding.reminder.title", defaultValue: "Daily reminder")
         }
     }
 
@@ -180,9 +180,9 @@ private extension OnboardingStep {
             LocalizedStringResource("onboarding.uses.line", defaultValue: "Plus a short lesson each day.")
         case .goodToKnow:
             LocalizedStringResource("onboarding.goodToKnow.line", defaultValue: "Two things before you start.")
-        case .checkIn:
+        case .reminder:
             LocalizedStringResource(
-                "onboarding.checkIn.line",
+                "onboarding.reminder.line",
                 defaultValue: "When do you usually have a few minutes?",
             )
         }
@@ -192,7 +192,7 @@ private extension OnboardingStep {
         switch self {
         case .welcome: LocalizedStringResource("onboarding.getStarted", defaultValue: "Get started")
         case .goodToKnow: LocalizedStringResource("onboarding.gotIt", defaultValue: "Got it")
-        case .loop, .uses, .checkIn: LocalizedStringResource("onboarding.continue", defaultValue: "Continue")
+        case .loop, .uses, .reminder: LocalizedStringResource("onboarding.continue", defaultValue: "Continue")
         }
     }
 }

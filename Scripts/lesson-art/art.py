@@ -458,7 +458,7 @@ ART['day9.try'] = (VT, f'<circle cx="86" cy="100" r="40" fill="{V}"/>' + cloud(8
     + f'<circle cx="256" cy="100" r="34" fill="{W}"/>' + phone(242, 76, 28, 48, BS) + spark(86, 36, A, 0.8))
 ART['day9.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="24" fill="{A}"/>' + bolt(244, 56, W, 0.9) + pencil(240, 134) + spark(84, 60, V, 0.8))
 
-# Day 10 · Stage 1 check-in
+# Day 10 · Stage 1 review
 ART['day10.hook'] = (VT, ring3(ringc=VL, arr=V) + check(206, 26, 11) + check(262, 148, 11) + check(80, 148, 11))
 ART['day10.idea1'] = (AT, f'<path d="M150 120 L132 176 L150 166 L168 176z M192 120 L210 176 L192 166 L174 176z" fill="{R}"/>'
     + f'<circle cx="171" cy="90" r="50" fill="{A}"/><circle cx="171" cy="90" r="38" fill="#F7DDB5"/>' + star(171, 90, 24, A) + spark(260, 50, V, 0.8) + spark(80, 140, G, 0.7))
@@ -627,7 +627,7 @@ ART['day19.try'] = (AT, f'<rect x="60" y="40" width="80" height="120" rx="8" fil
 ART['day19.task'] = (BT, f'<rect x="58" y="96" width="100" height="70" rx="12" fill="{W}"/><rect x="184" y="96" width="100" height="70" rx="12" fill="{W}"/>' + check(108, 130, 18) + refresh(234, 132, 18, A, 6)
     + f'<g transform="translate(171 52) rotate(-8)"><rect x="-36" y="-22" width="72" height="44" rx="8" fill="{V}"/>' + lines(-24, -8, [48, 34], c=W, gap=14, h=6) + '</g>')
 
-# Day 20 · Stage 2 check-in
+# Day 20 · Stage 2 review
 ART['day20.hook'] = (VT, star(171, 100, 56, VM) + spark(256, 56, VL, 0.9) + spark(88, 140, VL, 0.7))
 ART['day20.idea1'] = (AT, ''.join(f'<g opacity="{1-i*0.28:.2f}"><ellipse cx="{84+i*80}" cy="132" rx="16" ry="12" fill="{V}"/><path d="M{98+i*80} 132 V64 l26 -8 v16 l-26 8" fill="none" stroke="{V}" stroke-width="6" stroke-linejoin="round"/></g>' for i in range(3)))
 ART['day20.idea2'] = (GT, f'<rect x="40" y="166" width="262" height="10" rx="5" fill="{TAN}"/>' + plant(84, 166, 98) + plant(171, 166, 54) + plant(258, 166, 76) + spark(286, 40, A, 0.7))

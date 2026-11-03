@@ -1,5 +1,5 @@
-/// The suggested check-in times on onboarding's last screen.
-enum CheckInPreset: CaseIterable {
+/// The suggested reminder times on onboarding's last screen.
+enum ReminderPreset: CaseIterable {
     case morning, midday, evening
 
     var time: ReminderTime {

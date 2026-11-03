@@ -312,7 +312,7 @@ Try to log a loop as it starts, while the trigger is still fresh. If you only ca
 
 *Button: Log a loop*
 
-## Day 10 · Stage 1 check-in
+## Day 10 · Stage 1 review
 
 **Key idea:** mapping alone already starts the change. · **Task:** look back at your first ten days in Insights.
 
@@ -652,7 +652,7 @@ Log one loop and sort it honestly. If it really helped, choose "It actually help
 
 *Button: Log a loop*
 
-## Day 20 · Stage 2 check-in
+## Day 20 · Stage 2 review
 
 **Key idea:** disenchantment grows with repetition. · **Task:** log the habit that's lost the most shine.
 
@@ -994,7 +994,7 @@ Open Insights, choose "Last 4 weeks" and compare your first week with this one. 
 
 ## Day 30 · Keep going
 
-**Key idea:** the tools work best with regular use. · **Task:** check your daily check-in.
+**Key idea:** the tools work best with regular use. · **Task:** check your daily reminder.
 
 **Hook**
 

@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-/// Settings: the daily reminder (the check-in, to the person), and links to the person's options and to Help.
+/// Settings: the daily reminder, and links to the person's options and to Help.
 @Observable @MainActor
 final class SettingsViewModel {
     /// What the person chose. The switch and time show it straight away, while the change is still being applied.

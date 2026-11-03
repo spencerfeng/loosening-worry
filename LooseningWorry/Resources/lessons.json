@@ -442,7 +442,7 @@
   },
   {
     "day": 10,
-    "title": "Stage 1 check-in",
+    "title": "Stage 1 review",
     "minutes": 5,
     "cards": [
       {
@@ -932,7 +932,7 @@
   },
   {
     "day": 20,
-    "title": "Stage 2 check-in",
+    "title": "Stage 2 review",
     "minutes": 5,
     "cards": [
       {
@@ -1462,7 +1462,7 @@
       },
       {
         "kind": "task",
-        "title": "Check your daily check-in",
+        "title": "Check your daily reminder",
         "body": "It's in Settings. Keep it, move it to a time that suits life after the course, or turn it off if you'd rather come back on your own.",
         "action": "openSettings",
         "tint": "blue"

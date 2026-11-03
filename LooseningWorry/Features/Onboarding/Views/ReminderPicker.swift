@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// The check-in panel: three suggested times above a time wheel. Picking a suggestion turns the wheel to it; turning
+/// The reminder panel: three suggested times above a time wheel. Picking a suggestion turns the wheel to it; turning
 /// the wheel to a time of the person's own leaves no suggestion picked.
-struct CheckInPicker: View {
+struct ReminderPicker: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let model: OnboardingViewModel
 
@@ -12,20 +12,20 @@ struct CheckInPicker: View {
                 ? AnyLayout(VStackLayout(spacing: 8))
                 : AnyLayout(HStackLayout(spacing: 8))
             presets {
-                ForEach(CheckInPreset.allCases, id: \.self) { preset in
+                ForEach(ReminderPreset.allCases, id: \.self) { preset in
                     PresetCard(preset: preset, isPicked: model.preset == preset) { model.pick(preset) }
                 }
             }
-            .sensoryFeedback(.selection, trigger: model.checkInTime)
+            .sensoryFeedback(.selection, trigger: model.reminderTime)
 
             DatePicker(
                 selection: Binding(
-                    get: { model.checkInTime.date() },
-                    set: { model.checkInTime = ReminderTime(date: $0) },
+                    get: { model.reminderTime.date() },
+                    set: { model.reminderTime = ReminderTime(date: $0) },
                 ),
                 displayedComponents: .hourAndMinute,
             ) {
-                Text(LocalizedStringResource("onboarding.checkIn.time", defaultValue: "Check-in time"))
+                Text(LocalizedStringResource("onboarding.reminder.time", defaultValue: "Reminder time"))
             }
             .datePickerStyle(.wheel)
             .labelsHidden()
@@ -37,7 +37,7 @@ struct CheckInPicker: View {
 
 /// Morning, Midday or Evening: its icon on its loop color, its name and its time.
 private struct PresetCard: View {
-    let preset: CheckInPreset
+    let preset: ReminderPreset
     let isPicked: Bool
     let pick: () -> Void
 
@@ -70,12 +70,12 @@ private struct PresetCard: View {
     }
 }
 
-private extension CheckInPreset {
+private extension ReminderPreset {
     var name: LocalizedStringResource {
         switch self {
-        case .morning: LocalizedStringResource("onboarding.checkIn.morning", defaultValue: "Morning")
-        case .midday: LocalizedStringResource("onboarding.checkIn.midday", defaultValue: "Midday")
-        case .evening: LocalizedStringResource("onboarding.checkIn.evening", defaultValue: "Evening")
+        case .morning: LocalizedStringResource("onboarding.reminder.morning", defaultValue: "Morning")
+        case .midday: LocalizedStringResource("onboarding.reminder.midday", defaultValue: "Midday")
+        case .evening: LocalizedStringResource("onboarding.reminder.evening", defaultValue: "Evening")
         }
     }
 

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Settings, opened from the gear on Home or a lesson's task: the daily check-in, the app lock, the person's options
+/// Settings, opened from the gear on Home or a lesson's task: the daily reminder, the app lock, the person's options
 /// and a way to Help. Each row leads with its icon on a tint, like the tools on Home. All wording is a draft.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -24,7 +24,7 @@ struct SettingsView: View {
                 Section {
                     Toggle(isOn: reminderSwitch) {
                         SettingsLabel(
-                            title: LocalizedStringResource("settings.reminder", defaultValue: "Daily check-in"),
+                            title: LocalizedStringResource("settings.reminder", defaultValue: "Daily reminder"),
                             symbol: "bell",
                             tint: .amberTint,
                             ink: .amberStrong,
@@ -45,7 +45,7 @@ struct SettingsView: View {
                     if model.reminderFailed {
                         Text(LocalizedStringResource(
                             "settings.reminder.failed",
-                            defaultValue: "Couldn't set the check-in. Try again.",
+                            defaultValue: "Couldn't set the reminder. Try again.",
                         ))
                         .font(.theme(.footnote))
                         .foregroundStyle(.theme(.redOnTint))
@@ -155,7 +155,7 @@ private struct NotificationsOffNote: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LocalizedStringResource(
                 "settings.notificationsOff",
-                defaultValue: "Notifications are off for Loosening Worry. Turn them on in Settings for your check-in.",
+                defaultValue: "Notifications are off for Loosening Worry. Turn them on in Settings for your reminder.",
             ))
             .font(.theme(.footnote))
             .foregroundStyle(.theme(.textSecondary))

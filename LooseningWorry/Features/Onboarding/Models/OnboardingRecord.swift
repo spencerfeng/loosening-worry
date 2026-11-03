@@ -1,6 +1,6 @@
 import Foundation
 
-/// Whether this device has been through onboarding. Kept on this device only, like the check-in: a new device asks
+/// Whether this device has been through onboarding. Kept on this device only, like the reminder: a new device asks
 /// for its own notification permission and time, and waiting for synced data would leave first launch unsure.
 struct OnboardingRecord {
     let defaults: UserDefaults

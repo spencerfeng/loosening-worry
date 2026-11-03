@@ -29,7 +29,7 @@ final class OnboardingViewModelTests {
     }
 
     @Test
-    func `starts on Welcome, and Continue moves through each screen to the check-in`() {
+    func `starts on Welcome, and Continue moves through each screen to the reminder`() {
         let model = makeModel()
         var seen = [model.step]
 
@@ -38,28 +38,28 @@ final class OnboardingViewModelTests {
             seen.append(model.step)
         }
 
-        #expect(seen == [.welcome, .loop, .uses, .goodToKnow, .checkIn])
+        #expect(seen == [.welcome, .loop, .uses, .goodToKnow, .reminder])
     }
 
     @Test
-    func `the check-in starts at 8 pm, which is Evening`() {
+    func `the reminder starts at 8 pm, which is Evening`() {
         let model = makeModel()
 
-        #expect(model.checkInTime == .eightPM)
+        #expect(model.reminderTime == .eightPM)
         #expect(model.preset == .evening)
     }
 
     @Test(arguments: [
-        (CheckInPreset.morning, ReminderTime(hour: 8, minute: 0)),
+        (ReminderPreset.morning, ReminderTime(hour: 8, minute: 0)),
         (.midday, ReminderTime(hour: 12, minute: 30)),
         (.evening, ReminderTime(hour: 20, minute: 0)),
     ])
-    func `picking a suggested time sets the check-in to it`(preset: CheckInPreset, time: ReminderTime) {
+    func `picking a suggested time sets the reminder to it`(preset: ReminderPreset, time: ReminderTime) {
         let model = makeModel()
 
         model.pick(preset)
 
-        #expect(model.checkInTime == time)
+        #expect(model.reminderTime == time)
         #expect(model.preset == preset)
     }
 
@@ -67,47 +67,47 @@ final class OnboardingViewModelTests {
     func `a time of the person's own matches no suggestion`() {
         let model = makeModel()
 
-        model.checkInTime = ReminderTime(hour: 7, minute: 15)
+        model.reminderTime = ReminderTime(hour: 7, minute: 15)
 
         #expect(model.preset == nil)
     }
 
     @Test
-    func `turning on the check-in asks for permission, schedules it at the chosen time and finishes`() async {
+    func `turning on the reminder asks for permission, schedules it at the chosen time and finishes`() async {
         let model = makeModel()
         model.pick(.morning)
 
-        await model.turnOnCheckIn()
+        await model.turnOnReminder()
 
         #expect(scheduler.askCount == 1)
-        #expect(scheduler.scheduled == CheckInPreset.morning.time)
+        #expect(scheduler.scheduled == ReminderPreset.morning.time)
         #expect(settings.isOn)
-        #expect(settings.time == CheckInPreset.morning.time)
+        #expect(settings.time == ReminderPreset.morning.time)
         #expect(finishCount == 1)
     }
 
     @Test
-    func `if the person refuses notifications, the check-in stays off with their time kept, and onboarding finishes`(
+    func `if the person refuses notifications, the reminder stays off with their time kept, and onboarding finishes`(
     ) async {
         scheduler.allowsWhenAsked = false
         let model = makeModel()
         model.pick(.midday)
 
-        await model.turnOnCheckIn()
+        await model.turnOnReminder()
 
         #expect(scheduler.scheduled == nil)
         #expect(settings.isOn == false)
-        #expect(settings.time == CheckInPreset.midday.time)
+        #expect(settings.time == ReminderPreset.midday.time)
         #expect(finishCount == 1)
     }
 
     /// iOS asks only once; after that, only iOS Settings can turn notifications back on.
     @Test
-    func `when notifications are already off, turning on the check-in doesn't ask again`() async {
+    func `when notifications are already off, turning on the reminder doesn't ask again`() async {
         scheduler.permission = .denied
         let model = makeModel()
 
-        await model.turnOnCheckIn()
+        await model.turnOnReminder()
 
         #expect(scheduler.askCount == 0)
         #expect(settings.isOn == false)
@@ -115,22 +115,22 @@ final class OnboardingViewModelTests {
     }
 
     @Test
-    func `if the check-in can't be scheduled, it stays off and onboarding still finishes`() async {
+    func `if the reminder can't be scheduled, it stays off and onboarding still finishes`() async {
         scheduler.schedulingFails = true
         let model = makeModel()
 
-        await model.turnOnCheckIn()
+        await model.turnOnReminder()
 
         #expect(settings.isOn == false)
         #expect(finishCount == 1)
     }
 
     @Test
-    func `choosing Not now finishes without asking for permission or setting a check-in`() {
+    func `choosing Not now finishes without asking for permission or setting a reminder`() {
         let model = makeModel()
         model.pick(.morning)
 
-        model.skipCheckIn()
+        model.skipReminder()
 
         #expect(scheduler.askCount == 0)
         #expect(scheduler.scheduled == nil)
@@ -144,12 +144,12 @@ final class OnboardingViewModelTests {
     func `while iOS asks about notifications, the buttons wait and onboarding finishes once`() async {
         scheduler.isHeld = true
         let model = makeModel()
-        let turningOn = Task { await model.turnOnCheckIn() }
+        let turningOn = Task { await model.turnOnReminder() }
         await scheduler.untilHeld()
 
         #expect(model.isTurningOn)
-        await model.turnOnCheckIn()
-        model.skipCheckIn()
+        await model.turnOnReminder()
+        model.skipReminder()
         scheduler.release()
         await turningOn.value
 

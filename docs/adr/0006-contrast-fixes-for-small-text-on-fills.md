@@ -12,9 +12,9 @@ An accessibility pass measured every text color against what it sits on, by WCAG
 18pt (14pt bold), 3:1 for larger text and icons. Most roles pass in both appearances. Three kinds of pair didn't:
 
 - Small white text on `accent` in dark mode. The canvas's dark `accent`, `#4C82F0`, gives white 3.65:1.
-  Home's Log banner line ("Log trigger, behavior, result in 20 sec") and the picked check-in card's time are
-  13pt. Darkening `accent` itself isn't an option: it also tints the selected tab's label, switches and strokes
-  on the dark page, where `#4C82F0` is what keeps them readable (5.05:1 on `background`).
+  Home's Log banner line ("Log trigger, behavior, result in 20 sec") and the time on onboarding's picked
+  reminder-time card are 13pt. Darkening `accent` itself isn't an option: it also tints the selected tab's label,
+  switches and strokes on the dark page, where `#4C82F0` is what keeps them readable (5.05:1 on `background`).
 - White on `greenStrong` in dark mode, where the green is light (`#5CC48F`): 2.15:1, under even the 3:1 for
   Breathe's large phase words and Nice catch's tick.
 - Small text in a `Strong` hue: Nice catch's "+1" (`greenStrong` on `greenTint`, 3.75:1 in light) and Log a
@@ -33,6 +33,6 @@ An accessibility pass measured every text color against what it sits on, by WCAG
 
 ## Consequences
 
-- Home's banner and the picked check-in card are a shade darker than the canvas in dark mode.
+- Home's banner and onboarding's picked reminder-time card are a shade darker than the canvas in dark mode.
 - Breathe's phase words and Nice catch's tick are off-white in light mode rather than white.
 - A new fill with small text on it starts from `accentFill`, or checks its contrast in both appearances.
