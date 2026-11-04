@@ -33,7 +33,7 @@ struct LoopCaseTests {
     @Test
     func `every case decodes, and every expected id is one of its profile's options`() throws {
         let file = try CaseFile.bundled()
-        #expect(file.cases.count == 80)
+        #expect(file.cases.count == 82)
 
         for loopCase in file.cases {
             let options = try file.options(for: loopCase)

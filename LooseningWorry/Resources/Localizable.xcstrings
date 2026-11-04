@@ -2561,7 +2561,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Try something more rewarding"
+            "value" : "Turn toward what's here"
           }
         }
       }
@@ -3606,6 +3606,28 @@
         }
       }
     },
+    "starter.trigger.worriedFeeling" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A worried feeling"
+          }
+        }
+      }
+    },
+    "starter.trigger.worryingThought" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A worrying thought"
+          }
+        }
+      }
+    },
     "Step %lld of %lld" : {
       "localizations" : {
         "en" : {
@@ -4282,7 +4304,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "That's your breath at work. Your brain just noticed calm feels better than worry."
+            "value" : "That's your breath at work. Paying attention to it gave your brain a break from worry."
           }
         }
       }

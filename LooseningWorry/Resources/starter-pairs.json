@@ -8,5 +8,7 @@
   "trigger.news": ["behavior.scrolled", "behavior.keptChecking", "behavior.searchedOnline", "behavior.overthought"],
   "trigger.waitingForReply": ["behavior.keptChecking", "behavior.overthought", "behavior.askedForReassurance", "behavior.scrolled"],
   "trigger.tryingToSleep": ["behavior.overthought", "behavior.scrolled", "behavior.searchedOnline", "behavior.snacked"],
+  "trigger.worriedFeeling": ["behavior.overthought", "behavior.searchedOnline", "behavior.askedForReassurance", "behavior.keptChecking"],
+  "trigger.worryingThought": ["behavior.overthought", "behavior.keptChecking", "behavior.searchedOnline", "behavior.askedForReassurance"],
   "trigger.outOfNowhere": ["behavior.overthought", "behavior.keptChecking", "behavior.scrolled", "behavior.snacked"]
 }

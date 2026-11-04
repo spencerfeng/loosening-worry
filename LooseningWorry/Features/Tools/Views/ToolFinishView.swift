@@ -282,7 +282,7 @@ private extension QuickTool {
         case (.lighter, .breathe):
             LocalizedStringResource(
                 "tool.finish.lighter.breathe",
-                defaultValue: "That's your breath at work. Your brain just noticed calm feels better than worry.",
+                defaultValue: "That's your breath at work. Paying attention to it gave your brain a break from worry.",
             )
         case (.lighter, .noteIt):
             LocalizedStringResource(

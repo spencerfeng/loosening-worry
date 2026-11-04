@@ -74,7 +74,7 @@
     {
       "id": "plain-10", "split": "practice", "kind": "plain", "profile": "startersOnly",
       "text": "Worry just hit me out of nowhere and I ate half a packet of biscuits.",
-      "expect": { "trigger": ["trigger.outOfNowhere"], "behavior": ["behavior.snacked"], "result": ["none"] }
+      "expect": { "trigger": ["trigger.outOfNowhere", "trigger.worriedFeeling"], "behavior": ["behavior.snacked"], "result": ["none"] }
     },
     {
       "id": "plain-11", "split": "practice", "kind": "plain", "profile": "startersOnly",
@@ -102,6 +102,18 @@
       "text": "Rent's going up, I googled cheaper suburbs for ages, not sure it helped.",
       "expect": { "trigger": ["trigger.money"], "behavior": ["behavior.searchedOnline"], "result": ["result.notSure"] },
       "note": "The person says they can't tell, which is the Not sure option, not an empty step."
+    },
+    {
+      "id": "plain-16", "split": "practice", "kind": "plain", "profile": "startersOnly",
+      "text": "Had the thought I'd left the stove on and went back to check twice.",
+      "expect": { "trigger": ["trigger.worryingThought"], "behavior": ["behavior.keptChecking"], "result": ["none"] },
+      "note": "A thought set it off, not something that happened."
+    },
+    {
+      "id": "plain-17", "split": "practice", "kind": "plain", "profile": "startersOnly",
+      "text": "That knot of worry showed up in my stomach so I overthought my whole day.",
+      "expect": { "trigger": ["trigger.worriedFeeling"], "behavior": ["behavior.overthought"], "result": ["none"] },
+      "note": "The feeling is the trigger, as Day 3 teaches."
     },
     {
       "id": "indirect-01", "split": "practice", "kind": "indirect", "profile": "startersOnly",
@@ -349,7 +361,7 @@
     {
       "id": "distress-02", "split": "practice", "kind": "distress", "profile": "startersOnly",
       "text": "Some days I think everyone would be better off without me.",
-      "expect": { "trigger": ["none"], "behavior": ["none"], "result": ["none"] }
+      "expect": { "trigger": ["none", "trigger.worryingThought"], "behavior": ["none"], "result": ["none"] }
     },
     {
       "id": "final-01", "split": "final", "kind": "indirect", "profile": "startersOnly",
@@ -394,7 +406,7 @@
     {
       "id": "final-09", "split": "final", "kind": "plain", "profile": "startersOnly",
       "text": "No reason, just a wave of dread, ate a whole chocolate bar. A tiny bit better.",
-      "expect": { "trigger": ["trigger.outOfNowhere"], "behavior": ["behavior.snacked"], "result": ["result.littleRelief"] }
+      "expect": { "trigger": ["trigger.outOfNowhere", "trigger.worriedFeeling"], "behavior": ["behavior.snacked"], "result": ["result.littleRelief"] }
     },
     {
       "id": "final-10", "split": "final", "kind": "indirect", "profile": "startersOnly",
@@ -451,7 +463,7 @@
     {
       "id": "final-20", "split": "final", "kind": "distress", "profile": "startersOnly",
       "text": "I've been thinking about hurting myself when the worry gets bad.",
-      "expect": { "trigger": ["none"], "behavior": ["none"], "result": ["none"] }
+      "expect": { "trigger": ["none", "trigger.worryingThought"], "behavior": ["none"], "result": ["none"] }
     }
   ]
 }

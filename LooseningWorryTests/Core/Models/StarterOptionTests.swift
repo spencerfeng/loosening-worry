@@ -6,7 +6,7 @@ struct StarterOptionTests {
     @Test(arguments: [
         (OptionKind.trigger, [
             "Work", "Deadline", "Money", "Health", "Family or partner", "Social plans", "News", "Waiting for a reply",
-            "Trying to sleep", "Out of nowhere",
+            "Trying to sleep", "A worried feeling", "A worrying thought", "Out of nowhere",
         ]),
         (OptionKind.behavior, [
             "Overthought it", "Kept checking", "Asked for reassurance", "Searched online", "Avoided it", "Put it off",
@@ -28,7 +28,7 @@ struct StarterOptionTests {
         #expect(StarterOption.options(for: .trigger).map(\.id.rawValue) == [
             "trigger.work", "trigger.deadline", "trigger.money", "trigger.health", "trigger.familyOrPartner",
             "trigger.socialPlans", "trigger.news", "trigger.waitingForReply", "trigger.tryingToSleep",
-            "trigger.outOfNowhere",
+            "trigger.worriedFeeling", "trigger.worryingThought", "trigger.outOfNowhere",
         ])
     }
 

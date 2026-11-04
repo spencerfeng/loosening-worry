@@ -15,6 +15,9 @@ enum StarterID: String, CaseIterable, Sendable {
     case news = "trigger.news"
     case waitingForReply = "trigger.waitingForReply"
     case tryingToSleep = "trigger.tryingToSleep"
+    // Worry also starts inside, from a feeling or a thought, as Days 3 and 4 teach.
+    case worriedFeeling = "trigger.worriedFeeling"
+    case worryingThought = "trigger.worryingThought"
     case outOfNowhere = "trigger.outOfNowhere"
 
     // The most common worry habits first: new users see behaviors in this order.
@@ -59,6 +62,10 @@ enum StarterID: String, CaseIterable, Sendable {
         case .waitingForReply:
             LocalizedStringResource("starter.trigger.waitingForReply", defaultValue: "Waiting for a reply")
         case .tryingToSleep: LocalizedStringResource("starter.trigger.tryingToSleep", defaultValue: "Trying to sleep")
+        case .worriedFeeling:
+            LocalizedStringResource("starter.trigger.worriedFeeling", defaultValue: "A worried feeling")
+        case .worryingThought:
+            LocalizedStringResource("starter.trigger.worryingThought", defaultValue: "A worrying thought")
         case .outOfNowhere: LocalizedStringResource("starter.trigger.outOfNowhere", defaultValue: "Out of nowhere")
         case .overthought: LocalizedStringResource("starter.behavior.overthought", defaultValue: "Overthought it")
         case .keptChecking: LocalizedStringResource("starter.behavior.keptChecking", defaultValue: "Kept checking")

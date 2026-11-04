@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A small uppercase heading over a group, such as Nice catch's "Try something more rewarding" or a Settings section.
+/// A small uppercase heading over a group, such as Nice catch's "Turn toward what's here" or a Settings section.
 struct SectionLabel: View {
     let text: LocalizedStringResource
 

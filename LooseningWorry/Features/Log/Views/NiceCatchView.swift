@@ -46,7 +46,7 @@ struct NiceCatchView: View {
             VStack(alignment: .leading, spacing: 12) {
                 SectionLabel(LocalizedStringResource(
                     "niceCatch.suggestion",
-                    defaultValue: "Try something more rewarding",
+                    defaultValue: "Turn toward what's here",
                 ))
                 ToolCard(tool: niceCatch.suggestion.tool, detail: niceCatch.suggestion.detail) {
                     runningTool = niceCatch.suggestion.tool
