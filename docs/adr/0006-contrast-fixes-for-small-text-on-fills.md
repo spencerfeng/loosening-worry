@@ -4,7 +4,7 @@ Date: 2026-10-31
 
 ## Status
 
-Accepted. Extends ADR 0001.
+Accepted. Extends ADR 0001. Help, given below as an example, was removed on 2026-11-04; the decisions still stand.
 
 ## Context
 

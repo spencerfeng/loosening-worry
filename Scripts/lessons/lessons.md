@@ -38,7 +38,7 @@ Sometime today, notice one moment when worry starts up on its own. You don't nee
 
 **Footer (Day 1 only)**
 
-Loosening Worry is a self-help app, not therapy or a diagnosis. If anxiety is making daily life very hard, or you're in crisis, open Help for support lines.
+Loosening Worry is a self-help app, not therapy or a diagnosis. If anxiety is making daily life very hard, talk to a doctor.
 
 ## Day 2 · Your brain loves loops
 
@@ -954,7 +954,7 @@ Think about what usually makes your worry worse: stress, poor sleep, a certain k
 
 **Today's task**
 
-Go through Be kind and keep one phrase that feels true to you. On a hard day you'll find it under Your phrases. Then decide which tool you'll reach for first. If anxiety ever feels much harder than usual, or stays that way, open Help for support lines.
+Go through Be kind and keep one phrase that feels true to you. On a hard day you'll find it under Your phrases. Then decide which tool you'll reach for first. If anxiety ever feels much harder than usual, or stays that way, talk to a doctor.
 
 *Button: Be kind*
 

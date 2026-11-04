@@ -31,7 +31,6 @@ struct LoopLoggingEvals {
             #expect(right >= 0.85, "\(step) right \(right.formatted(.percent))")
             #expect(wrong <= 0.05, "\(step) wrong \(wrong.formatted(.percent))")
         }
-        #expect(result.aggregateValue(.mean(of: LoopMetrics.help)) == 1)
         let seconds = result.aggregateValue(.mean(of: LoopMetrics.seconds))
         #expect(seconds < 2, "\(seconds.formatted(.number.precision(.fractionLength(2)))) seconds per sentence")
         print(result.groupedSummary)

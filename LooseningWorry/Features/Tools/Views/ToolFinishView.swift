@@ -8,7 +8,6 @@ struct ToolFinishView: View {
     let done: () -> Void
     /// "Try another tool" swaps the buttons for the other tools.
     @State private var isPickingTool = false
-    @State private var isShowingHelp = false
 
     var body: some View {
         ScrollView {
@@ -39,12 +38,9 @@ struct ToolFinishView: View {
                 }
 
                 if let outcome = model.outcome {
-                    OutcomeMessage(
-                        text: model.tool.finishMessage(for: outcome),
-                        suggestedTool: model.suggestedTool,
-                        tryTool: { model.start($0, now: .now) },
-                        getHelp: { isShowingHelp = true },
-                    )
+                    OutcomeMessage(text: model.tool.finishMessage(for: outcome), suggestedTool: model.suggestedTool) {
+                        model.start($0, now: .now)
+                    }
                     .id(outcome)
                     .transition(reveal)
                 }
@@ -99,9 +95,6 @@ struct ToolFinishView: View {
                     tint: .accentTint,
                 )
             }
-        }
-        .sheet(isPresented: $isShowingHelp) {
-            HelpView()
         }
     }
 
@@ -191,12 +184,11 @@ private struct LighterTallyCard: View {
     }
 }
 
-/// What the answer means; after Heavier, a tool to try and the way to Help.
+/// What the answer means; after Heavier, a tool to try.
 private struct OutcomeMessage: View {
     let text: LocalizedStringResource
     let suggestedTool: QuickTool?
     let tryTool: (QuickTool) -> Void
-    let getHelp: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -220,17 +212,6 @@ private struct OutcomeMessage: View {
                         .frame(minHeight: 44)
                         .background(.theme(suggestedTool.tint), in: .capsule)
                         .contentShape(.capsule)
-                    }
-                    .buttonStyle(.plain)
-                    Button(action: getHelp) {
-                        Text(LocalizedStringResource("tool.finish.help", defaultValue: "Get help"))
-                            .font(.theme(.callout))
-                            .foregroundStyle(.theme(.help))
-                            .padding(.horizontal, 16)
-                            .frame(minHeight: 44)
-                            .background(.theme(.surface), in: .capsule)
-                            .overlay { Capsule().strokeBorder(.theme(.border)) }
-                            .contentShape(.capsule)
                     }
                     .buttonStyle(.plain)
                 }
@@ -322,16 +303,14 @@ private extension QuickTool {
             LocalizedStringResource(
                 "tool.finish.heavier.breathe",
                 defaultValue: """
-                Some moments are just hard, and that's fine. Getting curious about the feeling can help, or reach out \
-                for more support.
+                Some moments are just hard, and that's fine. Getting curious about the feeling can help.
                 """,
             )
         case (.heavier, _):
             LocalizedStringResource(
                 "tool.finish.heavier",
                 defaultValue: """
-                Some moments are just hard, and that's fine. A minute of breathing can help, or reach out for more \
-                support.
+                Some moments are just hard, and that's fine. A minute of breathing can help.
                 """,
             )
         }

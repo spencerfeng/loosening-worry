@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// The five screens a new device opens on. Each is a picture panel, a title and one line; the dots and the button stay
-/// put below while the screens swipe. There's no Skip: the screen about Help is one everyone should see once.
+/// put below while the screens swipe. There's no Skip: the screen about what the app isn't is one everyone should see
+/// once.
 struct OnboardingView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var model: OnboardingViewModel
@@ -179,7 +180,7 @@ private extension OnboardingStep {
         case .uses:
             LocalizedStringResource("onboarding.uses.line", defaultValue: "Plus a short lesson each day.")
         case .goodToKnow:
-            LocalizedStringResource("onboarding.goodToKnow.line", defaultValue: "Two things before you start.")
+            LocalizedStringResource("onboarding.goodToKnow.line", defaultValue: "One thing before you start.")
         case .reminder:
             LocalizedStringResource(
                 "onboarding.reminder.line",

@@ -2,12 +2,11 @@ import SwiftData
 import SwiftUI
 
 /// After a check-in is saved: what was named, a line about it, and on the unpleasant side a tool to try, the other
-/// tools, a way into the logger and, when it's very unpleasant, Help.
+/// tools and a way into the logger.
 struct CheckInFinishedView: View {
     @Environment(\.modelContext) private var modelContext
     @AccessibilityFocusState private var isTitleFocused: Bool
     @State private var runningTool: QuickTool?
-    @State private var isShowingHelp = false
     /// Set on appear, to play the success haptic once.
     @State private var hasAppeared = false
 
@@ -22,9 +21,6 @@ struct CheckInFinishedView: View {
                 summary
                 if let tool = suggestion.tool {
                     TryATool(tool: tool, start: { runningTool = $0 }, logLoop: logLoop)
-                }
-                if suggestion.showsHelp {
-                    HelpLine { isShowingHelp = true }
                 }
             }
             .padding(.horizontal, 20)
@@ -43,9 +39,6 @@ struct CheckInFinishedView: View {
         .background(.theme(.background))
         .fullScreenCover(item: $runningTool) { tool in
             ToolRunView(tool: tool, sessions: SessionStore(context: modelContext))
-        }
-        .sheet(isPresented: $isShowingHelp) {
-            HelpView()
         }
         .sensoryFeedback(.success, trigger: hasAppeared)
         .onAppear {
@@ -150,32 +143,6 @@ private struct OtherTools: View {
                 .buttonStyle(.plain)
             }
         }
-    }
-}
-
-/// A quiet pointer to Help, in Help's own color (ADR 0001).
-private struct HelpLine: View {
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Image(systemName: "lifepreserver")
-                    .foregroundStyle(.theme(.help))
-                    .accessibilityHidden(true)
-                Text(LocalizedStringResource(
-                    "checkIn.finished.help",
-                    defaultValue: "If it feels like too much, Help has people you can talk to.",
-                ))
-                .foregroundStyle(.theme(.textSecondary))
-                .multilineTextAlignment(.leading)
-            }
-            .font(.theme(.callout))
-            .frame(minHeight: 44)
-            .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
-        .accessibilityHint(Text(LocalizedStringResource("checkIn.finished.help.hint", defaultValue: "Opens Help")))
     }
 }
 

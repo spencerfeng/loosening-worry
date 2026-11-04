@@ -8,8 +8,6 @@ Domain language for the app. The design source is the "Loosening Worry — App M
 - **Tool**: a short guided exercise someone can start any time worry shows up. Four exist: Get curious,
   Breathe, Note it and Be kind. Each tool is shown in one hue from the theme (see ADR 0001), but the
   hue is not the tool's identity.
-- **Help**: the crisis-support path, reached from the Help button and the "Get help" link. It has its own
-  color role, kept separate from any tool's hue.
 - **Check-in**: a short record of how the person feels right now, started from the Check in row on Home (under "For
   you today", above the lesson) or from the reminder after the course. Two steps: how it feels overall, on Apple's
   seven-step State of Mind scale from very unpleasant to very pleasant, then any of HealthKit's 38 State of Mind
@@ -18,7 +16,7 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   day; Home shows today's count and the time of the last one. It never leads to the lesson. When the feeling is on the
   unpleasant side, the finish screen suggests a tool chosen from the words picked (worry words to Get curious,
   self-judgment to Be kind, heated words to Note it, drained to Breathe), with the other tools and Log a loop beside
-  it; on very unpleasant it also points to Help.
+  it.
 - **Reminder**: the daily notification, at a time the person picks during onboarding or in Settings
   (`ReminderSettings`, `ReminderScheduler`). During the course it names the next lesson; once every lesson is done it
   asks "How are you right now?" and opens the check-in. It's kept on each device, since each device asks for its own
@@ -28,8 +26,7 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   grace minute, `AppLockViewModel.grace`). While the app is away it shows only the icon, so the app switcher shows
   nothing private. It's kept on each device, and turns itself off if the device's passcode is removed.
 - **Onboarding**: the five screens a device opens on until it has been through them once: what the app is for, what a
-  loop is, how to use the app, what it isn't and where Help is, then the reminder time. Teaching is left to the
-  lessons.
+  loop is, how to use the app, what it isn't, then the reminder time. Teaching is left to the lessons.
 - **Option**: one choice in the logger for a loop's trigger, behavior or result. Triggers and behaviors are ranked
   by the person's history (see **Ranking**), six at a time with More for the rest. For results the logger shows the
   starters (the core results, in a fixed order) first, then the person's own in the order they were added, so step 3

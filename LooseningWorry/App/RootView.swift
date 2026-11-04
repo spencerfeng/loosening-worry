@@ -74,9 +74,6 @@ struct RootView: View {
         .sheet(isPresented: $model.isSettingsPresented, onDismiss: model.screenClosed) {
             SettingsView(scheduler: reminderScheduler, lock: lock)
         }
-        .sheet(isPresented: $model.isHelpPresented, onDismiss: model.screenClosed) {
-            HelpView()
-        }
         // Progress can arrive from another device while the app was away; the reminder should name the right lesson.
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {

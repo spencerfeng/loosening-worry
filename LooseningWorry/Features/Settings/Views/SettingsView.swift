@@ -1,13 +1,12 @@
 import SwiftUI
 
-/// Settings, opened from the gear on Home or a lesson's task: the daily reminder, the app lock, the person's options
-/// and a way to Help. Each row leads with its icon on a tint, like the tools on Home. All wording is a draft.
+/// Settings, opened from the gear on Home or a lesson's task: the daily reminder, the app lock and the person's
+/// options. Each row leads with its icon on a tint, like the tools on Home. All wording is a draft.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @State private var model: SettingsViewModel
     @State private var isShowingOptions = false
-    @State private var isShowingHelp = false
     let lock: AppLockViewModel
 
     init(scheduler: any ReminderScheduler, lock: AppLockViewModel) {
@@ -82,25 +81,6 @@ struct SettingsView: View {
                 }
                 // No header holds this card away from the footer above, so it takes a wider gap.
                 .listSectionSpacing(21)
-
-                Section {
-                    Button {
-                        isShowingHelp = true
-                    } label: {
-                        SettingsLabel(
-                            title: LocalizedStringResource("settings.help", defaultValue: "Get help"),
-                            symbol: "lifepreserver",
-                            tint: .redTint,
-                            ink: .help,
-                            opensScreen: true,
-                        )
-                    }
-                    .settingsRow()
-                } header: {
-                    SectionLabel(LocalizedStringResource("settings.support", defaultValue: "Support"))
-                }
-                // Undoes most of the wider gap Your options takes, so Support sits like Privacy.
-                .listSectionSpacing(2)
             }
             .foregroundStyle(.theme(.textPrimary))
             // The design's rows are 56 points: the 34-point icon with 11 above and below (`settingsRow()`).
@@ -113,9 +93,6 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $isShowingOptions) {
                 EditOptionsView(kind: .trigger)
-            }
-            .sheet(isPresented: $isShowingHelp) {
-                HelpView()
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {

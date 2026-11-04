@@ -9,7 +9,7 @@ struct HomeView: View {
     @Query private var lessonProgress: [LessonProgress]
     @Query private var checkIns: [CheckIn]
 
-    /// Opens the logger, other tabs, lessons, tools, Settings and Help.
+    /// Opens the logger, other tabs, a check-in, lessons, tools and Settings.
     let root: RootViewModel
 
     var body: some View {
@@ -20,23 +20,22 @@ struct HomeView: View {
         .background(.theme(.background))
     }
 
-    @ViewBuilder private var headerButtons: some View {
+    private var settingsButton: some View {
         SettingsButton { root.openSettings() }
-        HelpButton { root.openHelp() }
     }
 
     private func content(now: Date) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // At accessibility sizes the greeting needs the full width, so Settings and Help move above it.
+                // At accessibility sizes the greeting needs the full width, so Settings moves above it.
                 if dynamicTypeSize.isAccessibilitySize {
-                    HStack(spacing: 8) { headerButtons }
+                    settingsButton
                     HomeHeader(now: now)
                 } else {
                     HStack(alignment: .center, spacing: 12) {
                         HomeHeader(now: now)
                         Spacer(minLength: 0)
-                        HStack(spacing: 8) { headerButtons }
+                        settingsButton
                     }
                 }
                 LogBanner { root.select(.log) }
@@ -111,33 +110,6 @@ private struct SettingsButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(LocalizedStringResource("home.settings", defaultValue: "Settings")))
-    }
-}
-
-/// Opens Help, the crisis path, in its own color (ADR 0001).
-private struct HelpButton: View {
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
-                Image(systemName: "lifepreserver")
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.theme(.help))
-                    .accessibilityHidden(true)
-                Text(LocalizedStringResource("home.help", defaultValue: "Help"))
-                    .foregroundStyle(.theme(.textPrimary))
-            }
-            .font(.theme(.callout))
-            .padding(.leading, 10)
-            .padding(.trailing, 14)
-            .frame(minHeight: 44)
-            .background(.theme(.surface), in: .capsule)
-            .overlay { Capsule().strokeBorder(.theme(.border)) }
-            .contentShape(.capsule)
-        }
-        .buttonStyle(.plain)
-        .accessibilityHint(Text(LocalizedStringResource("home.help.hint", defaultValue: "Crisis lines and support")))
     }
 }
 

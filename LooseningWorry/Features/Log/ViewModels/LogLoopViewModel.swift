@@ -77,15 +77,6 @@ final class LogLoopViewModel {
     /// Whether the interpreter is reading `described` now.
     private(set) var isFillingIn = false
 
-    /// Whether words Fill in read, since cleared, called for Help, so Help stays.
-    private var hasShownCrisisHelp = false
-
-    /// Whether to point the person to Help: the words they described the loop in suggest they may be in crisis. It
-    /// shows as they type, and stays after Fill in clears the words.
-    var showsHelp: Bool {
-        hasShownCrisisHelp || CrisisWording.appears(in: described)
-    }
-
     /// Whether the describe field shows: the interpreter can read on this device, and the person is on step 1 with
     /// nothing picked or offered yet, so the words would fill in the whole loop.
     var showsDescribe: Bool {
@@ -145,7 +136,6 @@ final class LogLoopViewModel {
             couldntTell = true
             return
         }
-        hasShownCrisisHelp = hasShownCrisisHelp || showsHelp
         described = ""
         stepOrder = nil
         currentStep = OptionKind.allCases.first { answers[$0] == nil }

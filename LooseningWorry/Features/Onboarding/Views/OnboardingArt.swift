@@ -211,7 +211,7 @@ struct UsesPanel: View {
     }
 }
 
-/// Good to know: what the app isn't, and where Help is. Needs the clinician's review before launch.
+/// Good to know: what the app isn't. Needs the clinician's review before launch.
 struct GoodToKnowPanel: View {
     var body: some View {
         PanelRows {
@@ -228,17 +228,6 @@ struct GoodToKnowPanel: View {
                 Image(systemName: "leaf.fill")
                     .font(.system(size: 26, weight: .semibold))
                     .foregroundStyle(.theme(.accentText))
-            }
-            PanelRow(
-                title: LocalizedStringResource("onboarding.goodToKnow.help", defaultValue: "Help is one tap away"),
-                line: LocalizedStringResource(
-                    "onboarding.goodToKnow.help.line",
-                    defaultValue: "Crisis lines, any time. Top right of Home.",
-                ),
-            ) {
-                Image(systemName: "lifepreserver")
-                    .font(.system(size: 26, weight: .semibold))
-                    .foregroundStyle(.theme(.help))
             }
         }
     }

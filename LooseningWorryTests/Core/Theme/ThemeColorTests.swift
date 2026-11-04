@@ -42,7 +42,6 @@ struct ThemeColorTests {
         .violetStrong: ("6A4FD8", "8A73EE"),
         .violetTint: ("EEE9FC", "2A2347"),
         .violetOnTint: ("5B3FC4", "B3A2F5"),
-        .help: ("C2453A", "F09A90"),
     ]
 
     @Test

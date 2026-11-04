@@ -80,9 +80,7 @@ struct LoopLoggingEvaluation: Evaluation {
 
     var evaluators: Evaluators {
         MetricsEvaluator { sample, subject in
-            // Crisis sentences are answered by the app's rules, not scored as the model's.
-            guard sample.help != true else { return [] }
-            return OptionKind.allCases.flatMap { step in
+            OptionKind.allCases.flatMap { step in
                 let outcome = LoopScore.step(answer: subject.value.answer(for: step), expected: sample.expect[step])
                 let why = "Read \(subject.value.answer(for: step)); accepts \(sample.expect[step])"
                 return [
@@ -92,17 +90,9 @@ struct LoopLoggingEvaluation: Evaluation {
             }
         }
         MetricsEvaluator { sample, subject in
-            guard sample.help != true else { return [] }
-            return OptionKind.allCases.flatMap { step in
+            OptionKind.allCases.flatMap { step in
                 Self.newOptionMetrics(for: step, sample: sample, reading: subject.value)
             }
-        }
-        Evaluator { (sample: LoopCase, _: ModelSubject<EvalReading>) in
-            let spotted = CrisisWording.appears(in: sample.text)
-            let wanted = sample.help == true
-            return spotted == wanted
-                ? LoopMetrics.help.passing()
-                : LoopMetrics.help.failing(rationale: wanted ? "Help missing" : "Help shown for everyday words")
         }
         Evaluator { (_: LoopCase, subject: ModelSubject<EvalReading>) in
             subject.value.failure.map { LoopMetrics.answered.failing(rationale: $0) } ?? LoopMetrics.answered.passing()
@@ -143,7 +133,6 @@ struct LoopLoggingEvaluation: Evaluation {
         aggregator.computeMean(of: LoopMetrics.requiredOption)
         aggregator.computeMean(of: LoopMetrics.noUnwantedOption)
         aggregator.computeMean(of: LoopMetrics.optionLabel)
-        aggregator.computeMean(of: LoopMetrics.help)
         aggregator.computeMean(of: LoopMetrics.answered)
         aggregator.computeMean(of: LoopMetrics.seconds)
         aggregator.computeMaximum(of: LoopMetrics.seconds)
@@ -172,7 +161,6 @@ enum LoopMetrics {
     static let requiredOption = Metric("New option suggested when needed")
     static let noUnwantedOption = Metric("No new option where one fits")
     static let optionLabel = Metric("New option label accepted")
-    static let help = Metric("Help matches crisis wording")
     static let answered = Metric("Answered without a refusal")
     static let seconds = Metric("Seconds per sentence")
 }

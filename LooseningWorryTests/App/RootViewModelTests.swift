@@ -244,18 +244,9 @@ struct RootViewModelTests {
         #expect(!model.isLogSheetPresented)
     }
 
-    @Test
-    func `opening Help shows it over the tabs`() {
-        let model = RootViewModel(onboarding: .finished)
-
-        model.openHelp()
-
-        #expect(model.isHelpPresented)
-    }
-
     /// One screen over the tabs, as the reminder might find the app.
     enum Covering: CaseIterable {
-        case logger, checkIn, lesson, tool, settings, help
+        case logger, checkIn, lesson, tool, settings
 
         @MainActor
         func open(in model: RootViewModel) throws {
@@ -265,7 +256,6 @@ struct RootViewModelTests {
             case .lesson: try model.openLesson(#require(LessonCatalog.bundled.lesson(day: 5)))
             case .tool: model.openTool(.breathe)
             case .settings: model.openSettings()
-            case .help: model.openHelp()
             }
         }
 
@@ -277,7 +267,6 @@ struct RootViewModelTests {
             case .lesson: model.readingLesson != nil
             case .tool: model.runningTool != nil
             case .settings: model.isSettingsPresented
-            case .help: model.isHelpPresented
             }
         }
     }

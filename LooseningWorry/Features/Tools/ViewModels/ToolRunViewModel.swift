@@ -123,7 +123,7 @@ final class ToolRunViewModel {
         return LighterTally(outcomes: earlierOutcomes + [outcome])
     }
 
-    /// After feeling heavier, a tool to try next, offered beside Get help: Breathe, or Get curious after Breathe.
+    /// After feeling heavier, a tool to try next: Breathe, or Get curious after Breathe.
     var suggestedTool: QuickTool? {
         guard outcome == .heavier else { return nil }
         return tool == .breathe ? .curious : .breathe

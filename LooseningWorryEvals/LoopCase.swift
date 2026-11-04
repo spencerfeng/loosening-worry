@@ -87,8 +87,6 @@ struct LoopCase: SampleProtocol {
     let expect: Steps<[String]>
     /// The steps that may get a new option; any other step must not.
     let newOptions: [String: NewOptionRule]?
-    /// Whether the sentence has crisis wording, which the app's rules, not the model, answer.
-    let help: Bool?
     let note: String?
 
     var input: String {

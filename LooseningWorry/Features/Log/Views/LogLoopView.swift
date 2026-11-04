@@ -13,7 +13,6 @@ struct LogLoopView: View {
     )
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
-    @State private var isShowingHelp = false
     /// Closes the logger and switches to Insights, from Nice catch's weekly count.
     let showInsights: () -> Void
 
@@ -34,9 +33,6 @@ struct LogLoopView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        if model.showsHelp {
-                            LogHelpRow { isShowingHelp = true }
-                        }
                         if model.showsDescribe {
                             LogDescribeField(
                                 text: $model.described,
@@ -141,9 +137,6 @@ struct LogLoopView: View {
                 }
             }
             .background(.theme(.background))
-            .sheet(isPresented: $isShowingHelp) {
-                HelpView()
-            }
             .navigationDestination(item: $editing) { kind in
                 EditOptionsView(kind: kind)
             }

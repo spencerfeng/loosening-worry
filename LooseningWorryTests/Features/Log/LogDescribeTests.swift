@@ -187,27 +187,6 @@ struct LogDescribeTests {
     }
 
     @Test
-    func `crisis wording points to Help as it's typed, and still after Fill in`() async {
-        let model = LogLoopViewModel(interpreter: FakeLoopInterpreter(reading: LoopReading(picks: [
-            .trigger: "trigger.work"
-        ])))
-        model.described = "Work again. I can't go on like this."
-        #expect(model.showsHelp)
-
-        await model.fillIn(saved: [])
-
-        #expect(model.showsHelp)
-    }
-
-    @Test
-    func `everyday words don't point to Help`() {
-        let model = LogLoopViewModel(interpreter: FakeLoopInterpreter())
-        model.described = "Work email again, kept checking it."
-
-        #expect(!model.showsHelp)
-    }
-
-    @Test
     func `the field shows at the start only where the interpreter can read`() {
         let interpreter = FakeLoopInterpreter()
         #expect(LogLoopViewModel(interpreter: interpreter).showsDescribe)
@@ -256,19 +235,6 @@ struct LogDescribeTests {
 
         #expect(model.showsDescribe)
         #expect(model.described == "ugh, today")
-    }
-
-    @Test
-    func `the Help line stays once the words that called for it are cleared`() async {
-        let model = LogLoopViewModel(interpreter: FakeLoopInterpreter(reading: LoopReading(picks: [
-            .trigger: "trigger.work"
-        ])))
-        model.described = "Work again. I can't go on like this."
-
-        await model.fillIn(saved: [])
-
-        #expect(model.described.isEmpty)
-        #expect(model.showsHelp)
     }
 
     @Test

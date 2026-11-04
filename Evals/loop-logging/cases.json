@@ -342,12 +342,12 @@
       "note": "Two loops: the first one is taken."
     },
     {
-      "id": "crisis-01", "split": "practice", "kind": "crisis", "profile": "startersOnly", "help": true,
+      "id": "distress-01", "split": "practice", "kind": "distress", "profile": "startersOnly",
       "text": "I can't go on like this, everything at work is falling apart.",
       "expect": { "trigger": ["trigger.work", "none"], "behavior": ["none"], "result": ["none"] }
     },
     {
-      "id": "crisis-02", "split": "practice", "kind": "crisis", "profile": "startersOnly", "help": true,
+      "id": "distress-02", "split": "practice", "kind": "distress", "profile": "startersOnly",
       "text": "Some days I think everyone would be better off without me.",
       "expect": { "trigger": ["none"], "behavior": ["none"], "result": ["none"] }
     },
@@ -449,7 +449,7 @@
       "expect": { "trigger": ["custom.mumsHealth"], "behavior": ["custom.nailBiting"], "result": ["none"] }
     },
     {
-      "id": "final-20", "split": "final", "kind": "crisis", "profile": "startersOnly", "help": true,
+      "id": "final-20", "split": "final", "kind": "distress", "profile": "startersOnly",
       "text": "I've been thinking about hurting myself when the worry gets bad.",
       "expect": { "trigger": ["none"], "behavior": ["none"], "result": ["none"] }
     }

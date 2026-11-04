@@ -42,8 +42,6 @@ extension Theme {
         /// Brighter fills for charts and rings, which carry no text; `Strong` stays darker for icons and text
         /// (ADR 0005).
         case greenFill, amberFill
-        /// The crisis-support path. Kept apart from `red` so redesigning a tool's hue never recolours it.
-        case help
 
         var resource: ColorResource {
             switch self {
@@ -81,7 +79,6 @@ extension Theme {
             case .violetOnTint: .violetOnTint
             case .greenFill: .greenFill
             case .amberFill: .amberFill
-            case .help: .help
             }
         }
     }

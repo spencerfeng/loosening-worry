@@ -2,12 +2,9 @@
 struct CheckInSuggestion: Equatable {
     /// The tool to try, or `nil` when there's nothing to ease.
     let tool: QuickTool?
-    /// Whether to point to Help as well.
-    let showsHelp: Bool
 
     init(for answer: CheckInAnswer) {
         tool = answer.pleasantness.isUnpleasant ? Self.tool(for: answer.feelings) : nil
-        showsHelp = answer.pleasantness == .veryUnpleasant
     }
 
     /// The tool most of the words point to. Curiosity suits any unpleasant feeling, so it stands in when no word

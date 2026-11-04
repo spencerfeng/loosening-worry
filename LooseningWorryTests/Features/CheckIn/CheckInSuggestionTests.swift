@@ -7,11 +7,10 @@ struct CheckInSuggestionTests {
     }
 
     @Test(arguments: [Pleasantness.neutral, .slightlyPleasant, .pleasant, .veryPleasant])
-    func `a neutral or pleasant feeling gets no tool and no Help`(pleasantness: Pleasantness) {
+    func `a neutral or pleasant feeling gets no tool`(pleasantness: Pleasantness) {
         let result = suggestion(pleasantness, feelings: [.worried, .stressed])
 
         #expect(result.tool == nil)
-        #expect(!result.showsHelp)
     }
 
     /// Worry is met with curiosity, self-judgment with kindness, heat with noting, and tiredness with breath.
@@ -51,13 +50,5 @@ struct CheckInSuggestionTests {
     ])
     func `a tie goes to worry, then self-judgment, then heat, then tiredness`(feelings: [Feeling], tool: QuickTool) {
         #expect(suggestion(.unpleasant, feelings: feelings).tool == tool)
-    }
-
-    @Test(arguments: [(Pleasantness.veryUnpleasant, true), (.unpleasant, false), (.slightlyUnpleasant, false)])
-    func `only very unpleasant also points to Help`(pleasantness: Pleasantness, showsHelp: Bool) {
-        let result = suggestion(pleasantness, feelings: [.hopeless])
-
-        #expect(result.showsHelp == showsHelp)
-        #expect(result.tool == .beKind)
     }
 }

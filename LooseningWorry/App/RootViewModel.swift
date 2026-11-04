@@ -6,8 +6,7 @@ enum AppTab: Hashable {
     case log
 }
 
-/// The tab bar and the one screen iOS shows over it at a time: the logger, a check-in, a lesson, a tool, Settings or
-/// Help.
+/// The tab bar and the one screen iOS shows over it at a time: the logger, a check-in, a lesson, a tool or Settings.
 @Observable @MainActor
 final class RootViewModel {
     /// Onboarding shows instead of the tabs until this device has been through it once.
@@ -19,7 +18,6 @@ final class RootViewModel {
     var readingLesson: Lesson?
     var runningTool: QuickTool?
     var isSettingsPresented = false
-    var isHelpPresented = false
     /// What opens once the screen showing now has closed; iOS ignores a new screen while another is still going.
     private var next: Next?
 
@@ -95,10 +93,6 @@ final class RootViewModel {
         isSettingsPresented = true
     }
 
-    func openHelp() {
-        isHelpPresented = true
-    }
-
     /// Closes the reader; `task`, if any, opens in `screenClosed()` once it has gone.
     func finishLesson(then task: LessonAction?) {
         next = task.map(Next.task)
@@ -121,8 +115,7 @@ final class RootViewModel {
 
     private var isShowingScreen: Bool {
         isLogSheetPresented || isCheckInPresented || readingLesson != nil || runningTool != nil ||
-            isSettingsPresented ||
-            isHelpPresented
+            isSettingsPresented
     }
 
     /// Opens `screen` now, or closes what's showing and opens it once that has gone. Anything already waiting, such
@@ -134,7 +127,6 @@ final class RootViewModel {
             readingLesson = nil
             runningTool = nil
             isSettingsPresented = false
-            isHelpPresented = false
             next = screen
         } else {
             next = nil

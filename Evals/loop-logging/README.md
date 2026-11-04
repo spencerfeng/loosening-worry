@@ -23,8 +23,6 @@ starters. `startersOnly` has none added; `custom` adds a few.
   from `none`: it's the "Not sure" option, for when the person says they couldn't tell.
 - `newOptions` (optional): when none of the person's options fit, the feature suggests a new one in their own words,
   such as "+ Landlord". This field says which steps should get such a suggestion. See below.
-- `help` (optional): `true` when the sentence has crisis wording. The Help link comes from plain rules in code, not
-  from the model, so these cases are checked against those rules and not scored as model answers.
 - `note` (optional): why the expected answer is what it is.
 
 ### New-option suggestions
