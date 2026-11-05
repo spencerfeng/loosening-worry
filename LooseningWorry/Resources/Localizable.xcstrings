@@ -183,50 +183,6 @@
         }
       }
     },
-    "checkIn.reason.beKind" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Meet the harsh inner voice with warmth"
-          }
-        }
-      }
-    },
-    "checkIn.reason.breathe" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Slow down with your breath"
-          }
-        }
-      }
-    },
-    "checkIn.reason.curious" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Look at the worry instead of being pulled along by it"
-          }
-        }
-      }
-    },
-    "checkIn.reason.noteIt" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Name what's here, one word at a time"
-          }
-        }
-      }
-    },
     "checkIn.save.failed" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -973,13 +929,13 @@
     "Home" : {
 
     },
-    "home.banner.detail" : {
+    "home.banner.choose" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Log trigger, behavior, result in 20 sec"
+            "value" : "Log what set you off, then choose what to do"
           }
         }
       }
@@ -2093,6 +2049,94 @@
         }
       }
     },
+    "log.meetIt.back" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It already happened"
+          }
+        }
+      }
+    },
+    "log.meetIt.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meet the urge with a tool instead"
+          }
+        }
+      }
+    },
+    "log.meetIt.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Turn toward the feeling instead of following it."
+          }
+        }
+      }
+    },
+    "log.meetIt.lastTime" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last time"
+          }
+        }
+      }
+    },
+    "log.meetIt.pickTool" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pick a tool below"
+          }
+        }
+      }
+    },
+    "log.meetIt.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meet the urge this time"
+          }
+        }
+      }
+    },
+    "log.meetIt.summaryLabel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What you'll do"
+          }
+        }
+      }
+    },
+    "log.meetIt.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nothing yet, I'm in it now"
+          }
+        }
+      }
+    },
     "log.more" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2364,6 +2408,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "What set you off"
+          }
+        }
+      }
+    },
+    "loop.tool.beKind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Was kind to myself"
+          }
+        }
+      }
+    },
+    "loop.tool.breathe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Breathed"
+          }
+        }
+      }
+    },
+    "loop.tool.curious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Got curious"
+          }
+        }
+      }
+    },
+    "loop.tool.noteIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Noted it"
           }
         }
       }
@@ -4319,6 +4407,17 @@
         }
       }
     },
+    "tool.finish.notStarted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The tool didn't start, so nothing was saved."
+          }
+        }
+      }
+    },
     "tool.finish.pill" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -4337,6 +4436,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "That's okay. Noticing without fighting is the practice, and it gets easier each time."
+          }
+        }
+      }
+    },
+    "tool.finish.savedLoop" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Saved as a loop"
           }
         }
       }
@@ -4810,6 +4920,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Hmm… what happens if you stay with it?"
+          }
+        }
+      }
+    },
+    "tool.reason.beKind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meet the harsh inner voice with warmth"
+          }
+        }
+      }
+    },
+    "tool.reason.breathe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Slow down with your breath"
+          }
+        }
+      }
+    },
+    "tool.reason.curious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Look at the worry instead of being pulled along by it"
+          }
+        }
+      }
+    },
+    "tool.reason.noteIt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Name what's here, one word at a time"
           }
         }
       }

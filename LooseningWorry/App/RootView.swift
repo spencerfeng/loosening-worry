@@ -45,7 +45,7 @@ struct RootView: View {
             }
             // Selecting this tab opens the sheet; RootViewModel never makes it the selection.
             // Keeps the system's glass look rather than the mockup's accent fill (ADR 0003).
-            Tab("Log a loop", systemImage: "square.and.pencil", value: AppTab.log, role: .prominent) {
+            Tab("Log a loop", systemImage: "plus", value: AppTab.log, role: .prominent) {
                 Color.clear
             }
         }

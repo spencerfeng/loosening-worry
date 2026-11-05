@@ -25,15 +25,31 @@ struct LoopStore {
         return try context.fetchCount(loops)
     }
 
-    /// When the person noticed the latest loop set off by the trigger with id `triggerID`, among those where they said;
-    /// `nil` if they never did.
+    /// When the person noticed the latest habit set off by the trigger with id `triggerID`, among those where they
+    /// said;
+    /// `nil` if they never did. Loops met with a tool are left out: choosing a tool is noticing the urge as it started,
+    /// so comparing with one would leave the next habit nothing to improve on.
     func lastNoticed(forTrigger triggerID: String) throws -> NoticeTiming? {
+        let toolPrefix = QuickTool.behaviorIDPrefix
         var answered = FetchDescriptor<Loop>(
-            predicate: #Predicate { $0.triggerID == triggerID && $0.noticedID != nil },
+            predicate: #Predicate {
+                $0.triggerID == triggerID && $0.noticedID != nil && !$0.behaviorID.starts(with: toolPrefix)
+            },
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)],
         )
         answered.fetchLimit = 1
         return try context.fetch(answered).first?.noticed
+    }
+
+    /// The latest loop set off by the trigger with id `triggerID` that has a note, so its words can be shown again;
+    /// `nil` if none has.
+    func lastNoted(forTrigger triggerID: String) throws -> Loop? {
+        var noted = FetchDescriptor<Loop>(
+            predicate: #Predicate { $0.triggerID == triggerID && $0.note != nil },
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)],
+        )
+        noted.fetchLimit = 1
+        return try context.fetch(noted).first
     }
 
     /// The loops logged at or after `start`.

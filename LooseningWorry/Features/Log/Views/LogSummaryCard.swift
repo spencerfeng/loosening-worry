@@ -10,7 +10,9 @@ struct LogSummaryCard: View {
             ForEach(OptionKind.allCases, id: \.self) { step in
                 LogSummaryRow(
                     step: step,
-                    answer: model.answer(for: step)?.label,
+                    isMeeting: step == .behavior && model.isMeeting,
+                    // While the person picks a tool, step 2 has no answer yet, even one from before they reopened it.
+                    answer: step == .behavior && model.isMeeting ? nil : model.answer(for: step)?.label,
                     progress: model.progress(for: step),
                     popTrigger: model.cheer?.step == step ? model.pickCount : nil,
                 ) {
@@ -25,6 +27,8 @@ struct LogSummaryCard: View {
 
 private struct LogSummaryRow: View {
     let step: OptionKind
+    /// Step 2 while the person picks a tool to meet the urge with, rather than a habit that already ran.
+    let isMeeting: Bool
     let answer: String?
     let progress: StepProgress
     /// The latest pick when it answered this step, so re-answering the step pops its tick again.
@@ -36,7 +40,9 @@ private struct LogSummaryRow: View {
             HStack(spacing: 12) {
                 marker
                 VStack(alignment: .leading, spacing: 1) {
-                    Text(step.logCopy.summaryLabel)
+                    Text(isMeeting
+                        ? LocalizedStringResource("log.meetIt.summaryLabel", defaultValue: "What you'll do")
+                        : step.logCopy.summaryLabel)
                         .textCase(.uppercase)
                         .font(.theme(.footnote))
                         .tracking(0.6)
@@ -93,7 +99,9 @@ private struct LogSummaryRow: View {
                 .foregroundStyle(.theme(.textPrimary))
         } else {
             Group {
-                if progress.isCurrent {
+                if isMeeting {
+                    Text(LocalizedStringResource("log.meetIt.pickTool", defaultValue: "Pick a tool below"))
+                } else if progress.isCurrent {
                     Text("Choose below")
                 } else {
                     Text(verbatim: "—")

@@ -12,18 +12,32 @@ struct ToolFinishView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                VStack(spacing: 6) {
-                    Text(LocalizedStringResource("tool.finish.title", defaultValue: "How do you feel now?"))
-                        .font(.theme(.title))
-                        .foregroundStyle(.theme(.textPrimary))
-                        .accessibilityAddTraits(.isHeader)
-                    Text(LocalizedStringResource("tool.finish.detail", defaultValue: "Compared to when you started."))
+                if model.asksHowItFelt {
+                    VStack(spacing: 6) {
+                        Text(LocalizedStringResource("tool.finish.title", defaultValue: "How do you feel now?"))
+                            .font(.theme(.title))
+                            .foregroundStyle(.theme(.textPrimary))
+                            .accessibilityAddTraits(.isHeader)
+                        Text(LocalizedStringResource(
+                            "tool.finish.detail",
+                            defaultValue: "Compared to when you started.",
+                        ))
                         .font(.theme(.body))
                         .foregroundStyle(.theme(.textSecondary))
-                }
-                .multilineTextAlignment(.center)
+                    }
+                    .multilineTextAlignment(.center)
 
-                OutcomePicker(outcome: model.outcome) { model.choose($0) }
+                    OutcomePicker(outcome: model.outcome) { model.choose($0) }
+                } else {
+                    Text(LocalizedStringResource(
+                        "tool.finish.notStarted",
+                        defaultValue: "The tool didn't start, so nothing was saved.",
+                    ))
+                    .font(.theme(.body))
+                    .foregroundStyle(.theme(.textSecondary))
+                    .multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
+                }
 
                 // Quietly, so a failed save doesn't spoil the moment; the rest of the screen works as ever.
                 if let failure = model.saveFailure {
@@ -43,6 +57,11 @@ struct ToolFinishView: View {
                     }
                     .id(outcome)
                     .transition(reveal)
+                }
+
+                if let loop = model.meetingLoop {
+                    SavedLoopCard(loop: loop)
+                        .transition(reveal)
                 }
 
                 if let tally = model.lighterTally {
@@ -101,6 +120,24 @@ struct ToolFinishView: View {
     /// How the answer's message and tally come in: rising into place, or only fading with Reduce Motion.
     private var reveal: AnyTransition {
         reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 8))
+    }
+}
+
+/// The loop a run from the logger's "Nothing yet" saved: the trigger, the tool, and how it left the person.
+private struct SavedLoopCard: View {
+    let loop: Loop
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LocalizedStringResource("tool.finish.savedLoop", defaultValue: "Saved as a loop"))
+                .font(.theme(.callout))
+                .foregroundStyle(.theme(.textSecondary))
+                .accessibilityAddTraits(.isHeader)
+            LoopChips(labels: [loop.triggerLabel, loop.behaviorLabel, loop.resultLabel])
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .cardSurface(cornerRadius: 18)
     }
 }
 
@@ -256,16 +293,6 @@ private struct OtherTools: View {
             }
         }
         .padding(.bottom, 6)
-    }
-}
-
-private extension ToolOutcome {
-    var label: LocalizedStringResource {
-        switch self {
-        case .lighter: LocalizedStringResource("tool.feeling.lighter", defaultValue: "Lighter")
-        case .same: LocalizedStringResource("tool.feeling.same", defaultValue: "About the same")
-        case .heavier: LocalizedStringResource("tool.feeling.heavier", defaultValue: "Heavier")
-        }
     }
 }
 

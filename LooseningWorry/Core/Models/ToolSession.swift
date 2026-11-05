@@ -22,7 +22,8 @@ final class ToolSession {
     /// The answer to "How do you feel now?", by `ToolOutcome` id, or `nil` if the run went unanswered. Kept as text
     /// like `toolID`, so a run synced from a newer version with an answer this one doesn't know still loads.
     var outcomeID: String?
-    /// Set when the tool was started from Nice catch.
+    /// The loop the run responds to: the one just logged, for a tool started from Nice catch, or the one the run saved,
+    /// for a tool started from the logger's "Nothing yet".
     var loop: Loop?
 
     init(tool: QuickTool) {

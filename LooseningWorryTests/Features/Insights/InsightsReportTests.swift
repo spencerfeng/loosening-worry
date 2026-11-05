@@ -149,6 +149,21 @@ struct InsightsReportTests {
         #expect(habit.hasEnough)
     }
 
+    /// Meeting the urge with a tool isn't a habit to see through, so the card never names one.
+    @Test
+    func `the habit card leaves out loops met with a tool`() throws {
+        let curious = ("tool.curious", "Got curious")
+        let loops = [
+            loop(date(day: 26, hour: 8), behavior: curious, result: ("outcome.lighter", "Lighter")),
+            loop(date(day: 26, hour: 9), behavior: curious, result: ("outcome.lighter", "Lighter")),
+            loop(date(day: 27, hour: 9)),
+        ]
+
+        let habit = try #require(report(loops).habit)
+
+        #expect(habit.label == "Overthought it")
+    }
+
     /// Until a habit has three loops with a clear result, the card says more loops will tell.
     @Test
     func `the habit card waits for three clear results`() throws {

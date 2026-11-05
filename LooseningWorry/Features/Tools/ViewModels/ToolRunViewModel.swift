@@ -37,6 +37,12 @@ final class ToolRunViewModel {
     private let sessions: any SessionRecording
     /// The loop just logged, for a tool started from Nice catch.
     private let loop: Loop?
+    /// The trigger the person is meeting with this tool, for a run started from the logger's "Nothing yet, I'm in it
+    /// now"; the run saves a loop of its own.
+    private let meetingTrigger: OptionChoice?
+    /// The loop the sitting's first saved session brought, which any further tools in the sitting join: one urge, one
+    /// loop. `nil` until a session is saved.
+    private(set) var meetingLoop: Loop?
     /// When the run started: on Play or the first tap, or for a paged tool, when it opened.
     private var startedAt: Date?
     /// Whether the person has engaged with a paged tool, which runs from the moment it opens; only then is it a
@@ -62,15 +68,23 @@ final class ToolRunViewModel {
         lengths: ToolLengths,
         sessions: any SessionRecording,
         loop: Loop? = nil,
+        meeting trigger: OptionChoice? = nil,
     ) {
         self.tool = tool
         self.picker = picker
         self.lengths = lengths
         self.sessions = sessions
         self.loop = loop
+        meetingTrigger = trigger
         script = picker.script(for: tool)
         length = lengths.length(for: tool)
         startIfPaged(now: now)
+    }
+
+    /// Whether the finish screen asks "How do you feel now?". A run from "Nothing yet" that saved no loop has nothing
+    /// to keep the answer with, so it doesn't ask.
+    var asksHowItFelt: Bool {
+        meetingTrigger == nil || meetingLoop != nil
     }
 
     var isPaused: Bool {
@@ -223,14 +237,20 @@ final class ToolRunViewModel {
         finish(now: now)
     }
 
-    /// The answer to "How do you feel now?", saved with the session.
+    /// The answer to "How do you feel now?", saved with the session, and for a run started from "Nothing yet" as its
+    /// loop's result too. If saving fails, the loop keeps the result it had.
     func choose(_ outcome: ToolOutcome) {
         self.outcome = outcome
         guard let session else { return }
+        let earlierResult = meetingLoop.map { OptionChoice(id: $0.resultID, label: $0.resultLabel) }
+        meetingLoop?.setResult(outcome.asResult)
         do {
             try sessions.setOutcome(outcome, on: session)
         } catch {
             Self.logger.error("Couldn't save the outcome with the session: \(error)")
+            if let earlierResult {
+                meetingLoop?.setResult(earlierResult)
+            }
             saveFailure = .outcome
         }
     }
@@ -293,12 +313,31 @@ final class ToolRunViewModel {
     private func record(now: Date) {
         let isSession = tool.pacing == .paged ? hasEngaged : hasStarted
         guard isSession, session == nil, let startedAt else { return }
+        let sittingLoop = loop ?? meetingLoop ?? newMeetingLoop()
         do {
-            session = try sessions.record(tool, startedAt: startedAt, duration: motionTime(at: now), loop: loop)
+            session = try sessions.record(
+                tool,
+                startedAt: startedAt,
+                duration: motionTime(at: now),
+                loop: sittingLoop,
+            )
+            if meetingTrigger != nil {
+                meetingLoop = sittingLoop
+            }
         } catch {
             Self.logger.error("Couldn't save the session: \(error)")
             saveFailure = .session
         }
+    }
+
+    /// For a run started from "Nothing yet", the loop its sitting saves: the trigger, this first tool, and not sure
+    /// until the person answers. They chose to meet the urge before the habit ran, which is noticing it as it started.
+    private func newMeetingLoop() -> Loop? {
+        guard let meetingTrigger else { return nil }
+        let notSure = OptionChoice(.notSure, label: String(localized: StarterID.notSure.label))
+        let loop = Loop(trigger: meetingTrigger, behavior: tool.asBehavior, result: notSure)
+        loop.noticed = .asItStarted
+        return loop
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Tools")

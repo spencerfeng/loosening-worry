@@ -33,6 +33,11 @@ final class Loop {
         triggerLabel = trigger.label
         behaviorID = behavior.id
         behaviorLabel = behavior.label
+        setResult(result)
+    }
+
+    /// Replaces what the loop gave the person, such as when a tool's finish screen is answered after it was saved.
+    func setResult(_ result: OptionChoice) {
         resultID = result.id
         resultLabel = result.label
     }

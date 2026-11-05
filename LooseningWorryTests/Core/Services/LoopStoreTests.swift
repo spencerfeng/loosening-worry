@@ -72,6 +72,41 @@ struct LoopStoreTests {
         #expect(try store.lastNoticed(forTrigger: "trigger.money") == nil)
     }
 
+    /// Meeting the urge with a tool is noticing it as it started by definition, so comparing with it would leave the
+    /// next habit nothing to improve on: the comparison is with the habits.
+    @Test
+    func `the last answer for a trigger skips loops met with a tool`() throws {
+        let store = LoopStore(context: ModelContext(container))
+        let work = OptionChoice(.work, label: "Work")
+        try store.add(.sample(trigger: work, createdAt: Self.date(day: 1, hour: 12), noticed: .afterwards))
+        try store.add(.sample(
+            trigger: work,
+            behavior: QuickTool.curious.asBehavior,
+            createdAt: Self.date(day: 5, hour: 12),
+            noticed: .asItStarted,
+        ))
+
+        #expect(try store.lastNoticed(forTrigger: "trigger.work") == .afterwards)
+    }
+
+    /// "Nothing yet, I'm in it now" shows what the person wrote the last time this trigger set them off.
+    @Test
+    func `the last note for a trigger skips loops without one and other triggers`() throws {
+        let store = LoopStore(context: ModelContext(container))
+        let work = OptionChoice(.work, label: "Work")
+        for (day, note) in [(1, "Inbox dread"), (5, "Awake till 2, chest tight"), (8, nil)] {
+            let loop = try Loop.sample(trigger: work, createdAt: Self.date(day: day, hour: 12))
+            loop.note = note
+            try store.add(loop)
+        }
+        let news = try Loop.sample(trigger: OptionChoice(.news, label: "News"), createdAt: Self.date(day: 9, hour: 12))
+        news.note = "Doomscrolled"
+        try store.add(news)
+
+        #expect(try store.lastNoted(forTrigger: "trigger.work")?.note == "Awake till 2, chest tight")
+        #expect(try store.lastNoted(forTrigger: "trigger.money") == nil)
+    }
+
     private static var gmtCalendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = .gmt

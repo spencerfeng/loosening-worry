@@ -129,8 +129,8 @@ private struct LogBanner: View {
                 Text(LocalizedStringResource("home.banner.title", defaultValue: "Feeling it now?"))
                     .font(.theme(.headline))
                 Text(LocalizedStringResource(
-                    "home.banner.detail",
-                    defaultValue: "Log trigger, behavior, result in 20 sec",
+                    "home.banner.choose",
+                    defaultValue: "Log what set you off, then choose what to do",
                 ))
                 .font(.theme(.caption))
             }
@@ -138,7 +138,7 @@ private struct LogBanner: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             Button(action: action) {
                 HStack(spacing: 6) {
-                    Image(systemName: "square.and.pencil")
+                    Image(systemName: "plus")
                         .fontWeight(.semibold)
                         .accessibilityHidden(true)
                     Text("Log a loop")

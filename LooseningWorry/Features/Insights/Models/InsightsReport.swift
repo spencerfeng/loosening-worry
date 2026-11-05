@@ -135,13 +135,16 @@ struct InsightsReport {
 
     /// The three triggers logged most, a tie going to the one logged last.
     var topTriggers: [Tally] {
-        Array(ranked(by: \.triggerID, label: \.triggerLabel).prefix(3))
+        Array(ranked(loops, by: \.triggerID, label: \.triggerLabel).prefix(3))
     }
 
     /// The behavior logged most in the period, and what it gave, for the card that helps the person see it plainly.
+    /// Loops met with a tool are left out: a tool isn't a habit to see through.
     var habit: Habit? {
-        guard let top = ranked(by: \.behaviorID, label: \.behaviorLabel).first else { return nil }
-        let results = loops.filter { choiceID($0.behaviorID) == top.id }.compactMap { StarterID(rawValue: $0.resultID) }
+        let habits = loops.filter { $0.metWithTool == nil }
+        guard let top = ranked(habits, by: \.behaviorID, label: \.behaviorLabel).first else { return nil }
+        let results = habits.filter { choiceID($0.behaviorID) == top.id }
+            .compactMap { StarterID(rawValue: $0.resultID) }
         let clear = results.filter(\.isClearResult)
         return Habit(
             label: top.label,
@@ -156,7 +159,7 @@ struct InsightsReport {
 
     /// Every trigger or behavior in the period, most logged first, a tie going to the one logged last, each with the
     /// words it was last logged with.
-    private func ranked(by id: KeyPath<Loop, String>, label: KeyPath<Loop, String>) -> [Tally] {
+    private func ranked(_ loops: [Loop], by id: KeyPath<Loop, String>, label: KeyPath<Loop, String>) -> [Tally] {
         var tallies: [String: (count: Int, last: Loop)] = [:]
         for loop in loops {
             let choice = choiceID(loop[keyPath: id])

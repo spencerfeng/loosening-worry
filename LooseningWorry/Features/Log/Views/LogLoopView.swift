@@ -11,6 +11,12 @@ struct LogLoopView: View {
     @State private var model = LogLoopViewModel()
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
+    /// The tool the person is meeting the urge with, after "Nothing yet".
+    @State private var meetingTool: QuickTool?
+    /// What the person wrote the last time this trigger set them off, read when they choose "Nothing yet".
+    @State private var lastNoted: Loop?
+    /// Set when a tool run from "Nothing yet" saved its loop, so the logger closes with the tool.
+    @State private var savedByTool = false
     /// Closes the logger and switches to Insights, from Nice catch's weekly count.
     let showInsights: () -> Void
 
@@ -48,7 +54,14 @@ struct LogLoopView: View {
                                 .font(.theme(.caption))
                                 .foregroundStyle(.theme(.textSecondary))
                         }
-                        if let step = model.currentStep {
+                        if model.isMeeting {
+                            LogMeetIt(lastNoted: lastNoted) { tool in
+                                meetingTool = tool
+                            } back: {
+                                withAnimation(stepAnimation) { model.stopMeeting() }
+                            }
+                            .transition(questionTransition)
+                        } else if let step = model.currentStep {
                             let choices = model.choices(for: step, saved: savedOptions)
                             let visible = model.visibleChoices(choices, for: step)
                             LogQuestion(
@@ -59,6 +72,7 @@ struct LogLoopView: View {
                                 isAddingOwn: model.isAddingOwn,
                                 draft: $model.draft,
                                 canAddOwn: model.canAddOwn,
+                                meetIt: step == .behavior ? { meetIt() } : nil,
                             ) { choice in
                                 withAnimation(stepAnimation) { model.pick(choice) }
                             } showMore: {
@@ -126,6 +140,16 @@ struct LogLoopView: View {
             .navigationDestination(item: $editing) { kind in
                 EditOptionsView(kind: kind)
             }
+            // Closing the tool comes back here, trigger kept; finishing it, with its loop saved, closes the logger too.
+            .fullScreenCover(item: $meetingTool, onDismiss: closeIfSavedByTool) { tool in
+                ToolRunView(
+                    tool: tool,
+                    sessions: SessionStore(context: modelContext),
+                    meeting: model.answer(for: .trigger),
+                ) { savedLoop in
+                    savedByTool = savedLoop != nil
+                }
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -163,6 +187,20 @@ struct LogLoopView: View {
                 model.recentLoops = (try? LoopStore(context: modelContext).loops(since: historyStart)) ?? []
             }
             .sensoryFeedback(.selection, trigger: model.pickCount)
+        }
+    }
+
+    private func meetIt() {
+        if let trigger = model.answer(for: .trigger) {
+            // Without it, the screen just has no "Last time"; meeting the urge still works.
+            lastNoted = try? LoopStore(context: modelContext).lastNoted(forTrigger: trigger.id)
+        }
+        withAnimation(stepAnimation) { model.meetIt() }
+    }
+
+    private func closeIfSavedByTool() {
+        if savedByTool {
+            dismiss()
         }
     }
 

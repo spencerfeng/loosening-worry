@@ -28,6 +28,20 @@ struct SessionStoreTests {
         #expect(session.loop == nil)
     }
 
+    /// A run from the logger's "Nothing yet" brings a loop that isn't stored yet; saving the run stores it too, with
+    /// the result the finish screen gives it.
+    @Test
+    func `a new loop belonging to a session is saved with it, and so is its result`() throws {
+        let loop = Loop.sample(trigger: OptionChoice(.work, label: "Work"))
+        let session = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: loop)
+        loop.setResult(ToolOutcome.lighter.asResult)
+        try store.setOutcome(.lighter, on: session)
+
+        let saved = try ModelContext(container).fetch(FetchDescriptor<Loop>())
+        #expect(saved.map(\.resultID) == ["outcome.lighter"])
+        #expect(saved.first?.toolSessions?.count == 1)
+    }
+
     @Test
     func `the feeling answered is saved with the session, and a changed answer replaces it`() throws {
         let session = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)

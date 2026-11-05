@@ -18,6 +18,8 @@ struct LogQuestion: View {
     let isAddingOwn: Bool
     @Binding var draft: String
     let canAddOwn: Bool
+    /// Offers "Nothing yet, I'm in it now" above the choices; step 2 only.
+    let meetIt: (() -> Void)?
     let pick: (OptionChoice) -> Void
     let showMore: () -> Void
     /// Opens Edit options on this step's tab.
@@ -47,6 +49,9 @@ struct LogQuestion: View {
                 Text(step.logCopy.hint)
                     .font(.theme(.body))
                     .foregroundStyle(.theme(.textSecondary))
+            }
+            if let meetIt {
+                LogMeetItCard(action: meetIt)
             }
             FlowLayout(spacing: 8) {
                 ForEach(choices, id: \.label) { choice in

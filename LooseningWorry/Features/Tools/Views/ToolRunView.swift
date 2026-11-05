@@ -9,9 +9,22 @@ struct ToolRunView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @State private var model: ToolRunViewModel
+    /// Told, as the tool closes, the loop the run saved of its own, if any.
+    private let closed: (_ savedLoop: Loop?) -> Void
 
-    /// `loop` is the loop just logged, for a tool started from Nice catch; the session belongs to it.
-    init(tool: QuickTool, sessions: any SessionRecording, loop: Loop? = nil) {
+    /// - Parameters:
+    ///   - loop: The loop just logged, for a tool started from Nice catch; the session belongs to it.
+    ///   - trigger: The trigger the person is meeting with this tool, for a run started from the logger's "Nothing
+    ///     yet"; the run saves a loop of its own.
+    ///   - closed: Told, as the tool closes, by Done or by Close, the loop the run saved of its own, if any: a sitting
+    ///     from "Nothing yet" can save one and then go on to another tool.
+    init(
+        tool: QuickTool,
+        sessions: any SessionRecording,
+        loop: Loop? = nil,
+        meeting trigger: OptionChoice? = nil,
+        closed: @escaping (_ savedLoop: Loop?) -> Void = { _ in },
+    ) {
         _model = State(initialValue: ToolRunViewModel(
             tool: tool,
             now: .now,
@@ -19,7 +32,9 @@ struct ToolRunView: View {
             lengths: .standard,
             sessions: sessions,
             loop: loop,
+            meeting: trigger,
         ))
+        self.closed = closed
     }
 
     var body: some View {
@@ -27,7 +42,8 @@ struct ToolRunView: View {
             Group {
                 switch model.stage {
                 case .running: running
-                case .finished: ToolFinishView(model: model) { dismiss() }
+                case .finished:
+                    ToolFinishView(model: model) { close() }
                 }
             }
             .background(.theme(.background))
@@ -47,6 +63,11 @@ struct ToolRunView: View {
         }
     }
 
+    private func close() {
+        closed(model.meetingLoop)
+        dismiss()
+    }
+
     private var running: some View {
         ToolBody(model: model)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -59,7 +80,7 @@ struct ToolRunView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
+                    Button(role: .close) { close() }
                 }
                 ToolbarItem(placement: .principal) {
                     ToolRunPill(model: model)

@@ -28,6 +28,9 @@ final class LogLoopViewModel {
     var note = ""
     /// The answer to "When did you notice?", or `nil` until the person picks one: it's optional.
     private(set) var noticed: NoticeTiming?
+    /// Whether the person said "Nothing yet, I'm in it now" on step 2, so they're picking a tool to meet the urge with
+    /// instead of a habit that already ran.
+    private(set) var isMeeting = false
     /// What Nice catch shows, once the loop is saved.
     private(set) var niceCatch: NiceCatch?
 
@@ -147,6 +150,17 @@ final class LogLoopViewModel {
         currentStep = OptionKind.allCases.first { answers[$0] == nil }
     }
 
+    /// "Nothing yet, I'm in it now": keeps the trigger and offers the tools instead of the habits.
+    func meetIt() {
+        closeAddOwn()
+        isMeeting = true
+    }
+
+    /// Back from the tools to the habits, keeping the trigger.
+    func stopMeeting() {
+        isMeeting = false
+    }
+
     func toggleAddOwn() {
         isAddingOwn.toggle()
         draft = ""
@@ -237,6 +251,7 @@ final class LogLoopViewModel {
     /// Reopens a step from the summary card, keeping its answer.
     func goTo(_ step: OptionKind) {
         closeAddOwn()
+        isMeeting = false
         isShowingAllChoices = false
         stepOrder = nil
         // A failed save was about the loop as it stood; the person is changing it now.

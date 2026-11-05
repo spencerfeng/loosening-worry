@@ -281,7 +281,7 @@ private struct PulsingLogButton: View {
     @State private var isPulsing = false
 
     var body: some View {
-        Image(systemName: "square.and.pencil")
+        Image(systemName: "plus")
             .font(.system(size: 18, weight: .semibold))
             .foregroundStyle(.theme(.textOnAccent))
             .frame(width: 40, height: 40)

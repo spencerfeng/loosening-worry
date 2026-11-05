@@ -32,8 +32,16 @@ final class ToolRunViewModelTests {
     }
 
     /// A run of `tool` opened at the start, with the tests' own prompts and stored lengths.
-    func model(_ tool: QuickTool, loop: Loop? = nil) -> ToolRunViewModel {
-        ToolRunViewModel(tool: tool, now: start, picker: picker, lengths: lengths, sessions: sessions, loop: loop)
+    func model(_ tool: QuickTool, loop: Loop? = nil, meeting trigger: OptionChoice? = nil) -> ToolRunViewModel {
+        ToolRunViewModel(
+            tool: tool,
+            now: start,
+            picker: picker,
+            lengths: lengths,
+            sessions: sessions,
+            loop: loop,
+            meeting: trigger,
+        )
     }
 
     isolated deinit {

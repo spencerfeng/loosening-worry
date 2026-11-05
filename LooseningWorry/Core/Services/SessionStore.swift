@@ -17,16 +17,22 @@ protocol SessionRecording {
 struct SessionStore: SessionRecording {
     let context: ModelContext
 
-    /// Saves a run of `tool`, belonging to `loop` when it was started from Nice catch. If saving fails the session is
-    /// taken out again, so it isn't saved later by mistake.
+    /// Saves a run of `tool`, belonging to `loop`: the loop just logged, for a tool started from Nice catch, or a new
+    /// one
+    /// the run brings, for a tool started from the logger's "Nothing yet". If saving fails the session is taken out
+    /// again, and so is a new loop, so neither is saved later by mistake.
     @discardableResult
     func record(_ tool: QuickTool, startedAt: Date, duration: Duration, loop: Loop?) throws -> ToolSession {
+        let isNewLoop = loop.map { $0.modelContext == nil } ?? false
         let session = ToolSession(tool: tool, startedAt: startedAt, duration: duration, loop: loop)
         context.insert(session)
         do {
             try context.save()
         } catch {
             context.delete(session)
+            if isNewLoop, let loop {
+                context.delete(loop)
+            }
             throw error
         }
         return session

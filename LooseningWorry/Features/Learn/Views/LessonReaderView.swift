@@ -397,7 +397,7 @@ extension LessonAction {
 
     var symbol: String {
         switch self {
-        case .logLoop: "square.and.pencil"
+        case .logLoop: "plus"
         case .openInsights: "chart.bar"
         case let .tool(tool): tool.symbol
         case .openSettings: "gearshape"

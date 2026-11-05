@@ -96,7 +96,7 @@ private struct TryATool: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionLabel(LocalizedStringResource("checkIn.finished.tryATool", defaultValue: "Try a tool"))
-            ToolCard(tool: tool, detail: tool.checkInReason) { start(tool) }
+            ToolCard(tool: tool, detail: tool.reason) { start(tool) }
             SectionLabel(LocalizedStringResource("checkIn.finished.orTry", defaultValue: "Or try"))
                 .padding(.top, 6)
             OtherTools(tools: QuickTool.allCases.filter { $0 != tool }, start: start)
@@ -142,24 +142,6 @@ private struct OtherTools: View {
                 }
                 .buttonStyle(.plain)
             }
-        }
-    }
-}
-
-/// Why each tool suits what was named, under its name on the card. Drafts for the reviewer.
-private extension QuickTool {
-    var checkInReason: LocalizedStringResource {
-        switch self {
-        case .curious:
-            LocalizedStringResource(
-                "checkIn.reason.curious",
-                defaultValue: "Look at the worry instead of being pulled along by it",
-            )
-        case .breathe: LocalizedStringResource("checkIn.reason.breathe", defaultValue: "Slow down with your breath")
-        case .noteIt:
-            LocalizedStringResource("checkIn.reason.noteIt", defaultValue: "Name what's here, one word at a time")
-        case .beKind:
-            LocalizedStringResource("checkIn.reason.beKind", defaultValue: "Meet the harsh inner voice with warmth")
         }
     }
 }
