@@ -8,9 +8,7 @@ struct LogLoopView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
-    @State private var model = LogLoopViewModel(
-        interpreter: CloudFirstLoopInterpreter(cloud: PrivateCloudLoopInterpreter(), device: OnDeviceLoopInterpreter())
-    )
+    @State private var model = LogLoopViewModel()
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
     /// Closes the logger and switches to Insights, from Nice catch's weekly count.
@@ -33,20 +31,6 @@ struct LogLoopView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        if model.showsDescribe {
-                            LogDescribeField(
-                                text: $model.described,
-                                canFillIn: model.canFillIn,
-                                isFillingIn: model.isFillingIn,
-                                couldntTell: model.couldntTell,
-                            ) {
-                                Task {
-                                    await model.fillIn(saved: savedOptions)
-                                }
-                            }
-                            LogOrDivider()
-                                .padding(.vertical, -6)
-                        }
                         LogSummaryCard(model: model) { step in
                             withAnimation(stepAnimation) { model.goTo(step) }
                         }
@@ -75,7 +59,6 @@ struct LogLoopView: View {
                                 isAddingOwn: model.isAddingOwn,
                                 draft: $model.draft,
                                 canAddOwn: model.canAddOwn,
-                                suggestedOption: model.suggestedOption(for: step),
                             ) { choice in
                                 withAnimation(stepAnimation) { model.pick(choice) }
                             } showMore: {
@@ -87,10 +70,6 @@ struct LogLoopView: View {
                             } addOwn: {
                                 withAnimation(stepAnimation) {
                                     model.addOwn(existing: choices, save: saveOwnOption)
-                                }
-                            } addSuggested: {
-                                withAnimation(stepAnimation) {
-                                    model.addSuggestedOption(existing: choices, save: saveOwnOption)
                                 }
                             }
                             .id(step)
@@ -163,12 +142,6 @@ struct LogLoopView: View {
                     AccessibilityNotification.Announcement(announcement).post()
                 }
             }
-            .onChange(of: model.couldntTell) { _, couldntTell in
-                if couldntTell {
-                    AccessibilityNotification.Announcement(String(localized: LogDescribeField.couldntTellMessage))
-                        .post()
-                }
-            }
             .onChange(of: model.saveFailed) { _, failed in
                 if failed {
                     AccessibilityNotification.Announcement(String(localized: Self.saveFailedMessage)).post()
@@ -191,7 +164,7 @@ struct LogLoopView: View {
         defaultValue: "Couldn't save this loop. Please try again.",
     )
 
-    /// Saves an option the person added, typed or suggested from their words, to their list.
+    /// Saves an option the person added to their list.
     private func saveOwnOption(_ kind: OptionKind, _ label: String) throws -> OptionChoice {
         try OptionStore(context: modelContext).addOwn(label, kind: kind)
     }

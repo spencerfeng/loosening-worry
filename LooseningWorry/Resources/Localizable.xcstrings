@@ -1994,83 +1994,6 @@
         }
       }
     },
-    "log.describe.couldntTell" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't tell from that. Pick below, or try other words."
-          }
-        }
-      }
-    },
-    "log.describe.fillIn" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Fill in"
-          }
-        }
-      }
-    },
-    "log.describe.fillingIn" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Filling in…"
-          }
-        }
-      }
-    },
-    "log.describe.label" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Describe what happened"
-          }
-        }
-      }
-    },
-    "log.describe.or" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "or pick each step"
-          }
-        }
-      }
-    },
-    "log.describe.placeholder" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Describe it to fill in the steps"
-          }
-        }
-      }
-    },
-    "log.describe.private" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Private to you. Never stored."
-          }
-        }
-      }
-    },
     "log.details.anxiety" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2298,50 +2221,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Couldn't save this loop. Please try again."
-          }
-        }
-      }
-    },
-    "log.suggested" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggested"
-          }
-        }
-      }
-    },
-    "log.suggestedOption" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggested from your words"
-          }
-        }
-      }
-    },
-    "log.suggestedOption.add" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add %@"
-          }
-        }
-      }
-    },
-    "log.suggestedOption.hint" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Suggested from your words. Saved to your list for next time."
           }
         }
       }

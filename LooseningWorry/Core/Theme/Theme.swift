@@ -98,12 +98,9 @@ extension Theme {
         let scalesWith: Font.TextStyle
     }
 
-    /// The type scale (ADR 0002). Each style is named after, and scales with, the system style of the same name, except
-    /// `badge`: no system style is named for its size, so it scales with `caption`, which is 12 points by default too.
+    /// The type scale (ADR 0002). Each style is named after, and scales with, the system style of the same name.
     enum TextStyle: CaseIterable, Sendable {
         case largeTitle, title, title2, title3, headline, body, callout, subheadline, footnote, caption, caption2
-        /// Small labels on a tinted pill, such as the logger's "Suggested".
-        case badge
 
         var metrics: TextMetrics {
             switch self {
@@ -118,7 +115,6 @@ extension Theme {
             case .footnote: TextMetrics(face: .semiBold, size: 13, scalesWith: .footnote)
             case .caption: TextMetrics(face: .regular, size: 13, scalesWith: .caption)
             case .caption2: TextMetrics(face: .semiBold, size: 11, scalesWith: .caption2)
-            case .badge: TextMetrics(face: .bold, size: 12, scalesWith: .caption)
             }
         }
     }

@@ -8,10 +8,6 @@ final class LogLoopViewModel {
     /// The step being asked, or `nil` once all three are answered.
     private(set) var currentStep: OptionKind? = .trigger
     private var answers: [OptionKind: OptionChoice] = [:]
-    /// The steps whose answer Fill in chose and the person hasn't changed.
-    private var suggested: Set<OptionKind> = []
-    /// New options Fill in offers in the person's words, for steps none of their options fit.
-    private var suggestedOptions: [OptionKind: String] = [:]
     /// Cheers the step answered last; `nil` until the first pick.
     private(set) var cheer: LogCheer?
     /// How many loops the person logged before this one; set when the logger opens.
@@ -63,30 +59,6 @@ final class LogLoopViewModel {
     /// choices, and a change to it never needs a redraw.
     @ObservationIgnored private var stepOrder: StepOrder?
     private let pairs: StarterPairs
-    private let interpreter: LoopInterpreter?
-
-    /// What the person typed or dictated to describe the loop, for the interpreter to fill in the steps from. Editing
-    /// it
-    /// clears `couldntTell`, which was about the words before.
-    var described = "" {
-        didSet { couldntTell = false }
-    }
-
-    /// Whether the last Fill in found nothing to fill in, so the person picks below or tries other words.
-    private(set) var couldntTell = false
-    /// Whether the interpreter is reading `described` now.
-    private(set) var isFillingIn = false
-
-    /// Whether the describe field shows: the interpreter can read on this device, and the person is on step 1 with
-    /// nothing picked or offered yet, so the words would fill in the whole loop.
-    var showsDescribe: Bool {
-        interpreter?.isAvailable == true && currentStep == .trigger && answers.isEmpty && suggestedOptions.isEmpty
-    }
-
-    /// Whether Fill in is offered: there are words to read, and it isn't reading already.
-    var canFillIn: Bool {
-        !described.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isFillingIn
-    }
 
     /// How many choices steps 1 and 2 show before More.
     static let choicesBeforeMore = 6
@@ -95,50 +67,9 @@ final class LogLoopViewModel {
     ///   - loopsLogged: How many loops the person logged before this one, so each new loop gets the next set of
     ///     cheers.
     ///   - pairs: The behaviors offered first after each starter trigger until the person has history of their own.
-    ///   - interpreter: Reads a described loop into the steps; `nil` where describing isn't offered.
-    init(loopsLogged: Int = 0, pairs: StarterPairs = .bundled, interpreter: LoopInterpreter? = nil) {
+    init(loopsLogged: Int = 0, pairs: StarterPairs = .bundled) {
         self.loopsLogged = loopsLogged
         self.pairs = pairs
-        self.interpreter = interpreter
-    }
-
-    /// Has the interpreter read `described` and picks what it read, then asks the first step still unanswered. Picks
-    /// only from the person's own choices, ignoring any other id it reads, and only while the field shows, so it never
-    /// overwrites an answer.
-    /// - Parameter saved: The person's options, so it picks from the same choices the steps show.
-    func fillIn(saved: [LoopOption]) async {
-        guard let interpreter, showsDescribe, canFillIn else { return }
-        isFillingIn = true
-        defer { isFillingIn = false }
-        let options = Dictionary(uniqueKeysWithValues: OptionKind.allCases.map {
-            ($0, OptionList.choices(for: $0, saved: saved))
-        })
-        let reading: LoopReading
-        do {
-            reading = try await interpreter.read(described, options: options)
-        } catch is CancellationError {
-            // The logger closed while reading; there's no one to tell.
-            return
-        } catch {
-            Self.logger.error("Couldn't read a described loop: \(error)")
-            couldntTell = true
-            return
-        }
-        for (step, id) in reading.picks {
-            guard let choice = options[step]?.first(where: { $0.id == id }) else { continue }
-            answers[step] = choice
-            suggested.insert(step)
-        }
-        suggestedOptions = reading.newOptions.filter { answers[$0.key] == nil }
-        guard !suggested.isEmpty || !suggestedOptions.isEmpty else {
-            // The words stay out of the log: they're the person's own.
-            Self.logger.notice("Fill in found nothing to fill in.")
-            couldntTell = true
-            return
-        }
-        described = ""
-        stepOrder = nil
-        currentStep = OptionKind.allCases.first { answers[$0] == nil }
     }
 
     /// The step's choices in the order to offer them. Steps 1 and 2 follow the person's history, and step 2 the
@@ -192,16 +123,6 @@ final class LogLoopViewModel {
         answers[step]
     }
 
-    /// Whether `step`'s answer is one Fill in chose, which the person hasn't changed.
-    func isSuggested(_ step: OptionKind) -> Bool {
-        suggested.contains(step)
-    }
-
-    /// The new option Fill in offers for `step` in the person's words, until the step is answered.
-    func suggestedOption(for step: OptionKind) -> String? {
-        suggestedOptions[step]
-    }
-
     func progress(for step: OptionKind) -> StepProgress {
         switch (answers[step] != nil, step == currentStep) {
         case (true, true): .reopened
@@ -219,8 +140,6 @@ final class LogLoopViewModel {
         isShowingAllChoices = false
         stepOrder = nil
         answers[step] = choice
-        suggested.remove(step)
-        suggestedOptions[step] = nil
         pickCount += 1
         cheer = LogCheer(step: step, loopsLogged: loopsLogged)
         currentStep = OptionKind.allCases.first { answers[$0] == nil }
@@ -240,18 +159,8 @@ final class LogLoopViewModel {
     ///     text is still picked under an id of its own, since the loop keeps its own copy, and `unsavedOption` tells
     ///     the person it wasn't kept for next time.
     func addOwn(existing: [OptionChoice], save: (OptionKind, String) throws -> OptionChoice) {
-        guard canAddOwn else { return }
-        add(trimmedDraft, existing: existing, save: save)
-    }
-
-    /// Adds the new option Fill in offers for the current step, as if the person had typed it into "+ Add your own".
-    func addSuggestedOption(existing: [OptionChoice], save: (OptionKind, String) throws -> OptionChoice) {
-        guard let step = currentStep, let label = suggestedOptions[step] else { return }
-        add(label, existing: existing, save: save)
-    }
-
-    private func add(_ label: String, existing: [OptionChoice], save: (OptionKind, String) throws -> OptionChoice) {
-        guard let step = currentStep else { return }
+        guard canAddOwn, let step = currentStep else { return }
+        let label = trimmedDraft
         if let match = OptionList.match(label, in: existing) {
             pick(match)
             return

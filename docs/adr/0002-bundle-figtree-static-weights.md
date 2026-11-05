@@ -4,7 +4,7 @@ Date: 2026-10-22
 
 ## Status
 
-Accepted
+Accepted. The `badge` style was removed on 2026-11-05 along with the logger's "Suggested" label, its only use.
 
 ## Context
 

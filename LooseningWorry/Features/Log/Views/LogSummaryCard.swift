@@ -11,7 +11,6 @@ struct LogSummaryCard: View {
                 LogSummaryRow(
                     step: step,
                     answer: model.answer(for: step)?.label,
-                    isSuggested: model.isSuggested(step),
                     progress: model.progress(for: step),
                     popTrigger: model.cheer?.step == step ? model.pickCount : nil,
                 ) {
@@ -27,8 +26,6 @@ struct LogSummaryCard: View {
 private struct LogSummaryRow: View {
     let step: OptionKind
     let answer: String?
-    /// Whether Fill in chose the answer, so the person checks it.
-    let isSuggested: Bool
     let progress: StepProgress
     /// The latest pick when it answered this step, so re-answering the step pops its tick again.
     let popTrigger: Int?
@@ -91,19 +88,9 @@ private struct LogSummaryRow: View {
 
     @ViewBuilder private var value: some View {
         if let answer {
-            HStack(spacing: 8) {
-                Text(answer)
-                    .font(.theme(.headline))
-                    .foregroundStyle(.theme(.textPrimary))
-                if isSuggested {
-                    Text(LocalizedStringResource("log.suggested", defaultValue: "Suggested"))
-                        .font(.theme(.badge))
-                        .foregroundStyle(.theme(.accentText))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(.theme(.accentWash), in: .capsule)
-                }
-            }
+            Text(answer)
+                .font(.theme(.headline))
+                .foregroundStyle(.theme(.textPrimary))
         } else {
             Group {
                 if progress.isCurrent {
