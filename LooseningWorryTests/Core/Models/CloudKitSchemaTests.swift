@@ -47,4 +47,11 @@ struct CloudKitSchemaTests {
 
         #expect(Set(session.attributes.map(\.name)).isSuperset(of: ["toolID", "outcomeID"]))
     }
+
+    @Test
+    func `a loop stores when it was noticed by id`() throws {
+        let loop = try #require(AppModelContainer.schema.entities.first { $0.name == "Loop" })
+
+        #expect(loop.attributes.map(\.name).contains("noticedID"))
+    }
 }

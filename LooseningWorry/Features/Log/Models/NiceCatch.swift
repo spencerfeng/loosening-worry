@@ -11,13 +11,21 @@ struct NiceCatch {
     /// Includes the loop just saved.
     let loopsThisWeek: Int
     let suggestion: ToolSuggestion
+    /// Whether the person noticed this loop earlier than the last time its trigger set them off.
+    let noticedEarlier: Bool
 
-    init(loop: Loop, loopsThisWeek: Int) {
+    /// - Parameter lastNoticed: When the person noticed the last loop with the same trigger, if they said.
+    init(loop: Loop, loopsThisWeek: Int, lastNoticed: NoticeTiming? = nil) {
         self.loop = loop
         chips = [loop.triggerLabel, loop.behaviorLabel, loop.resultLabel]
         reflection = Self.reflection(forResult: loop.resultID)
         self.loopsThisWeek = loopsThisWeek
         suggestion = Self.suggestion(for: loop)
+        noticedEarlier = if let now = loop.noticed, let lastNoticed {
+            now > lastNoticed
+        } else {
+            false
+        }
     }
 
     /// A tool to try, with the words that offer it.

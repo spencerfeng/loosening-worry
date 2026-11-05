@@ -2016,24 +2016,24 @@
         }
       }
     },
-    "log.details.note" : {
+    "log.details.feeling" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Note"
+            "value" : "How did it feel?"
           }
         }
       }
     },
-    "log.details.notePlaceholder" : {
+    "log.details.feelingPlaceholder" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Anything worth remembering"
+            "value" : "In your own words, like “chest tight, mind racing”"
           }
         }
       }
@@ -2111,6 +2111,61 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Shows the rest of the list"
+          }
+        }
+      }
+    },
+    "log.noticed.afterwards" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Afterwards"
+          }
+        }
+      }
+    },
+    "log.noticed.asItStarted" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "As it started"
+          }
+        }
+      }
+    },
+    "log.noticed.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Any answer is fine. Noticing at all is the practice."
+          }
+        }
+      }
+    },
+    "log.noticed.partway" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Partway through"
+          }
+        }
+      }
+    },
+    "log.noticed.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When did you notice?"
           }
         }
       }
@@ -2353,6 +2408,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Done"
+          }
+        }
+      }
+    },
+    "niceCatch.noticedEarlier" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You noticed it earlier than last time."
           }
         }
       }

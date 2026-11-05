@@ -33,6 +33,15 @@ struct NiceCatchView: View {
                     .foregroundStyle(.theme(.textSecondary))
                     .lineSpacing(5)
                     .frame(maxWidth: 300)
+                if niceCatch.noticedEarlier {
+                    Text(LocalizedStringResource(
+                        "niceCatch.noticedEarlier",
+                        defaultValue: "You noticed it earlier than last time.",
+                    ))
+                    .font(.theme(.callout))
+                    .foregroundStyle(.theme(.accentText))
+                    .frame(maxWidth: 300)
+                }
                 WeeklyCount(count: niceCatch.loopsThisWeek, action: showInsights)
                     .opacity(hasAppeared ? 1 : 0)
                     .offset(y: hasAppeared || reduceMotion ? 0 : 8)

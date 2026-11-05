@@ -75,6 +75,9 @@ struct LogLoopView: View {
                             .id(step)
                             .transition(questionTransition)
                         } else {
+                            LogNoticed(noticed: model.noticed) { timing in
+                                withAnimation(stepAnimation) { model.notice(timing) }
+                            }
                             LogDetails(
                                 isShowing: model.isShowingDetails,
                                 anxiety: model.anxiety,
@@ -111,7 +114,11 @@ struct LogLoopView: View {
                         isEnabled: model.canSave,
                     ) {
                         let store = LoopStore(context: modelContext)
-                        model.save { try store.add($0) } loopsThisWeek: { try store.loopsThisWeek() }
+                        model.save { try store.add($0) } loopsThisWeek: {
+                            try store.loopsThisWeek()
+                        } lastNoticed: { triggerID in
+                            try store.lastNoticed(forTrigger: triggerID)
+                        }
                     }
                 }
             }

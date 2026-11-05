@@ -26,6 +26,8 @@ final class LogLoopViewModel {
     private(set) var anxiety: Int?
     /// The optional note as typed.
     var note = ""
+    /// The answer to "When did you notice?", or `nil` until the person picks one: it's optional.
+    private(set) var noticed: NoticeTiming?
     /// What Nice catch shows, once the loop is saved.
     private(set) var niceCatch: NiceCatch?
 
@@ -180,7 +182,13 @@ final class LogLoopViewModel {
     ///   - store: Saves the loop. If it throws, `saveFailed` tells the person, and they can try again.
     ///   - loopsThisWeek: Counts this week's loops, the one just saved included. If it throws, Nice catch counts just
     ///     that one.
-    func save(_ store: (Loop) throws -> Void, loopsThisWeek: () throws -> Int) {
+    ///   - lastNoticed: When the person noticed the last loop with a given trigger id, read before this one is stored
+    ///     so Nice catch never compares the loop with itself. If it throws, there's nothing to compare with.
+    func save(
+        _ store: (Loop) throws -> Void,
+        loopsThisWeek: () throws -> Int,
+        lastNoticed: (String) throws -> NoticeTiming? = { _ in nil },
+    ) {
         guard
             canSave,
             let trigger = answers[.trigger],
@@ -189,12 +197,14 @@ final class LogLoopViewModel {
         else { return }
         let loop = Loop(trigger: trigger, behavior: behavior, result: result)
         loop.anxiety = anxiety
+        loop.noticed = noticed
+        let last = try? lastNoticed(trigger.id)
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         loop.note = trimmedNote.isEmpty ? nil : trimmedNote
         do {
             try store(loop)
             let count = (try? loopsThisWeek()) ?? 1
-            niceCatch = NiceCatch(loop: loop, loopsThisWeek: count)
+            niceCatch = NiceCatch(loop: loop, loopsThisWeek: count, lastNoticed: last)
             saveFailed = false
         } catch {
             Self.logger.error("Couldn't save a loop: \(error)")
@@ -209,6 +219,11 @@ final class LogLoopViewModel {
             anxiety = nil
             note = ""
         }
+    }
+
+    /// Answers "When did you notice?". Tapping the chosen answer again takes it back, since the question is optional.
+    func notice(_ timing: NoticeTiming) {
+        noticed = noticed == timing ? nil : timing
     }
 
     /// The levels the person can pick from.

@@ -21,6 +21,9 @@ final class Loop {
     /// Optional detail, 0–10.
     var anxiety: Int?
     var note: String?
+    /// When the person noticed it, by `NoticeTiming` id; `nil` if they didn't say. Kept as text so a loop synced from
+    /// a newer version with an answer this one doesn't know still loads.
+    var noticedID: String?
     /// Tools started from this loop's Nice catch. Deleting the loop keeps the sessions.
     @Relationship(deleteRule: .nullify, inverse: \ToolSession.loop)
     var toolSessions: [ToolSession]?
@@ -32,5 +35,11 @@ final class Loop {
         behaviorLabel = behavior.label
         resultID = result.id
         resultLabel = result.label
+    }
+
+    /// When the person noticed it, or `nil` if they didn't say or the answer is one this version doesn't know.
+    var noticed: NoticeTiming? {
+        get { noticedID.flatMap(NoticeTiming.init(rawValue:)) }
+        set { noticedID = newValue?.rawValue }
     }
 }

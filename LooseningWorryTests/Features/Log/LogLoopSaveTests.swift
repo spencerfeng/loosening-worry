@@ -129,6 +129,88 @@ struct LogLoopSaveTests {
     }
 }
 
+// MARK: - When did you notice
+
+@MainActor
+struct LogLoopNoticedTests {
+    @Test
+    func `when the person noticed is saved with the loop`() throws {
+        let model = finishedModel()
+        model.notice(.partway)
+        var stored: [Loop] = []
+
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
+
+        #expect(try #require(stored.only).noticed == .partway)
+    }
+
+    /// The question is optional, so logging never takes longer than the three steps.
+    @Test
+    func `a loop saved without an answer says nothing about when it was noticed`() throws {
+        let model = finishedModel()
+        var stored: [Loop] = []
+
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
+
+        #expect(try #require(stored.only).noticed == nil)
+    }
+
+    @Test
+    func `changing the answer before saving keeps the last one`() throws {
+        let model = finishedModel()
+        model.notice(.afterwards)
+        model.notice(.asItStarted)
+        var stored: [Loop] = []
+
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
+
+        #expect(try #require(stored.only).noticed == .asItStarted)
+    }
+
+    /// The question is optional, so a mistaken tap mustn't leave an answer the person can't take back.
+    @Test
+    func `tapping the chosen answer again takes it back`() throws {
+        let model = finishedModel()
+        model.notice(.partway)
+
+        model.notice(.partway)
+
+        #expect(model.noticed == nil)
+        var stored: [Loop] = []
+        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        #expect(try #require(stored.only).noticed == nil)
+    }
+
+    /// The loop is saved either way; there's just nothing to compare it with.
+    @Test
+    func `if the last answer can't be read, Nice catch says nothing about it`() throws {
+        struct ReadFailed: Error {}
+        let model = finishedModel()
+        model.notice(.asItStarted)
+
+        model.save { _ in } loopsThisWeek: { 1 } lastNoticed: { _ in throw ReadFailed() }
+
+        #expect(try #require(model.niceCatch).noticedEarlier == false)
+    }
+
+    /// The last answer is read before the loop is stored, so the loop is never compared with itself.
+    @Test
+    func `the comparison on Nice catch is with the last answer for the same trigger, read before saving`() throws {
+        let model = finishedModel()
+        model.notice(.partway)
+        var stored: [Loop] = []
+        var askedFor: [String] = []
+
+        model.save { stored.append($0) } loopsThisWeek: { 1 } lastNoticed: { triggerID in
+            askedFor.append(triggerID)
+            return stored.isEmpty ? .afterwards : .partway
+        }
+
+        #expect(askedFor == ["trigger.news"])
+        #expect(try #require(model.niceCatch).noticedEarlier)
+    }
+}
+
 // MARK: - Details
 
 @MainActor

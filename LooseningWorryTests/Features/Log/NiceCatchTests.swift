@@ -37,6 +37,36 @@ struct NiceCatchTests {
         #expect(niceCatch.reflection.key == "niceCatch.reflection.general")
     }
 
+    /// Noticing earlier is the progress the logger's last question tracks, so Nice catch says when it happens.
+    @Test(arguments: [
+        (NoticeTiming.partway, NoticeTiming.afterwards),
+        (.asItStarted, .afterwards),
+        (.asItStarted, .partway),
+    ])
+    func `noticing earlier than last time for this trigger is called out`(now: NoticeTiming, last: NoticeTiming) {
+        let loop = Loop.sample(noticed: now)
+
+        let niceCatch = NiceCatch(loop: loop, loopsThisWeek: 1, lastNoticed: last)
+
+        #expect(niceCatch.noticedEarlier)
+    }
+
+    /// Nice catch never compares against the person: a later answer, or nothing to compare, says nothing.
+    @Test(arguments: [
+        (.partway, .partway),
+        (.afterwards, .asItStarted),
+        (.asItStarted, nil),
+        (nil, .afterwards),
+        (nil, nil),
+    ] as [(NoticeTiming?, NoticeTiming?)])
+    func `otherwise nothing is said about when it was noticed`(now: NoticeTiming?, last: NoticeTiming?) {
+        let loop = Loop.sample(noticed: now)
+
+        let niceCatch = NiceCatch(loop: loop, loopsThisWeek: 1, lastNoticed: last)
+
+        #expect(niceCatch.noticedEarlier == false)
+    }
+
     /// Get curious until the tools exist and a rule is chosen.
     @Test
     func `the suggested tool is Get curious`() {

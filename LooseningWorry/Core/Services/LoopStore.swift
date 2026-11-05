@@ -25,6 +25,17 @@ struct LoopStore {
         return try context.fetchCount(loops)
     }
 
+    /// When the person noticed the latest loop set off by the trigger with id `triggerID`, among those where they said;
+    /// `nil` if they never did.
+    func lastNoticed(forTrigger triggerID: String) throws -> NoticeTiming? {
+        var answered = FetchDescriptor<Loop>(
+            predicate: #Predicate { $0.triggerID == triggerID && $0.noticedID != nil },
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)],
+        )
+        answered.fetchLimit = 1
+        return try context.fetch(answered).first?.noticed
+    }
+
     /// The loops logged at or after `start`.
     func loops(since start: Date) throws -> [Loop] {
         try context.fetch(FetchDescriptor<Loop>(predicate: #Predicate { $0.createdAt >= start }))

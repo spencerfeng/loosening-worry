@@ -52,10 +52,11 @@ private struct LogDetailsCard: View {
         defaultValue: "How anxious, 0–10",
     )
     private static let anxietyNotSet = LocalizedStringResource("log.details.anxietyNotSet", defaultValue: "Not set")
-    private static let noteLabel = LocalizedStringResource("log.details.note", defaultValue: "Note")
+    /// The note is shown again the next time this trigger sets the person off, so it asks for how it felt.
+    private static let noteLabel = LocalizedStringResource("log.details.feeling", defaultValue: "How did it feel?")
     private static let notePlaceholder = LocalizedStringResource(
-        "log.details.notePlaceholder",
-        defaultValue: "Anything worth remembering",
+        "log.details.feelingPlaceholder",
+        defaultValue: "In your own words, like \u{201C}chest tight, mind racing\u{201D}",
     )
 
     var body: some View {

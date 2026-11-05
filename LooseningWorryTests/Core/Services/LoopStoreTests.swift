@@ -54,6 +54,24 @@ struct LoopStoreTests {
         #expect(try loops.map(\.createdAt).sorted() == [Self.date(day: 10, hour: 12), Self.date(day: 20, hour: 12)])
     }
 
+    /// Nice catch compares with the last time this trigger set the person off and they said when they noticed.
+    @Test
+    func `the last answer for a trigger skips unanswered loops and other triggers`() throws {
+        let store = LoopStore(context: ModelContext(container))
+        let work = OptionChoice(.work, label: "Work")
+        try store.add(.sample(trigger: work, createdAt: Self.date(day: 1, hour: 12), noticed: .afterwards))
+        try store.add(.sample(trigger: work, createdAt: Self.date(day: 5, hour: 12), noticed: .partway))
+        try store.add(.sample(trigger: work, createdAt: Self.date(day: 8, hour: 12)))
+        try store.add(.sample(
+            trigger: OptionChoice(.news, label: "News"),
+            createdAt: Self.date(day: 9, hour: 12),
+            noticed: .asItStarted,
+        ))
+
+        #expect(try store.lastNoticed(forTrigger: "trigger.work") == .partway)
+        #expect(try store.lastNoticed(forTrigger: "trigger.money") == nil)
+    }
+
     private static var gmtCalendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = .gmt
