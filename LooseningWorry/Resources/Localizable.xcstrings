@@ -1273,6 +1273,28 @@
         }
       }
     },
+    "insights.key.habit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The old habit"
+          }
+        }
+      }
+    },
+    "insights.key.tool" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Met it with a tool"
+          }
+        }
+      }
+    },
     "insights.logLoop" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1350,6 +1372,92 @@
         }
       }
     },
+    "insights.setsYouOff" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What sets you off"
+          }
+        }
+      }
+    },
+    "insights.setsYouOff.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "And what you did about it"
+          }
+        }
+      }
+    },
+    "insights.setsYouOff.habit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.setsYouOff.met" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Met it with a tool %1$lld of %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "insights.span.lastFourWeeks" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1405,13 +1513,219 @@
         }
       }
     },
-    "insights.triggers" : {
+    "insights.trigger.asItStarted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "As it started %1$lld of the last %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.trigger.did" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Top triggers"
+            "value" : "What you did"
+          }
+        }
+      }
+    },
+    "insights.trigger.fourWeeks" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld time in the last 4 weeks"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld times in the last 4 weeks"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.trigger.gave" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What it gave you"
+          }
+        }
+      }
+    },
+    "insights.trigger.habits" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your habits"
+          }
+        }
+      }
+    },
+    "insights.trigger.lighter" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "lighter %1$lld of %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.trigger.noBetter" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "no better %1$lld of %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.trigger.noticed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When you noticed the habit"
+          }
+        }
+      }
+    },
+    "insights.trigger.noticedOrder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Oldest first: %@"
+          }
+        }
+      }
+    },
+    "insights.trigger.thisWeek" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld time this week"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld times this week"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.trigger.tools" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Meeting it with a tool"
+          }
+        }
+      }
+    },
+    "insights.trigger.words" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "In your words"
           }
         }
       }

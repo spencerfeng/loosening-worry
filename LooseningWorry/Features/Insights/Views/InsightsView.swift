@@ -13,6 +13,8 @@ struct InsightsView: View {
     @Query private var anyLoop: [Loop]
     /// Back to this week on each visit.
     @State private var period = InsightsPeriod.thisWeek
+    /// The trigger whose page is open, by the id `InsightsReport.triggers` gives it.
+    @State private var openTrigger: String?
 
     /// Opens the logger, from the card shown before anything's logged.
     let logLoop: () -> Void
@@ -27,8 +29,21 @@ struct InsightsView: View {
     }
 
     var body: some View {
+        NavigationStack {
+            content
+                .toolbarVisibility(.hidden, for: .navigationBar)
+        }
+        // A visit starts afresh: this week, and no trigger's page left open for a period it no longer matches.
+        .onDisappear {
+            period = .thisWeek
+            openTrigger = nil
+        }
+    }
+
+    private var content: some View {
         // Redrawn each minute, so today and this week move on while Insights stays open; counted up to the actual
-        // time, so a loop just logged shows straight away.
+        // time, so a loop just logged shows straight away. A trigger's page is built here too, so it moves on with
+        // the card.
         TimelineView(.everyMinute) { _ in
             let report = InsightsReport(
                 loops: loops,
@@ -44,7 +59,7 @@ struct InsightsView: View {
                         NothingYetCard(period: period, isFirstTime: anyLoop.isEmpty, logLoop: logLoop)
                     } else {
                         LoopsCard(report: report)
-                        TriggersCard(triggers: report.topTriggers)
+                        WhatSetsYouOffCard(rows: report.triggers) { openTrigger = $0 }
                         if let habit = report.habit {
                             HabitCard(habit: habit, period: period)
                         }
@@ -54,9 +69,13 @@ struct InsightsView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 24)
             }
+            .navigationDestination(item: $openTrigger) { id in
+                if let detail = report.trigger(id) {
+                    TriggerDetailView(detail: detail, period: period)
+                }
+            }
         }
         .background(.theme(.background))
-        .onDisappear { period = .thisWeek }
     }
 
     /// The title and the period, side by side, or stacked at accessibility sizes so the title isn't broken.
@@ -119,7 +138,7 @@ extension InsightsPeriod {
 }
 
 /// "2 loops", a plural in the catalog.
-private func loopCount(_ count: Int) -> LocalizedStringResource {
+func loopCount(_ count: Int) -> LocalizedStringResource {
     LocalizedStringResource("insights.loopCount", defaultValue: "\(count) loops")
 }
 
@@ -209,44 +228,6 @@ private struct LoopsCard: View {
             ? LocalizedStringResource("insights.today", defaultValue: "today")
             : LocalizedStringResource("insights.thisWeek", defaultValue: "this week")
         return Text(verbatim: "\(name), \(String(localized: current))")
-    }
-}
-
-/// The three triggers logged most, each with a bar against the most.
-private struct TriggersCard: View {
-    let triggers: [InsightsReport.Tally]
-
-    private static let colors: [Theme.ColorRole] = [.amberFill, .violetStrong, .greenFill]
-
-    var body: some View {
-        InsightsCard(title: LocalizedStringResource("insights.triggers", defaultValue: "Top triggers")) {
-            let most = max(triggers.first?.count ?? 1, 1)
-            ForEach(Array(triggers.enumerated()), id: \.element.id) { index, trigger in
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack {
-                        Text(verbatim: trigger.label)
-                            .foregroundStyle(.theme(.textPrimary))
-                        Spacer()
-                        Text(trigger.count, format: .number)
-                            .foregroundStyle(.theme(.textTertiary))
-                    }
-                    .font(.theme(.callout))
-                    Capsule()
-                        .fill(.theme(.surfaceSunken))
-                        .frame(height: 8)
-                        .overlay(alignment: .leading) {
-                            GeometryReader { proxy in
-                                Capsule()
-                                    .fill(.theme(Self.colors[index % Self.colors.count]))
-                                    .frame(width: proxy.size.width * Double(trigger.count) / Double(most))
-                            }
-                        }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(Text(verbatim: trigger.label))
-                .accessibilityValue(Text(loopCount(trigger.count)))
-            }
-        }
     }
 }
 
@@ -353,7 +334,7 @@ private struct NothingYetCard: View {
 }
 
 /// A card on the surface color, with a small title when it has one.
-private struct InsightsCard<Content: View>: View {
+struct InsightsCard<Content: View>: View {
     var title: LocalizedStringResource?
     @ViewBuilder let content: Content
 

@@ -36,8 +36,16 @@ extension ToolOutcome {
         }
     }
 
+    private static let resultIDPrefix = "outcome."
+
+    /// The answer a loop's result id names, or `nil` for any other result, "Not sure" included.
+    init?(resultID: String) {
+        guard resultID.hasPrefix(Self.resultIDPrefix) else { return nil }
+        self.init(rawValue: String(resultID.dropFirst(Self.resultIDPrefix.count)))
+    }
+
     var asResult: OptionChoice {
-        OptionChoice(id: "outcome.\(rawValue)", label: String(localized: label))
+        OptionChoice(id: Self.resultIDPrefix + rawValue, label: String(localized: label))
     }
 }
 

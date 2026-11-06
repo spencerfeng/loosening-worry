@@ -42,6 +42,9 @@ extension Theme {
         /// Brighter fills for charts and rings, which carry no text; `Strong` stays darker for icons and text
         /// (ADR 0005).
         case greenFill, amberFill
+        /// Insights' "What sets you off": the old habit's share of a bar, and the noticing dots for afterwards and
+        /// partway, as the person's answers fade from gray to blue (ADR 0007).
+        case redFill, grayFill, accentPaleFill
 
         var resource: ColorResource {
             switch self {
@@ -79,6 +82,9 @@ extension Theme {
             case .violetOnTint: .violetOnTint
             case .greenFill: .greenFill
             case .amberFill: .amberFill
+            case .redFill: .redFill
+            case .grayFill: .grayFill
+            case .accentPaleFill: .accentPaleFill
             }
         }
     }

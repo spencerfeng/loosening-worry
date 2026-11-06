@@ -31,14 +31,3 @@ struct LogNoticed: View {
         }
     }
 }
-
-private extension NoticeTiming {
-    /// The chip's words.
-    var label: LocalizedStringResource {
-        switch self {
-        case .afterwards: LocalizedStringResource("log.noticed.afterwards", defaultValue: "Afterwards")
-        case .partway: LocalizedStringResource("log.noticed.partway", defaultValue: "Partway through")
-        case .asItStarted: LocalizedStringResource("log.noticed.asItStarted", defaultValue: "As it started")
-        }
-    }
-}

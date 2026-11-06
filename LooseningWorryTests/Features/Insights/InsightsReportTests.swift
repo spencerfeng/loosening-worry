@@ -4,7 +4,7 @@ import Testing
 
 struct InsightsReportTests {
     /// Weeks start on Monday here, as in Australia; the report follows the person's own calendar.
-    private let calendar: Calendar = {
+    let calendar: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "Australia/Sydney") ?? .gmt
         calendar.firstWeekday = 2
@@ -12,15 +12,15 @@ struct InsightsReportTests {
     }()
 
     /// Wednesday 28 October 2026, 3 pm.
-    private var now: Date {
+    var now: Date {
         date(day: 28, hour: 15)
     }
 
-    private func date(day: Int, hour: Int, month: Int = 10) -> Date {
+    func date(day: Int, hour: Int, month: Int = 10) -> Date {
         calendar.date(from: DateComponents(year: 2026, month: month, day: day, hour: hour)) ?? .distantPast
     }
 
-    private func loop(
+    func loop(
         _ createdAt: Date,
         trigger: (String, String) = ("trigger.work", "Work"),
         behavior: (String, String) = ("behavior.overthought", "Overthought it"),
@@ -35,7 +35,7 @@ struct InsightsReportTests {
         return loop
     }
 
-    private func report(
+    func report(
         _ loops: [Loop],
         period: InsightsPeriod = .thisWeek,
         saved: [LoopOption] = [],
@@ -78,9 +78,9 @@ struct InsightsReportTests {
         #expect(report.total == 4)
     }
 
-    /// The triggers logged most in the period, a tie going to the one logged last; each shown as it was last worded.
+    /// The triggers logged in the period, a tie going to the one logged last; each shown as it was last worded.
     @Test
-    func `top triggers are the three logged most, ties to the most recent, in their latest words`() {
+    func `triggers run from most logged, ties to the most recent, in their latest words`() {
         let work = ("trigger.work", "Work")
         let money = ("trigger.money", "Money")
         let news = ("trigger.news", "News")
@@ -95,10 +95,10 @@ struct InsightsReportTests {
             loop(date(day: 20, hour: 9), trigger: news), // last week
         ]
 
-        let triggers = report(loops).topTriggers
+        let triggers = report(loops).triggers
 
-        #expect(triggers.map(\.label) == ["Money", "Work stuff", "Trying to sleep"])
-        #expect(triggers.map(\.count) == [2, 2, 1])
+        #expect(triggers.map(\.label) == ["Money", "Work stuff", "Trying to sleep", "News"])
+        #expect(triggers.map(\.habits) == [2, 2, 1, 1])
     }
 
     /// "Most loops start between 8 and 10 am": the two-hour stretch of the day with the most loops.
@@ -186,7 +186,7 @@ struct InsightsReportTests {
         #expect(report.total == 0)
         #expect(report.isEmpty)
         #expect(report.habit == nil)
-        #expect(report.topTriggers.isEmpty)
+        #expect(report.triggers.isEmpty)
     }
 
     /// As in the logger, the person's own option with a starter's words is the same choice, and counts as one.
@@ -199,10 +199,10 @@ struct InsightsReportTests {
             loop(date(day: 27, hour: 9), trigger: ("trigger.money", "Money")),
         ]
 
-        let triggers = report(loops, saved: [own]).topTriggers
+        let triggers = report(loops, saved: [own]).triggers
 
         #expect(triggers.map(\.label) == ["Work", "Money"])
-        #expect(triggers.map(\.count) == [2, 1])
+        #expect(triggers.map(\.habits) == [2, 1])
     }
 
     /// Like Home and Nice catch, the week counts up to now; a loop dated later, from a device with its clock ahead,

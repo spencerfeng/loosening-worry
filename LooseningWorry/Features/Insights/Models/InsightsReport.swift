@@ -64,6 +64,12 @@ struct InsightsReport {
         }
     }
 
+    /// How many of some loops went a given way, for "no better 5 of 6 times".
+    struct Share: Equatable {
+        let count: Int
+        let total: Int
+    }
+
     let period: InsightsPeriod
     /// Oldest first.
     let bars: [Bar]
@@ -133,9 +139,67 @@ struct InsightsReport {
         return DateInterval(start: start, duration: 2 * 60 * 60)
     }
 
-    /// The three triggers logged most, a tie going to the one logged last.
-    var topTriggers: [Tally] {
-        Array(ranked(loops, by: \.triggerID, label: \.triggerLabel).prefix(3))
+    /// Every trigger in the period, most logged first, a tie going to the one logged last, with what followed it.
+    var triggers: [TriggerSummary] {
+        ranked(loops, by: \.triggerID, label: \.triggerLabel).map { trigger in
+            let followed = loops(setOffBy: trigger.id)
+            let habits = followed.filter { $0.metWithTool == nil }
+            return TriggerSummary(
+                id: trigger.id,
+                label: trigger.label,
+                habits: habits.count,
+                metWithTool: followed.count - habits.count,
+                topHabit: ranked(habits, by: \.behaviorID, label: \.behaviorLabel).first,
+            )
+        }
+    }
+
+    /// The detail for the trigger with id `id`, as `triggers` gives it or any copy of it; `nil` if nothing in the
+    /// period
+    /// was set off by it.
+    func trigger(_ id: String) -> TriggerDetail? {
+        let followed = loops(setOffBy: choiceID(id))
+        guard let label = followed.last?.triggerLabel else { return nil }
+        let habits = followed.filter { $0.metWithTool == nil }
+        let clear = habits.compactMap { StarterID(rawValue: $0.resultID) }.filter(\.isClearResult)
+        let answered = followed.filter { $0.metWithTool != nil }.compactMap { ToolOutcome(resultID: $0.resultID) }
+        return TriggerDetail(
+            label: label,
+            habits: habits.count,
+            metWithTool: followed.count - habits.count,
+            followedBy: ranked(followed, by: \.behaviorID, label: \.behaviorLabel).map { behavior in
+                TriggerDetail.Followed(
+                    label: behavior.label,
+                    count: behavior.count,
+                    isTool: QuickTool(behaviorID: behavior.id) != nil,
+                )
+            },
+            habitsNoBetter: clear.isEmpty ? nil : Share(
+                count: clear.count(where: \.isUnrewardingResult),
+                total: clear.count,
+            ),
+            toolsLighter: answered.isEmpty ? nil : Share(
+                count: answered.count { $0 == .lighter },
+                total: answered.count,
+            ),
+            noticed: Array(habits.compactMap(\.noticed).suffix(8)),
+            notes: Array(followed.reversed().compactMap { loop in
+                loop.note.map {
+                    TriggerDetail.Note(
+                        text: $0,
+                        behavior: loop.behaviorLabel,
+                        result: loop.resultLabel,
+                        date: loop.createdAt,
+                    )
+                }
+            }
+            .prefix(3)),
+        )
+    }
+
+    /// The loops in the period set off by the trigger with id `id`, oldest first, whichever copy of it they logged.
+    private func loops(setOffBy id: String) -> [Loop] {
+        loops.filter { choiceID($0.triggerID) == id }
     }
 
     /// The behavior logged most in the period, and what it gave, for the card that helps the person see it plainly.
@@ -169,5 +233,82 @@ struct InsightsReport {
         return tallies
             .sorted { ($0.value.count, $0.value.last.createdAt) > ($1.value.count, $1.value.last.createdAt) }
             .map { Tally(id: $0.key, label: $0.value.last[keyPath: label], count: $0.value.count) }
+    }
+}
+
+/// A trigger, with what the person did after it in the period: the habit, or a tool to meet the urge. A row of
+/// Insights' "What sets you off".
+struct TriggerSummary: Equatable {
+    /// What history counts it by, as in `InsightsReport.Tally`.
+    let id: String
+    /// As last worded.
+    let label: String
+    /// Loops where a habit followed it.
+    let habits: Int
+    /// Loops where the person met the urge with a tool instead.
+    let metWithTool: Int
+    /// The habit it led to most, as last worded; `nil` if only tools followed it.
+    let topHabit: InsightsReport.Tally?
+
+    /// What the row's line says.
+    enum Line: Equatable {
+        /// "Met it with a tool 2 of 6 times."
+        case metWithTool(Int, of: Int)
+        /// "Kept checking 4 times."
+        case habit(label: String, count: Int)
+    }
+
+    /// Once the trigger has been met with a tool, how often, since meeting the urge is the progress that matters;
+    /// until then, the habit it led to most.
+    var line: Line {
+        if metWithTool == 0, let topHabit {
+            .habit(label: topHabit.label, count: topHabit.count)
+        } else {
+            .metWithTool(metWithTool, of: habits + metWithTool)
+        }
+    }
+}
+
+/// One trigger in detail, for its page: what followed it in the period and what that gave the person.
+struct TriggerDetail: Equatable {
+    /// A habit or a tool that followed the trigger, and how often.
+    struct Followed: Equatable {
+        /// As last worded.
+        let label: String
+        let count: Int
+        /// Whether the person met the urge with this tool, rather than a habit running.
+        let isTool: Bool
+    }
+
+    /// A note the person wrote after the trigger, in their own words, with the loop it was about.
+    struct Note: Equatable {
+        let text: String
+        let behavior: String
+        let result: String
+        let date: Date
+    }
+
+    /// As last worded.
+    let label: String
+    /// Loops where a habit followed it.
+    let habits: Int
+    /// Loops where the person met the urge with a tool instead.
+    let metWithTool: Int
+    /// Most logged first, a tie going to the one logged last.
+    let followedBy: [Followed]
+    /// Of its habits with a clear result, the ones that brought more worry, tension or no change; `nil` if none has a
+    /// clear result.
+    let habitsNoBetter: InsightsReport.Share?
+    /// Of its tool runs answered, the ones that left the person lighter; `nil` if none was answered.
+    let toolsLighter: InsightsReport.Share?
+    /// When the person noticed its last eight habits that say, oldest first. Tool runs are left out: meeting the urge
+    /// is noticing it as it started by definition.
+    let noticed: [NoticeTiming]
+    /// Its latest three notes, newest first.
+    let notes: [Note]
+
+    /// Its loops in the period.
+    var total: Int {
+        habits + metWithTool
     }
 }
