@@ -8,10 +8,8 @@ final class LogLoopViewModel {
     /// The step being asked, or `nil` once all three are answered.
     private(set) var currentStep: OptionKind? = .trigger
     private var answers: [OptionKind: OptionChoice] = [:]
-    /// Cheers the step answered last; `nil` until the first pick.
-    private(set) var cheer: LogCheer?
-    /// How many loops the person logged before this one; set when the logger opens.
-    var loopsLogged: Int
+    /// The step answered last; `nil` until the first pick.
+    private var lastAnswered: OptionKind?
     /// Counts every pick, so the logger can replay its feedback even when a step is answered again.
     private(set) var pickCount = 0
     /// Whether the "+ Add your own" field is open for the current step.
@@ -68,12 +66,9 @@ final class LogLoopViewModel {
     /// How many choices steps 1 and 2 show before More.
     static let choicesBeforeMore = 6
 
-    /// - Parameters:
-    ///   - loopsLogged: How many loops the person logged before this one, so each new loop gets the next set of
-    ///     cheers.
-    ///   - pairs: The behaviors offered first after each starter trigger until the person has history of their own.
-    init(loopsLogged: Int = 0, pairs: StarterPairs = .bundled) {
-        self.loopsLogged = loopsLogged
+    /// - Parameter pairs: The behaviors offered first after each starter trigger until the person has history of their
+    ///   own.
+    init(pairs: StarterPairs = .bundled) {
         self.pairs = pairs
     }
 
@@ -146,8 +141,14 @@ final class LogLoopViewModel {
         stepOrder = nil
         answers[step] = choice
         pickCount += 1
-        cheer = LogCheer(step: step, loopsLogged: loopsLogged)
+        lastAnswered = step
         currentStep = OptionKind.allCases.first { answers[$0] == nil }
+    }
+
+    /// What replays the summary card's pop for `step`: a new value on every pick that answers it, `nil` unless it was
+    /// the step answered last.
+    func popTrigger(for step: OptionKind) -> Int? {
+        lastAnswered == step ? pickCount : nil
     }
 
     /// "Nothing yet, I'm in it now": keeps the trigger and offers the tools instead of the habits.

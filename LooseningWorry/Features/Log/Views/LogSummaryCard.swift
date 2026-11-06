@@ -14,7 +14,7 @@ struct LogSummaryCard: View {
                     // While the person picks a tool, step 2 has no answer yet, even one from before they reopened it.
                     answer: step == .behavior && model.isMeeting ? nil : model.answer(for: step)?.label,
                     progress: model.progress(for: step),
-                    popTrigger: model.cheer?.step == step ? model.pickCount : nil,
+                    popTrigger: model.popTrigger(for: step),
                 ) {
                     reopen(step)
                 }

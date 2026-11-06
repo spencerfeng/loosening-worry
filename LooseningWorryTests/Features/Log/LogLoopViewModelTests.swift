@@ -66,64 +66,47 @@ struct LogLoopViewModelTests {
         #expect(progress.isCurrent == isCurrent)
     }
 
+    /// The summary card pops the row just answered, and only that one.
     @Test
-    func `each pick cheers the step it answered`() {
+    func `each pick pops the row it answered`() {
         let model = LogLoopViewModel()
-        #expect(model.cheer == nil)
+        #expect(OptionKind.allCases.allSatisfy { model.popTrigger(for: $0) == nil })
 
         model.pick(.news)
-        #expect(model.cheer?.step == .trigger)
+        #expect(model.popTrigger(for: .trigger) != nil)
+        #expect(model.popTrigger(for: .behavior) == nil)
 
         model.pick(.scrolled)
-        #expect(model.cheer?.step == .behavior)
+        #expect(model.popTrigger(for: .trigger) == nil)
+        #expect(model.popTrigger(for: .behavior) != nil)
     }
 
-    @Test(arguments: [0, 1, 7])
-    func `every cheer in a loop knows how many loops came before it`(loopsLogged: Int) {
-        let model = LogLoopViewModel(loopsLogged: loopsLogged)
-
-        model.pick(.news)
-        #expect(model.cheer?.loopsLogged == loopsLogged)
-
-        model.pick(.scrolled)
-        #expect(model.cheer?.loopsLogged == loopsLogged)
-    }
-
-    /// The logger reads the count once it opens, after the model exists.
+    /// The pop and the haptic replay when the trigger changes, so answering a reopened step again pops it again.
     @Test
-    func `a loop count set after opening applies to the cheers`() {
+    func `re-answering a reopened step pops it again`() {
         let model = LogLoopViewModel()
-
-        model.loopsLogged = 4
         model.pick(.news)
-
-        #expect(model.cheer?.loopsLogged == 4)
-    }
-
-    /// The badge and the VoiceOver announcement only refresh when the cheer changes.
-    @Test
-    func `every pick is counted, so re-answering a reopened step still cheers again`() {
-        let model = LogLoopViewModel()
-        #expect(model.pickCount == 0)
-        model.pick(.news)
+        let first = model.popTrigger(for: .trigger)
         model.goTo(.trigger)
 
         model.pick(.deadline)
 
-        #expect(model.cheer?.step == .trigger)
-        #expect(model.pickCount == 2)
+        #expect(model.popTrigger(for: .trigger) != nil)
+        #expect(model.popTrigger(for: .trigger) != first)
     }
 
+    /// Reopening a step is not an answer, so it mustn't replay or move the pop.
     @Test
-    func `reopening a step keeps the last cheer`() {
+    func `reopening a step keeps the last pop`() {
         let model = LogLoopViewModel()
         model.pick(.news)
         model.pick(.scrolled)
-        let cheer = model.cheer
+        let pop = model.popTrigger(for: .behavior)
 
         model.goTo(.trigger)
 
-        #expect(model.cheer == cheer)
+        #expect(model.popTrigger(for: .behavior) == pop)
+        #expect(model.popTrigger(for: .trigger) == nil)
     }
 
     @Test

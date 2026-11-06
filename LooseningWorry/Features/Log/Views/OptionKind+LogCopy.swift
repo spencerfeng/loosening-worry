@@ -14,13 +14,6 @@ struct LogStepCopy {
     let editLabel: LocalizedStringResource
     /// The step's tab on the Edit options screen.
     let optionsTab: LocalizedStringResource
-    /// Shown once the step is answered, rotated so each new loop gets the next one.
-    let cheers: [LocalizedStringResource]
-
-    /// The cheer for a loop logged after `loopsLogged` others, wrapping after the last.
-    func cheer(afterLoops loopsLogged: Int) -> LocalizedStringResource {
-        cheers[loopsLogged % cheers.count]
-    }
 }
 
 extension OptionKind {
@@ -43,17 +36,6 @@ extension OptionKind {
                 ),
                 editLabel: LocalizedStringResource("log.edit.triggers", defaultValue: "Edit your triggers"),
                 optionsTab: LocalizedStringResource("edit.tab.triggers", defaultValue: "Triggers"),
-                cheers: [
-                    LocalizedStringResource("log.trigger.cheer1", defaultValue: "Spotted it. That's the first step."),
-                    LocalizedStringResource(
-                        "log.trigger.cheer2",
-                        defaultValue: "Good catch. Naming it takes away some of its pull.",
-                    ),
-                    LocalizedStringResource(
-                        "log.trigger.cheer3",
-                        defaultValue: "There it is. Noticing is the skill you're building.",
-                    ),
-                ],
             )
         case .behavior:
             LogStepCopy(
@@ -67,17 +49,6 @@ extension OptionKind {
                 ),
                 editLabel: LocalizedStringResource("log.edit.behaviors", defaultValue: "Edit your behaviors"),
                 optionsTab: LocalizedStringResource("edit.tab.behaviors", defaultValue: "Behaviors"),
-                cheers: [
-                    LocalizedStringResource("log.behavior.cheer1", defaultValue: "Nice noticing. That's the habit."),
-                    LocalizedStringResource(
-                        "log.behavior.cheer2",
-                        defaultValue: "Seen clearly, and no need to judge it.",
-                    ),
-                    LocalizedStringResource(
-                        "log.behavior.cheer3",
-                        defaultValue: "That's the pattern. Spotting it is half the work.",
-                    ),
-                ],
             )
         case .result:
             LogStepCopy(
@@ -94,27 +65,7 @@ extension OptionKind {
                 addPlaceholder: LocalizedStringResource("log.result.addPlaceholder", defaultValue: "e.g. Felt numb"),
                 editLabel: LocalizedStringResource("log.edit.results", defaultValue: "Edit your results"),
                 optionsTab: LocalizedStringResource("edit.tab.results", defaultValue: "Results"),
-                cheers: [
-                    LocalizedStringResource(
-                        "log.result.cheer1",
-                        defaultValue: "Honest answer. That's what loosens the loop.",
-                    ),
-                    LocalizedStringResource(
-                        "log.result.cheer2",
-                        defaultValue: "Thanks for checking. Your brain is taking notes.",
-                    ),
-                    LocalizedStringResource(
-                        "log.result.cheer3",
-                        defaultValue: "Seeing what it really gave you is how habits change.",
-                    ),
-                ],
             )
         }
-    }
-}
-
-extension LogCheer {
-    var message: LocalizedStringResource {
-        step.logCopy.cheer(afterLoops: loopsLogged)
     }
 }

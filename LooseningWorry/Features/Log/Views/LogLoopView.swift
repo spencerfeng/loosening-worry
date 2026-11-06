@@ -19,8 +19,8 @@ struct LogLoopView: View {
     @State private var savedByTool = false
 
     var body: some View {
-        // Swapped in without a transition: a leaving view stays on screen until the animations inside it finish, and
-        // the cheer's clap is still playing. Nice catch animates its own entrance.
+        // Swapped in without a transition: a leaving view stays on screen until the animations inside it finish, such
+        // as the summary card's pop. Nice catch animates its own entrance.
         if let niceCatch = model.niceCatch {
             NiceCatchView(niceCatch: niceCatch) {
                 dismiss()
@@ -37,15 +37,6 @@ struct LogLoopView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         LogSummaryCard(model: model) { step in
                             withAnimation(stepAnimation) { model.goTo(step) }
-                        }
-                        if let cheer = model.cheer {
-                            LogCheerBadge(cheer: cheer)
-                                // A new badge for every pick, so it replays even when a step is answered again.
-                                .id(model.pickCount)
-                                // Sits closer to its neighbors than the stack's spacing.
-                                .padding(.top, -8)
-                                .padding(.bottom, -6)
-                                .transition(cheerTransition)
                         }
                         if let label = model.unsavedOption {
                             Text(Self.unsavedNote(label))
@@ -158,13 +149,8 @@ struct LogLoopView: View {
                 }
             }
             .onChange(of: model.pickCount) {
-                if let cheer = model.cheer {
-                    // One announcement, so the note about an unsaved option isn't cut off by the cheer.
-                    var announcement = String(localized: cheer.message)
-                    if let label = model.unsavedOption {
-                        announcement += " " + String(localized: Self.unsavedNote(label))
-                    }
-                    AccessibilityNotification.Announcement(announcement).post()
+                if let label = model.unsavedOption {
+                    AccessibilityNotification.Announcement(String(localized: Self.unsavedNote(label))).post()
                 }
             }
             .onChange(of: model.saveFailed) { _, failed in
@@ -173,8 +159,6 @@ struct LogLoopView: View {
                 }
             }
             .onAppear {
-                // If the count can't be read, the cheers start from the first set, which is harmless.
-                model.loopsLogged = (try? modelContext.fetchCount(FetchDescriptor<Loop>())) ?? 0
                 // Read once, so the order doesn't shift while the logger is open. Without it, the order is the
                 // default one, which still works.
                 let historyStart = OptionRanker.historyStart(before: .now)
@@ -228,18 +212,6 @@ struct LogLoopView: View {
         .easeOut(duration: reduceMotion ? 0.2 : 0.28)
     }
 
-    /// The cheer rises a little and grows into place as it fades in.
-    private var cheerTransition: AnyTransition {
-        let appear: AnyTransition = reduceMotion
-            ? .opacity
-            : .offset(y: 6).combined(with: .scale(scale: 0.96)).combined(with: .opacity)
-        // The old cheer leaves at once, so the two never take up space together and push the question down.
-        return .asymmetric(
-            insertion: appear.animation(.easeOut(duration: reduceMotion ? 0.2 : 0.36)),
-            removal: .identity,
-        )
-    }
-
     /// The next question slides in from the right; the one it replaces leaves at once, so the two never overlap.
     private var questionTransition: AnyTransition {
         .asymmetric(
@@ -247,63 +219,6 @@ struct LogLoopView: View {
             removal: .identity,
         )
     }
-}
-
-/// Encouragement for the step just answered. VoiceOver announces it when it changes, so the badge itself is not
-/// read again.
-private struct LogCheerBadge: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    let cheer: LogCheer
-    /// Bumped on appear to play the clap; the badge is rebuilt for every cheer, so it plays once per pick.
-    @State private var claps = 0
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "hands.clap.fill")
-                .font(.system(size: 15, weight: .semibold))
-                .frame(width: 18, height: 18)
-                .keyframeAnimator(initialValue: ClapPose(), trigger: claps) { content, pose in
-                    content
-                        .rotationEffect(pose.rotation)
-                        .scaleEffect(pose.scale)
-                } keyframes: { _ in
-                    // Two quick claps: it tips and swells, then settles, twice.
-                    KeyframeTrack(\.rotation) {
-                        CubicKeyframe(.degrees(-12), duration: 0.15)
-                        CubicKeyframe(.zero, duration: 0.15)
-                        CubicKeyframe(.degrees(-12), duration: 0.15)
-                        CubicKeyframe(.zero, duration: 0.15)
-                    }
-                    KeyframeTrack(\.scale) {
-                        CubicKeyframe(1.25, duration: 0.15)
-                        CubicKeyframe(1, duration: 0.15)
-                        CubicKeyframe(1.25, duration: 0.15)
-                        CubicKeyframe(1, duration: 0.15)
-                    }
-                }
-            Text(cheer.message)
-        }
-        .font(.theme(.subheadline))
-        .foregroundStyle(.theme(.accentPressed))
-        .padding(.vertical, 8)
-        .padding(.leading, 10)
-        .padding(.trailing, 14)
-        .background(.theme(.surface), in: .capsule)
-        .overlay { Capsule().strokeBorder(.theme(.accentTint)) }
-        .shadow(color: .theme(.accentShadow).opacity(0.14), radius: 7, y: 4)
-        .onAppear {
-            if !reduceMotion {
-                claps += 1
-            }
-        }
-        .accessibilityHidden(true)
-    }
-}
-
-private struct ClapPose {
-    var rotation = Angle.zero
-    var scale: CGFloat = 1
 }
 
 #if DEBUG
