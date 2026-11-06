@@ -57,8 +57,8 @@ final class ToolRunViewModel {
     /// The motion clock's counterparts, which Back 15 leaves alone.
     private var motionSince: Date?
     private var motionBefore = Duration.zero
-    /// This tool's outcomes from before this run, read as it finishes.
-    private var earlierOutcomes: [ToolOutcome] = []
+    /// This tool's outcomes from before this run, one per run and `nil` for one left unanswered, read as it finishes.
+    private var earlierOutcomes: [ToolOutcome?] = []
 
     /// The prompts are chosen here, so a guided tool shows its first one from the moment it opens.
     init(

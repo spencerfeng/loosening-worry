@@ -53,8 +53,9 @@ struct SessionStoreTests {
         #expect(saved.outcome == .same)
     }
 
+    /// One per run, so a run left unanswered still counts toward the finish screen's total.
     @Test
-    func `a tool's feelings leave out other tools and runs left unanswered`() throws {
+    func `a tool's feelings are one per run of it, unanswered ones included`() throws {
         let first = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
         try store.setOutcome(.lighter, on: first)
         try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
@@ -63,7 +64,9 @@ struct SessionStoreTests {
         let last = try store.record(.curious, startedAt: start, duration: .seconds(90), loop: nil)
         try store.setOutcome(.same, on: last)
 
-        #expect(try store.outcomes(for: .curious).sorted { $0.rawValue < $1.rawValue } == [.lighter, .same])
+        let outcomes = try store.outcomes(for: .curious)
+        #expect(outcomes.count == 3)
+        #expect(outcomes.compactMap(\.self).sorted { $0.rawValue < $1.rawValue } == [.lighter, .same])
     }
 
     /// A tool started from Nice catch belongs to the loop just logged.

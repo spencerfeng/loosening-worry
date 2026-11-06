@@ -20,7 +20,40 @@ extension ToolRunViewModelTests {
 
         model.choose(.lighter)
 
-        #expect(model.lighterTally == LighterTally(lighter: 3, answered: 4))
+        #expect(model.lighterTally == LighterTally(lighter: 3, total: 4))
+    }
+
+    /// Out of every run, as on Insights' trigger page: a run left unanswered counts toward the total, never as lighter.
+    @Test
+    func `runs left unanswered count toward the total`() {
+        sessions.saveEarlier(.curious, outcomes: [.lighter, nil, .lighter, .same])
+        let model = finishedRun(.curious)
+
+        model.choose(.lighter)
+
+        #expect(model.lighterTally == LighterTally(lighter: 3, total: 5))
+    }
+
+    /// Unanswered runs can take the lighter ones under half.
+    @Test
+    func `there's no tally when fewer than half of all runs were lighter`() {
+        sessions.saveEarlier(.curious, outcomes: [.lighter, nil, nil, .lighter])
+        let model = finishedRun(.curious)
+
+        model.choose(.same)
+
+        #expect(model.lighterTally == nil)
+    }
+
+    /// Unanswered runs say nothing yet, so they don't count toward the three answers it waits for.
+    @Test
+    func `the three runs it waits for are answered ones`() {
+        sessions.saveEarlier(.curious, outcomes: [nil, nil, .lighter])
+        let model = finishedRun(.curious)
+
+        model.choose(.lighter)
+
+        #expect(model.lighterTally == nil)
     }
 
     /// Shown after the answer, so it can't sway it.
@@ -44,7 +77,7 @@ extension ToolRunViewModelTests {
 
     /// It's there to encourage; a low count could read as doing it wrong, and the screen already offers other tools.
     @Test
-    func `there's no tally when fewer than half the answers were lighter`() {
+    func `there's no tally when fewer than half the runs were lighter`() {
         sessions.saveEarlier(.curious, outcomes: [.lighter, .same, .heavier])
         let model = finishedRun(.curious)
 
@@ -54,13 +87,13 @@ extension ToolRunViewModelTests {
     }
 
     @Test
-    func `half the answers lighter is enough`() {
+    func `half the runs lighter is enough`() {
         sessions.saveEarlier(.curious, outcomes: [.lighter, .same, .lighter])
         let model = finishedRun(.curious)
 
         model.choose(.heavier)
 
-        #expect(model.lighterTally == LighterTally(lighter: 2, answered: 4))
+        #expect(model.lighterTally == LighterTally(lighter: 2, total: 4))
     }
 
     /// It counts the answer showing now, once, however often it's changed.
@@ -72,7 +105,7 @@ extension ToolRunViewModelTests {
 
         model.choose(.same)
 
-        #expect(model.lighterTally == LighterTally(lighter: 2, answered: 4))
+        #expect(model.lighterTally == LighterTally(lighter: 2, total: 4))
     }
 
     @Test
@@ -87,7 +120,21 @@ extension ToolRunViewModelTests {
         model.end(now: start.addingTimeInterval(70))
         model.choose(.lighter)
 
-        #expect(model.lighterTally == LighterTally(lighter: 2, answered: 3))
+        #expect(model.lighterTally == LighterTally(lighter: 2, total: 3))
+    }
+
+    /// A run left unanswered earlier in the same sitting is one of the tool's runs, counted once.
+    @Test
+    func `the same tool again in a sitting counts the run left unanswered`() {
+        sessions.saveEarlier(.curious, outcomes: [.lighter, .lighter])
+        let model = finishedRun(.curious)
+
+        model.start(.curious, now: start.addingTimeInterval(40))
+        model.play(now: start.addingTimeInterval(40))
+        model.end(now: start.addingTimeInterval(70))
+        model.choose(.lighter)
+
+        #expect(model.lighterTally == LighterTally(lighter: 3, total: 4))
     }
 
     /// Next time it wouldn't be there to count, so the totals would disagree.
@@ -125,7 +172,7 @@ extension ToolRunViewModelTests {
 
         model.tick(now: start.addingTimeInterval(62))
 
-        #expect(model.lighterTally == LighterTally(lighter: 3, answered: 3))
+        #expect(model.lighterTally == LighterTally(lighter: 3, total: 3))
     }
 
     /// The rest of the finish screen works as ever.

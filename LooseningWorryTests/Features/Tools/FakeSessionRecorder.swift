@@ -30,11 +30,11 @@ final class FakeSessionRecorder: SessionRecording {
         session.outcome = outcome
     }
 
-    func outcomes(for tool: QuickTool) throws -> [ToolOutcome] {
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome?] {
         if failingReads {
             throw Failed()
         }
-        return sessions.filter { $0.tool == tool }.compactMap(\.outcome)
+        return sessions.filter { $0.tool == tool }.map(\.outcome)
     }
 
     /// Runs of `tool` from before, one per outcome; `nil` is a run left unanswered.

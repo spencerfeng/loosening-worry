@@ -7,8 +7,8 @@ protocol SessionRecording {
     @discardableResult
     func record(_ tool: QuickTool, startedAt: Date, duration: Duration, loop: Loop?) throws -> ToolSession
     func setOutcome(_ outcome: ToolOutcome, on session: ToolSession) throws
-    /// The answers to "How do you feel now?" after runs of `tool`; runs left unanswered have none.
-    func outcomes(for tool: QuickTool) throws -> [ToolOutcome]
+    /// The answer to "How do you feel now?" after each run of `tool`; `nil` for a run left unanswered.
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome?]
 }
 
 /// Saves each run of a tool once it ends, and the person's answer to "How do you feel now?". Each change is saved
@@ -53,9 +53,9 @@ struct SessionStore: SessionRecording {
 
     /// Filtered here rather than in a predicate, which can't reliably compare enum properties; a person's runs number
     /// in the hundreds at most.
-    func outcomes(for tool: QuickTool) throws -> [ToolOutcome] {
+    func outcomes(for tool: QuickTool) throws -> [ToolOutcome?] {
         try context.fetch(FetchDescriptor<ToolSession>())
             .filter { $0.tool == tool }
-            .compactMap(\.outcome)
+            .map(\.outcome)
     }
 }

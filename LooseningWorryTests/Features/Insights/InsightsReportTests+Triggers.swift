@@ -80,8 +80,9 @@ extension InsightsReportTests {
         #expect(page.followedBy.map(\.isTool) == [false, true, false])
     }
 
-    /// The old way and the new way side by side. As on the habit card, "Not sure" and the person's own results say
-    /// nothing either way; for a tool, neither does a run left unanswered.
+    /// The old way and the new way side by side, each out of every time, so the totals match "What you did".
+    /// "Not sure", the person's own results and a run left unanswered count toward the total, but never as no better
+    /// or lighter.
     @Test
     func `a trigger's detail compares what the habits and the tools gave`() throws {
         let loops = [
@@ -89,15 +90,17 @@ extension InsightsReportTests {
             loop(date(day: 26, hour: 9), result: ("result.nothingChanged", "Nothing changed")),
             loop(date(day: 26, hour: 10), result: ("result.littleRelief", "A little relief")),
             loop(date(day: 26, hour: 11), result: ("result.notSure", "Not sure")),
+            loop(date(day: 26, hour: 12), result: ("custom.3F2A", "Felt silly")),
             loop(date(day: 27, hour: 9), behavior: Self.curious, result: ("outcome.lighter", "Lighter")),
             loop(date(day: 27, hour: 10), behavior: Self.curious, result: ("outcome.same", "About the same")),
             loop(date(day: 27, hour: 11), behavior: Self.curious, result: ("result.notSure", "Not sure")),
+            loop(date(day: 27, hour: 12), behavior: Self.curious, result: ("custom.3F2A", "Felt silly")),
         ]
 
         let page = try #require(report(loops).trigger("trigger.work"))
 
-        #expect(page.habitsNoBetter == InsightsReport.Share(count: 2, total: 3))
-        #expect(page.toolsLighter == InsightsReport.Share(count: 1, total: 2))
+        #expect(page.habitsNoBetter == InsightsReport.Share(count: 2, total: 5))
+        #expect(page.toolsLighter == InsightsReport.Share(count: 1, total: 4))
     }
 
     /// Noticing earlier is the progress the dots show: the habits only, since meeting the urge with a tool comes before
@@ -162,10 +165,31 @@ extension InsightsReportTests {
         #expect(detail.followedBy.map(\.count) == [2])
     }
 
+    /// One clear answer is enough for a line, which then counts every time; habits that only brought relief read
+    /// "no better 0 of 2", and tool runs that never felt lighter "lighter 0 of 2".
+    @Test
+    func `one clear answer shows a line out of every time, even with nothing to count`() throws {
+        let loops = [
+            loop(date(day: 26, hour: 8), result: ("result.notSure", "Not sure")),
+            loop(date(day: 26, hour: 9), result: ("result.littleRelief", "A little relief")),
+            loop(date(day: 27, hour: 9), behavior: Self.curious, result: ("result.notSure", "Not sure")),
+            loop(date(day: 27, hour: 10), behavior: Self.curious, result: ("outcome.heavier", "Heavier")),
+        ]
+
+        let page = try #require(report(loops).trigger("trigger.work"))
+
+        #expect(page.habitsNoBetter == InsightsReport.Share(count: 0, total: 2))
+        #expect(page.toolsLighter == InsightsReport.Share(count: 0, total: 2))
+    }
+
     /// Each part of the page shows only once it has something to say.
     @Test
     func `a trigger's detail says nothing it has no loops for`() throws {
-        let loops = [loop(date(day: 26, hour: 8), result: ("result.notSure", "Not sure"))]
+        let loops = [
+            loop(date(day: 26, hour: 8), result: ("result.notSure", "Not sure")),
+            // A tool run left unanswered.
+            loop(date(day: 26, hour: 9), behavior: Self.curious, result: ("result.notSure", "Not sure")),
+        ]
         let report = report(loops)
 
         let detail = try #require(report.trigger("trigger.work"))

@@ -160,8 +160,8 @@ struct InsightsReport {
         let followed = loops(setOffBy: choiceID(id))
         guard let label = followed.last?.triggerLabel else { return nil }
         let habits = followed.filter { $0.metWithTool == nil }
-        let clear = habits.map { ResultOutcome(resultID: $0.resultID) }.filter { $0 != .unclear }
-        let answered = followed.filter { $0.metWithTool != nil }.compactMap { ToolOutcome(resultID: $0.resultID) }
+        let habitOutcomes = habits.map { ResultOutcome(resultID: $0.resultID) }
+        let toolOutcomes = followed.filter { $0.metWithTool != nil }.map { ToolOutcome(resultID: $0.resultID) }
         return TriggerDetail(
             label: label,
             habits: habits.count,
@@ -173,13 +173,13 @@ struct InsightsReport {
                     isTool: QuickTool(behaviorID: behavior.id) != nil,
                 )
             },
-            habitsNoBetter: clear.isEmpty ? nil : Share(
-                count: clear.count { $0 == .noBetter },
-                total: clear.count,
+            habitsNoBetter: habitOutcomes.allSatisfy { $0 == .unclear } ? nil : Share(
+                count: habitOutcomes.count { $0 == .noBetter },
+                total: habitOutcomes.count,
             ),
-            toolsLighter: answered.isEmpty ? nil : Share(
-                count: answered.count { $0 == .lighter },
-                total: answered.count,
+            toolsLighter: toolOutcomes.allSatisfy { $0 == nil } ? nil : Share(
+                count: toolOutcomes.count { $0 == .lighter },
+                total: toolOutcomes.count,
             ),
             noticed: Array(habits.compactMap(\.noticed).suffix(8)),
             notes: Array(followed.reversed().compactMap { loop in
@@ -291,10 +291,11 @@ struct TriggerDetail: Equatable {
     let metWithTool: Int
     /// Most logged first, a tie going to the one logged last.
     let followedBy: [Followed]
-    /// Of its habits with a clear result, the ones that brought more worry, tension or no change; `nil` if none has a
-    /// clear result.
+    /// Of all its habits, the ones that brought more worry, tension or no change, so the total matches what followed
+    /// it; `nil` until one has a clear result, as there's nothing to say before then.
     let habitsNoBetter: InsightsReport.Share?
-    /// Of its tool runs answered, the ones that left the person lighter; `nil` if none was answered.
+    /// Of all its tool runs, the ones that left the person lighter; `nil` until one has a Lighter, About the same or
+    /// Heavier answer.
     let toolsLighter: InsightsReport.Share?
     /// When the person noticed its last eight habits that say, oldest first. Tool runs have no answer: the person met
     /// the urge before a habit ran.

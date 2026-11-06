@@ -12,7 +12,7 @@ struct LighterTallyTests {
 
     @Test
     func `the sentence names the tool and the count, both in bold`() {
-        let text = LighterTally(lighter: 5, answered: 7).sentence(naming: .curious)
+        let text = LighterTally(lighter: 5, total: 7).sentence(naming: .curious)
 
         #expect(String(text.characters) == "Get curious has left you lighter 5\u{00A0}of\u{00A0}7 times.")
         #expect(boldRuns(in: text) == ["Get curious", "5\u{00A0}of\u{00A0}7"])
@@ -20,8 +20,8 @@ struct LighterTallyTests {
 
     /// The source's own wording always says "times"; "time" comes only from the catalog's plural.
     @Test
-    func `one answered run reads as one time`() {
-        let text = LighterTally(lighter: 1, answered: 1).sentence(naming: .breathe)
+    func `one run reads as one time`() {
+        let text = LighterTally(lighter: 1, total: 1).sentence(naming: .breathe)
 
         #expect(String(text.characters) == "Breathe has left you lighter 1\u{00A0}of\u{00A0}1 time.")
         #expect(boldRuns(in: text) == ["Breathe", "1\u{00A0}of\u{00A0}1"])
