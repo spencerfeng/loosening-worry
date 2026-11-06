@@ -2,18 +2,18 @@
 import Testing
 
 struct NoticeTimingTests {
-    /// Nice catch calls out noticing earlier, so the order must run from latest to earliest.
+    /// A logged loop means the habit ran, so the person either noticed once it was over or while they were still in it.
+    /// Catching the urge as it starts is "Nothing yet", not an answer here.
     @Test
-    func `answers run from noticing latest to noticing earliest`() {
-        #expect(NoticeTiming.allCases.sorted() == [.afterwards, .partway, .asItStarted])
-        #expect(NoticeTiming.afterwards < .partway)
-        #expect(NoticeTiming.partway < .asItStarted)
+    func `the person noticed afterwards or while it was happening`() {
+        #expect(NoticeTiming.allCases == [.afterwards, .whileHappening])
+        #expect(NoticeTiming.allCases.map { String(localized: $0.label) } == ["Afterwards", "While it was happening"])
     }
 
     /// A loop stores these, so none may change once released.
     @Test
     func `each answer has a stable id`() {
-        #expect(NoticeTiming.allCases.map(\.rawValue) == ["afterwards", "partway", "asItStarted"])
+        #expect(NoticeTiming.allCases.map(\.rawValue) == ["afterwards", "whileHappening"])
     }
 
     /// A loop synced from a newer version may hold an answer this one doesn't know.

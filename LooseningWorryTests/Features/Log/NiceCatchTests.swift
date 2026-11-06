@@ -3,76 +3,40 @@ import Foundation
 import Testing
 
 struct NiceCatchTests {
-    private static func loop(resultID: String = "result.moreWorry", result: String = "More worry") -> Loop {
-        .sample(result: OptionChoice(id: resultID, label: result))
+    private static let start = Date(timeIntervalSince1970: 1_800_000_000)
+
+    /// Loops of the sample trigger and habit, an hour apart, oldest first, one per result.
+    private static func loops(_ results: [StarterID]) -> [Loop] {
+        results.enumerated().map { hour, result in
+            .sample(
+                result: OptionChoice(result, label: String(localized: result.label)),
+                createdAt: start.addingTimeInterval(Double(hour) * 3600),
+            )
+        }
+    }
+
+    private static func niceCatch(_ results: [StarterID]) throws -> NiceCatch {
+        let history = loops(results)
+        return try NiceCatch(loop: #require(history.last), history: history)
     }
 
     @Test
-    func `shows the loop's three answers and this week's count`() {
-        let niceCatch = NiceCatch(loop: Self.loop(), loopsThisWeek: 10)
+    func `shows the loop's three answers`() throws {
+        let niceCatch = try Self.niceCatch([.moreWorry])
 
         #expect(niceCatch.chips == ["Work", "Overthought it", "More worry"])
-        #expect(niceCatch.loopsThisWeek == 10)
     }
 
-    @Test(arguments: [
-        (StarterID.moreWorry, "niceCatch.reflection.moreWorry"),
-        (.tenseAndTired, "niceCatch.reflection.tenseAndTired"),
-        (.nothingChanged, "niceCatch.reflection.nothingChanged"),
-        (.littleRelief, "niceCatch.reflection.littleRelief"),
-        (.actuallyHelped, "niceCatch.reflection.actuallyHelped"),
-        (.notSure, "niceCatch.reflection.notSure"),
-    ])
-    func `each core result gets its own reflection`(result: StarterID, key: String) {
-        let niceCatch = NiceCatch(loop: Self.loop(resultID: result.rawValue), loopsThisWeek: 1)
-
-        #expect(niceCatch.reflection.key == key)
-    }
-
-    /// The reflection never quotes the person's own words, so any result without its own line gets the general one.
-    @Test(arguments: ["custom.3F2A", "result.addedLater"])
-    func `any other result gets the general reflection`(resultID: String) {
-        let niceCatch = NiceCatch(loop: Self.loop(resultID: resultID, result: "Felt silly"), loopsThisWeek: 1)
-
-        #expect(niceCatch.reflection.key == "niceCatch.reflection.general")
-    }
-
-    /// Noticing earlier is the progress the logger's last question tracks, so Nice catch says when it happens.
-    @Test(arguments: [
-        (NoticeTiming.partway, NoticeTiming.afterwards),
-        (.asItStarted, .afterwards),
-        (.asItStarted, .partway),
-    ])
-    func `noticing earlier than last time for this trigger is called out`(now: NoticeTiming, last: NoticeTiming) {
-        let loop = Loop.sample(noticed: now)
-
-        let niceCatch = NiceCatch(loop: loop, loopsThisWeek: 1, lastNoticed: last)
-
-        #expect(niceCatch.noticedEarlier)
-    }
-
-    /// Nice catch never compares against the person: a later answer, or nothing to compare, says nothing.
-    @Test(arguments: [
-        (.partway, .partway),
-        (.afterwards, .asItStarted),
-        (.asItStarted, nil),
-        (nil, .afterwards),
-        (nil, nil),
-    ] as [(NoticeTiming?, NoticeTiming?)])
-    func `otherwise nothing is said about when it was noticed`(now: NoticeTiming?, last: NoticeTiming?) {
-        let loop = Loop.sample(noticed: now)
-
-        let niceCatch = NiceCatch(loop: loop, loopsThisWeek: 1, lastNoticed: last)
-
-        #expect(niceCatch.noticedEarlier == false)
-    }
-
-    /// Get curious until the tools exist and a rule is chosen.
+    /// The urge has passed and the person may still be stirred up, so Nice catch offers something for right now.
     @Test
-    func `the suggested tool is Get curious`() {
-        let suggestion = NiceCatch(loop: Self.loop(), loopsThisWeek: 1).suggestion
+    func `the tool to try now is Breathe`() {
+        #expect(NiceCatch.suggestion == .breathe)
+    }
 
-        #expect(suggestion.tool == .curious)
-        #expect(suggestion.detail.key == "tool.curious.detail")
+    /// One loop is nothing to compare with.
+    @Test
+    func `the last times appear once this trigger has led to this habit twice`() throws {
+        #expect(try Self.niceCatch([.moreWorry]).lastTimes == nil)
+        #expect(try Self.niceCatch([.moreWorry, .littleRelief]).lastTimes?.outcomes == [.noBetter, .relief])
     }
 }

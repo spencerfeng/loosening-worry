@@ -36,7 +36,7 @@ struct LogLoopSaveTests {
         let model = finishedModel()
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         let loop = try #require(stored.only)
         #expect(loop.triggerID == "trigger.news")
@@ -50,26 +50,37 @@ struct LogLoopSaveTests {
         #expect(model.isSaved)
     }
 
+    /// The history is read once this loop is stored, so it's among them.
     @Test
-    func `saving leads to Nice catch, showing the loop and this week's count`() throws {
+    func `saving leads to Nice catch, with the last times this trigger led to this habit`() throws {
         let model = finishedModel()
+        let earlier = Loop.sample(
+            trigger: OptionChoice(.news, label: "News"),
+            behavior: OptionChoice(.scrolled, label: "Scrolled"),
+            result: OptionChoice(.littleRelief, label: "A little relief"),
+        )
+        var stored: [Loop] = [earlier]
 
-        model.save { _ in } loopsThisWeek: { 5 }
+        model.save { stored.append($0) } history: { loop in
+            #expect(stored.last === loop)
+            return stored
+        }
 
         let niceCatch = try #require(model.niceCatch)
         #expect(niceCatch.chips == ["News", "Scrolled", "More worry"])
-        #expect(niceCatch.loopsThisWeek == 5)
+        #expect(niceCatch.lastTimes?.outcomes == [.relief, .noBetter])
     }
 
-    /// The loop is saved either way, so the count it shows is at least that one.
+    /// The loop is saved either way; there's just nothing to compare it with.
     @Test
-    func `if the week's count can't be read, Nice catch counts just the loop saved`() throws {
-        struct CountFailed: Error {}
+    func `if the history can't be read, Nice catch shows no last times`() throws {
+        struct ReadFailed: Error {}
         let model = finishedModel()
 
-        model.save { _ in } loopsThisWeek: { throw CountFailed() }
+        model.save { _ in } history: { _ in throw ReadFailed() }
 
-        #expect(try #require(model.niceCatch).loopsThisWeek == 1)
+        #expect(try #require(model.niceCatch).lastTimes == nil)
+        #expect(model.isSaved)
     }
 
     @Test
@@ -78,7 +89,7 @@ struct LogLoopSaveTests {
         model.pick(.news)
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(stored.isEmpty)
         #expect(model.isSaved == false)
@@ -90,8 +101,8 @@ struct LogLoopSaveTests {
         let model = finishedModel()
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(stored.count == 1)
         #expect(model.canSave == false)
@@ -102,14 +113,14 @@ struct LogLoopSaveTests {
         struct SaveFailed: Error {}
         let model = finishedModel()
 
-        model.save { _ in throw SaveFailed() } loopsThisWeek: { 1 }
+        model.save { _ in throw SaveFailed() } history: { [$0] }
 
         #expect(model.isSaved == false)
         #expect(model.saveFailed)
         #expect(model.canSave)
 
         var stored: [Loop] = []
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(stored.count == 1)
         #expect(model.isSaved)
@@ -121,7 +132,7 @@ struct LogLoopSaveTests {
     func `reopening a step clears the message that saving failed`() {
         struct SaveFailed: Error {}
         let model = finishedModel()
-        model.save { _ in throw SaveFailed() } loopsThisWeek: { 1 }
+        model.save { _ in throw SaveFailed() } history: { [$0] }
 
         model.goTo(.trigger)
 
@@ -136,12 +147,12 @@ struct LogLoopNoticedTests {
     @Test
     func `when the person noticed is saved with the loop`() throws {
         let model = finishedModel()
-        model.notice(.partway)
+        model.notice(.whileHappening)
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
-        #expect(try #require(stored.only).noticed == .partway)
+        #expect(try #require(stored.only).noticed == .whileHappening)
     }
 
     /// The question is optional, so logging never takes longer than the three steps.
@@ -150,7 +161,7 @@ struct LogLoopNoticedTests {
         let model = finishedModel()
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(try #require(stored.only).noticed == nil)
     }
@@ -158,56 +169,27 @@ struct LogLoopNoticedTests {
     @Test
     func `changing the answer before saving keeps the last one`() throws {
         let model = finishedModel()
+        model.notice(.whileHappening)
         model.notice(.afterwards)
-        model.notice(.asItStarted)
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
-        #expect(try #require(stored.only).noticed == .asItStarted)
+        #expect(try #require(stored.only).noticed == .afterwards)
     }
 
     /// The question is optional, so a mistaken tap mustn't leave an answer the person can't take back.
     @Test
     func `tapping the chosen answer again takes it back`() throws {
         let model = finishedModel()
-        model.notice(.partway)
+        model.notice(.whileHappening)
 
-        model.notice(.partway)
+        model.notice(.whileHappening)
 
         #expect(model.noticed == nil)
         var stored: [Loop] = []
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
         #expect(try #require(stored.only).noticed == nil)
-    }
-
-    /// The loop is saved either way; there's just nothing to compare it with.
-    @Test
-    func `if the last answer can't be read, Nice catch says nothing about it`() throws {
-        struct ReadFailed: Error {}
-        let model = finishedModel()
-        model.notice(.asItStarted)
-
-        model.save { _ in } loopsThisWeek: { 1 } lastNoticed: { _ in throw ReadFailed() }
-
-        #expect(try #require(model.niceCatch).noticedEarlier == false)
-    }
-
-    /// The last answer is read before the loop is stored, so the loop is never compared with itself.
-    @Test
-    func `the comparison on Nice catch is with the last answer for the same trigger, read before saving`() throws {
-        let model = finishedModel()
-        model.notice(.partway)
-        var stored: [Loop] = []
-        var askedFor: [String] = []
-
-        model.save { stored.append($0) } loopsThisWeek: { 1 } lastNoticed: { triggerID in
-            askedFor.append(triggerID)
-            return stored.isEmpty ? .afterwards : .partway
-        }
-
-        #expect(askedFor == ["trigger.news"])
-        #expect(try #require(model.niceCatch).noticedEarlier)
     }
 }
 
@@ -225,7 +207,7 @@ struct LogLoopDetailsTests {
 
         model.setAnxiety(7)
         var stored: [Loop] = []
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(try #require(stored.only).anxiety == 7)
     }
@@ -247,7 +229,7 @@ struct LogLoopDetailsTests {
         model.note = typed
         var stored: [Loop] = []
 
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
 
         #expect(try #require(stored.only).note == saved)
     }
@@ -266,7 +248,7 @@ struct LogLoopDetailsTests {
         #expect(model.anxiety == nil)
         #expect(model.note.isEmpty)
         var stored: [Loop] = []
-        model.save { stored.append($0) } loopsThisWeek: { 1 }
+        model.save { stored.append($0) } history: { [$0] }
         let loop = try #require(stored.only)
         #expect(loop.anxiety == nil)
         #expect(loop.note == nil)

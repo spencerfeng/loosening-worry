@@ -51,9 +51,7 @@ struct RootView: View {
         }
         .tint(.theme(.accent))
         .sheet(isPresented: $model.isLogSheetPresented, onDismiss: model.screenClosed) {
-            LogLoopView {
-                model.showInsights()
-            }
+            LogLoopView()
         }
         // Every screen over the tabs opens here, so the reminder or a lesson's task can close one and open another.
         .fullScreenCover(item: $model.readingLesson, onDismiss: lessonClosed) { lesson in

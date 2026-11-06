@@ -174,12 +174,13 @@ extension TriggerDetail {
         }
     }
 
-    /// "As it started 3 of the last 8 times". "times" is a plural on the last number, written by hand in the catalog.
+    /// "While it was happening 3 of the last 8 times". "times" is a plural on the last number, written by hand in the
+    /// catalog.
     var noticedLine: LocalizedStringResource {
-        let asItStarted = noticed.count { $0 == .asItStarted }
+        let whileHappening = noticed.count { $0 == .whileHappening }
         return LocalizedStringResource(
-            "insights.trigger.asItStarted",
-            defaultValue: "As it started \(asItStarted) of the last \(noticed.count) times",
+            "insights.trigger.whileHappening",
+            defaultValue: "While it was happening \(whileHappening) of the last \(noticed.count) times",
         )
     }
 }
@@ -286,7 +287,7 @@ private struct ShareRow: View {
     }
 }
 
-/// When the person noticed the habit, oldest first: gray afterwards, pale blue partway, blue as it started. VoiceOver
+/// When the person noticed the habit, oldest first: gray afterwards, blue while it was happening. VoiceOver
 /// reads the answers in order, so the trend is there without the colors.
 private struct NoticedCard: View {
     let detail: TriggerDetail
@@ -315,7 +316,7 @@ private struct NoticedCard: View {
         }
     }
 
-    /// "afterwards, partway through and as it started", in the person's language.
+    /// "afterwards, afterwards and while it was happening", in the person's language.
     private var answersInOrder: String {
         detail.noticed.map { String(localized: $0.label) }.formatted(.list(type: .and))
     }
@@ -323,8 +324,7 @@ private struct NoticedCard: View {
     private static func color(_ timing: NoticeTiming) -> Theme.ColorRole {
         switch timing {
         case .afterwards: .grayFill
-        case .partway: .accentPaleFill
-        case .asItStarted: .accent
+        case .whileHappening: .accent
         }
     }
 }

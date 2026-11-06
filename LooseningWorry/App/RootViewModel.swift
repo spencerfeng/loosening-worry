@@ -52,12 +52,6 @@ final class RootViewModel {
         }
     }
 
-    /// Closes the logger and switches to Insights, for Nice catch's weekly count.
-    func showInsights() {
-        isLogSheetPresented = false
-        selectedTab = .insights
-    }
-
     /// Tapping the daily reminder opens the lesson it names, or a check-in once the course is done, over any tab.
     /// During onboarding there are no tabs to open it over, so the tap only brings the app forward.
     func openNotification(identifier: String, lessonDay: Int?) {

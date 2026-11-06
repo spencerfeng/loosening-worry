@@ -5,7 +5,7 @@ Date: 2026-10-22
 ## Status
 
 Accepted. Extended by ADR 0004, which adds five accent roles, ADR 0005, which adds two fill roles, and ADR 0007,
-which adds three more. The `help` role was removed on 2026-11-04 along with Help itself.
+which adds three more, one since removed. The `help` role was removed on 2026-11-04 along with Help itself.
 
 ## Context
 

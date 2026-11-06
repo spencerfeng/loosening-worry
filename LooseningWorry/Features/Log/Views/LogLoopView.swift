@@ -17,14 +17,12 @@ struct LogLoopView: View {
     @State private var lastNoted: Loop?
     /// Set when a tool run from "Nothing yet" saved its loop, so the logger closes with the tool.
     @State private var savedByTool = false
-    /// Closes the logger and switches to Insights, from Nice catch's weekly count.
-    let showInsights: () -> Void
 
     var body: some View {
         // Swapped in without a transition: a leaving view stays on screen until the animations inside it finish, and
         // the cheer's clap is still playing. Nice catch animates its own entrance.
         if let niceCatch = model.niceCatch {
-            NiceCatchView(niceCatch: niceCatch, showInsights: showInsights) {
+            NiceCatchView(niceCatch: niceCatch) {
                 dismiss()
             }
         } else {
@@ -128,11 +126,7 @@ struct LogLoopView: View {
                         isEnabled: model.canSave,
                     ) {
                         let store = LoopStore(context: modelContext)
-                        model.save { try store.add($0) } loopsThisWeek: {
-                            try store.loopsThisWeek()
-                        } lastNoticed: { triggerID in
-                            try store.lastNoticed(forTrigger: triggerID)
-                        }
+                        model.save { try store.add($0) } history: { try store.loops(like: $0) }
                     }
                 }
             }
@@ -314,7 +308,7 @@ private struct ClapPose {
 
 #if DEBUG
     #Preview {
-        LogLoopView {}
+        LogLoopView()
             .modelContainer(AppModelContainer.preview)
     }
 #endif

@@ -43,16 +43,18 @@ Plural entries are written by hand. The source declares one `String(localized:ke
 carrying a `%lld`, and the catalog entry holds `variations.plural` with `one` and `other`;
 `String.localizedStringWithFormat` resolves the category at runtime.
 
-When the number is styled apart from its words (Nice catch's "**4** loops noticed this week"), the source declares
-`AttributedString(localized: LocalizedStringResource(key, defaultValue: "**\(count)** …"))` instead. The catalog entry
-is the same hand-written plural, with the `**` kept in each variation; the view restyles the strongly emphasized run.
+When the number is styled apart from its words, the source declares
+`AttributedString(localized: LocalizedStringResource(key, defaultValue: "**\(count)** …"))` instead, and the view
+restyles the strongly emphasized run. With a single value the catalog entry is the same hand-written plural, with the
+`**` kept in each variation; no string does that today, as each bold count also carries a total (below).
 
 When the string carries more than one value, only one of which decides the plural (the finish screen's "**Get curious** has
 left you lighter **5 of 7** times."), the entry keeps one `stringUnit` with positional arguments and a substitution for just
 the word that varies: `"**%1$@** has left you lighter **%2$lld of %3$lld** %#@times@."`, with `substitutions.times`
 (`argNum` 3, `formatSpecifier` `lld`) holding `variations.plural` `one` "time" and `other` "times". Keep every `**` in the
 main string, never inside a variation, so the bold runs can't depend on which plural form is chosen. `LighterTallyTests`
-checks the singular, which only the catalog can supply.
+checks the singular, which only the catalog can supply. Nice catch's "last times" card uses the same form for its line
+("**4 of 5 times** it gave you more worry.") and, to match the title in the person's own words, for every title.
 
 The pre-commit hook keeps the stored form honest: when the catalog is staged it runs
 `Scripts/normalize-string-catalog.swift`, which reorders entries into Xcode's collation and

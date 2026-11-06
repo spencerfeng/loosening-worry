@@ -1,12 +1,8 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Add your own" : {
-
-    },
-    "All done" : {
-
-    },
+    "Add your own" : {},
+    "All done" : {},
     "checkIn.back" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -205,12 +201,8 @@
         }
       }
     },
-    "Choose below" : {
-
-    },
-    "Closed" : {
-
-    },
+    "Choose below" : {},
+    "Closed" : {},
     "edit.add.cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -926,9 +918,7 @@
         }
       }
     },
-    "Home" : {
-
-    },
+    "Home" : {},
     "home.banner.choose" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1182,9 +1172,7 @@
         }
       }
     },
-    "Insights" : {
-
-    },
+    "Insights" : {},
     "insights.busiest" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1513,38 +1501,6 @@
         }
       }
     },
-    "insights.trigger.asItStarted" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "As it started %1$lld of the last %2$lld %#@times@"
-          },
-          "substitutions" : {
-            "times" : {
-              "argNum" : 2,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "new",
-                      "value" : "time"
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "new",
-                      "value" : "times"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "insights.trigger.did" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1719,6 +1675,38 @@
         }
       }
     },
+    "insights.trigger.whileHappening" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "While it was happening %1$lld of the last %2$lld %#@times@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "insights.trigger.words" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1741,9 +1729,7 @@
         }
       }
     },
-    "Learn" : {
-
-    },
+    "Learn" : {},
     "learn.minutes" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2140,9 +2126,7 @@
         }
       }
     },
-    "Log a loop" : {
-
-    },
+    "Log a loop" : {},
     "log.addOwn.add" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2484,17 +2468,6 @@
         }
       }
     },
-    "log.noticed.asItStarted" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "As it started"
-          }
-        }
-      }
-    },
     "log.noticed.hint" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2506,17 +2479,6 @@
         }
       }
     },
-    "log.noticed.partway" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Partway through"
-          }
-        }
-      }
-    },
     "log.noticed.question" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2524,6 +2486,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "When did you notice?"
+          }
+        }
+      }
+    },
+    "log.noticed.whileHappening" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "While it was happening"
           }
         }
       }
@@ -2770,39 +2743,6 @@
         }
       }
     },
-    "niceCatch.count" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "**%lld** loop noticed this week"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "**%lld** loops noticed this week"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "niceCatch.count.hint" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Opens Insights"
-          }
-        }
-      }
-    },
     "niceCatch.done" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2814,101 +2754,557 @@
         }
       }
     },
-    "niceCatch.noticedEarlier" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.actuallyHelped" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "You noticed it earlier than last time."
+            "value" : "**%1$lld of %2$lld %#@times@** it actually helped."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.actuallyHelped" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.askedForReassurance" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "It helped this time. Noticing honestly is what matters."
+            "value" : "The last %1$lld %#@times@ you asked for reassurance"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.general" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.avoidedIt" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Noticing what it gave you is how the habit starts to loosen."
+            "value" : "The last %1$lld %#@times@ you avoided it"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.littleRelief" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.keptChecking" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "A little relief, for now. Noticing what it really gives you is how the habit loosens."
+            "value" : "The last %1$lld %#@times@ you kept checking"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.moreWorry" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.littleRelief" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "It gave you more worry. Noticing that is how the habit starts to loosen."
+            "value" : "**%1$lld of %2$lld %#@times@** it gave you a little relief."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.nothingChanged" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.moreWorry" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "It didn't change anything. Noticing that is how the habit starts to loosen."
+            "value" : "**%1$lld of %2$lld %#@times@** it gave you more worry."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.notSure" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.nothingChanged" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Not sure is an honest answer. Noticing is how the habit starts to loosen."
+            "value" : "**%1$lld of %2$lld %#@times@** nothing changed."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.reflection.tenseAndTired" : {
-      "extractionState" : "extracted_with_value",
+    "niceCatch.lastTimes.notSure" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "It left you tense and tired. Noticing that is how the habit starts to loosen."
+            "value" : "**%1$lld of %2$lld %#@times@** you weren't sure what it gave you."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "niceCatch.suggestion" : {
+    "niceCatch.lastTimes.overPrepared" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you over-prepared"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.overthought" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you overthought it"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.own" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@: %2$@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.ownResult" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$lld of %2$lld %#@times@**: %3$@"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.putItOff" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you put it off"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.scrolled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you scrolled"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.searchedOnline" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you searched online"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.snacked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The last %1$lld %#@times@ you snacked"
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.lastTimes.tenseAndTired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "**%1$lld of %2$lld %#@times@** it left you tense and tired."
+          },
+          "substitutions" : {
+            "times" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "time"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "times"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "niceCatch.suggestion.now" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Turn toward what's here"
+            "value" : "Turn toward what's here now"
           }
         }
       }
@@ -2924,9 +3320,7 @@
         }
       }
     },
-    "Not answered yet" : {
-
-    },
+    "Not answered yet" : {},
     "onboarding.continue" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -3323,9 +3717,7 @@
         }
       }
     },
-    "Open" : {
-
-    },
+    "Open" : {},
     "pleasantness.neutral" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -4498,17 +4890,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "In for 4 · out for 6"
-          }
-        }
-      }
-    },
-    "tool.curious.detail" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "90 sec · explore the feeling"
           }
         }
       }

@@ -331,13 +331,12 @@ final class ToolRunViewModel {
     }
 
     /// For a run started from "Nothing yet", the loop its sitting saves: the trigger, this first tool, and not sure
-    /// until the person answers. They chose to meet the urge before the habit ran, which is noticing it as it started.
+    /// until the person answers. It has no noticing answer: the person met the urge before any habit ran, which is
+    /// further along than either answer the logger asks about.
     private func newMeetingLoop() -> Loop? {
         guard let meetingTrigger else { return nil }
         let notSure = OptionChoice(.notSure, label: String(localized: StarterID.notSure.label))
-        let loop = Loop(trigger: meetingTrigger, behavior: tool.asBehavior, result: notSure)
-        loop.noticed = .asItStarted
-        return loop
+        return Loop(trigger: meetingTrigger, behavior: tool.asBehavior, result: notSure)
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Tools")

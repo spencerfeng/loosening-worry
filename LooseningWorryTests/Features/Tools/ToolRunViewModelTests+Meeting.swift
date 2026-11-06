@@ -19,7 +19,7 @@ extension ToolRunViewModelTests {
         #expect(loop.behaviorLabel == "Got curious")
         #expect(loop.resultID == "result.notSure")
         #expect(loop.resultLabel == "Not sure")
-        #expect(loop.noticed == .asItStarted)
+        #expect(loop.noticed == nil)
     }
 
     @Test(arguments: [

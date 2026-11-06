@@ -4,7 +4,9 @@ Date: 2026-11-06
 
 ## Status
 
-Accepted. Extends ADR 0001 and ADR 0005.
+Accepted. Extends ADR 0001 and ADR 0005. `accentPaleFill` was removed on 2026-11-06, when the logger's "When did you
+notice?" went from three answers to two and "partway" went with it. Nice catch's "last times" dots also use `redFill`
+and `grayFill`, beside `greenFill`, under the same rule: shapes that carry no text.
 
 ## Context
 

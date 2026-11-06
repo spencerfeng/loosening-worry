@@ -155,13 +155,12 @@ struct InsightsReport {
     }
 
     /// The detail for the trigger with id `id`, as `triggers` gives it or any copy of it; `nil` if nothing in the
-    /// period
-    /// was set off by it.
+    /// period was set off by it.
     func trigger(_ id: String) -> TriggerDetail? {
         let followed = loops(setOffBy: choiceID(id))
         guard let label = followed.last?.triggerLabel else { return nil }
         let habits = followed.filter { $0.metWithTool == nil }
-        let clear = habits.compactMap { StarterID(rawValue: $0.resultID) }.filter(\.isClearResult)
+        let clear = habits.map { ResultOutcome(resultID: $0.resultID) }.filter { $0 != .unclear }
         let answered = followed.filter { $0.metWithTool != nil }.compactMap { ToolOutcome(resultID: $0.resultID) }
         return TriggerDetail(
             label: label,
@@ -175,7 +174,7 @@ struct InsightsReport {
                 )
             },
             habitsNoBetter: clear.isEmpty ? nil : Share(
-                count: clear.count(where: \.isUnrewardingResult),
+                count: clear.count { $0 == .noBetter },
                 total: clear.count,
             ),
             toolsLighter: answered.isEmpty ? nil : Share(
@@ -207,14 +206,10 @@ struct InsightsReport {
     var habit: Habit? {
         let habits = loops.filter { $0.metWithTool == nil }
         guard let top = ranked(habits, by: \.behaviorID, label: \.behaviorLabel).first else { return nil }
-        let results = habits.filter { choiceID($0.behaviorID) == top.id }
-            .compactMap { StarterID(rawValue: $0.resultID) }
-        let clear = results.filter(\.isClearResult)
-        return Habit(
-            label: top.label,
-            clearResults: clear.count,
-            unrewarding: clear.count(where: \.isUnrewardingResult),
-        )
+        let clear = habits.filter { choiceID($0.behaviorID) == top.id }
+            .map { ResultOutcome(resultID: $0.resultID) }
+            .filter { $0 != .unclear }
+        return Habit(label: top.label, clearResults: clear.count, unrewarding: clear.count { $0 == .noBetter })
     }
 
     private func choiceID(_ id: String) -> String {
@@ -301,8 +296,8 @@ struct TriggerDetail: Equatable {
     let habitsNoBetter: InsightsReport.Share?
     /// Of its tool runs answered, the ones that left the person lighter; `nil` if none was answered.
     let toolsLighter: InsightsReport.Share?
-    /// When the person noticed its last eight habits that say, oldest first. Tool runs are left out: meeting the urge
-    /// is noticing it as it started by definition.
+    /// When the person noticed its last eight habits that say, oldest first. Tool runs have no answer: the person met
+    /// the urge before a habit ran.
     let noticed: [NoticeTiming]
     /// Its latest three notes, newest first.
     let notes: [Note]

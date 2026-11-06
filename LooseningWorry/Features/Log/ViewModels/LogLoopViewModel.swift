@@ -194,15 +194,9 @@ final class LogLoopViewModel {
     /// `canSave`.
     /// - Parameters:
     ///   - store: Saves the loop. If it throws, `saveFailed` tells the person, and they can try again.
-    ///   - loopsThisWeek: Counts this week's loops, the one just saved included. If it throws, Nice catch counts just
-    ///     that one.
-    ///   - lastNoticed: When the person noticed the last loop with a given trigger id, read before this one is stored
-    ///     so Nice catch never compares the loop with itself. If it throws, there's nothing to compare with.
-    func save(
-        _ store: (Loop) throws -> Void,
-        loopsThisWeek: () throws -> Int,
-        lastNoticed: (String) throws -> NoticeTiming? = { _ in nil },
-    ) {
+    ///   - history: Given the loop just stored, every loop with its trigger and habit, oldest first, it included;
+    ///     Nice catch looks at the latest few. If it throws, Nice catch shows just that one.
+    func save(_ store: (Loop) throws -> Void, history: (Loop) throws -> [Loop]) {
         guard
             canSave,
             let trigger = answers[.trigger],
@@ -212,13 +206,11 @@ final class LogLoopViewModel {
         let loop = Loop(trigger: trigger, behavior: behavior, result: result)
         loop.anxiety = anxiety
         loop.noticed = noticed
-        let last = try? lastNoticed(trigger.id)
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
         loop.note = trimmedNote.isEmpty ? nil : trimmedNote
         do {
             try store(loop)
-            let count = (try? loopsThisWeek()) ?? 1
-            niceCatch = NiceCatch(loop: loop, loopsThisWeek: count, lastNoticed: last)
+            niceCatch = NiceCatch(loop: loop, history: (try? history(loop)) ?? [loop])
             saveFailed = false
         } catch {
             Self.logger.error("Couldn't save a loop: \(error)")

@@ -100,13 +100,13 @@ extension InsightsReportTests {
         #expect(page.toolsLighter == InsightsReport.Share(count: 1, total: 2))
     }
 
-    /// Noticing earlier is the progress the dots show: the habits only, since meeting the urge with a tool is noticing
-    /// it as it started by definition.
+    /// Noticing earlier is the progress the dots show: the habits only, since meeting the urge with a tool comes before
+    /// any habit runs.
     @Test
     func `a trigger's detail shows when the last eight habits were noticed, oldest first`() throws {
         let answers: [NoticeTiming?] = [
-            .afterwards, .afterwards, nil, .afterwards, .partway, .afterwards, .partway, .partway, .asItStarted,
-            .asItStarted,
+            .afterwards, .afterwards, nil, .afterwards, .whileHappening, .afterwards, .whileHappening, .whileHappening,
+            .afterwards, .whileHappening,
         ]
         var loops = answers.enumerated().map { hour, answer in
             let habit = loop(date(day: 26, hour: hour + 1))
@@ -114,13 +114,14 @@ extension InsightsReportTests {
             return habit
         }
         let met = loop(date(day: 27, hour: 9), behavior: Self.curious, result: ("outcome.lighter", "Lighter"))
-        met.noticed = .asItStarted
+        met.noticed = .whileHappening
         loops.append(met)
 
         let page = try #require(report(loops).trigger("trigger.work"))
 
         #expect(page.noticed == [
-            .afterwards, .afterwards, .partway, .afterwards, .partway, .partway, .asItStarted, .asItStarted,
+            .afterwards, .afterwards, .whileHappening, .afterwards, .whileHappening, .whileHappening, .afterwards,
+            .whileHappening,
         ])
     }
 

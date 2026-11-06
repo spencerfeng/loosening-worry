@@ -1,16 +1,15 @@
 import SwiftData
 import SwiftUI
 
-/// Shown once a loop is saved: a celebration, the loop, a line about what it gave the person, this week's count and
-/// a tool to try.
+/// Shown once a loop is saved: a celebration, the loop, what this habit has given the person the last times this
+/// trigger set it off, and a tool to try now.
 struct NiceCatchView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.modelContext) private var modelContext
 
     let niceCatch: NiceCatch
-    let showInsights: () -> Void
     let done: () -> Void
-    /// Starts the entrance: the tick pops, the confetti bursts and the count slides up.
+    /// Starts the entrance: the tick pops, the confetti bursts and the last times slide up.
     @State private var hasAppeared = false
     /// VoiceOver starts at the title, since the screen replaces the logger without a transition.
     @AccessibilityFocusState private var isTitleFocused: Bool
@@ -28,23 +27,11 @@ struct NiceCatchView: View {
                         .accessibilityFocused($isTitleFocused)
                     LoopChips(labels: niceCatch.chips)
                 }
-                Text(niceCatch.reflection)
-                    .font(.theme(.body))
-                    .foregroundStyle(.theme(.textSecondary))
-                    .lineSpacing(5)
-                    .frame(maxWidth: 300)
-                if niceCatch.noticedEarlier {
-                    Text(LocalizedStringResource(
-                        "niceCatch.noticedEarlier",
-                        defaultValue: "You noticed it earlier than last time.",
-                    ))
-                    .font(.theme(.callout))
-                    .foregroundStyle(.theme(.accentText))
-                    .frame(maxWidth: 300)
+                if let lastTimes = niceCatch.lastTimes {
+                    LastTimesCard(lastTimes: lastTimes)
+                        .opacity(hasAppeared ? 1 : 0)
+                        .offset(y: hasAppeared || reduceMotion ? 0 : 8)
                 }
-                WeeklyCount(count: niceCatch.loopsThisWeek, action: showInsights)
-                    .opacity(hasAppeared ? 1 : 0)
-                    .offset(y: hasAppeared || reduceMotion ? 0 : 8)
             }
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -54,11 +41,11 @@ struct NiceCatchView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(alignment: .leading, spacing: 12) {
                 SectionLabel(LocalizedStringResource(
-                    "niceCatch.suggestion",
-                    defaultValue: "Turn toward what's here",
+                    "niceCatch.suggestion.now",
+                    defaultValue: "Turn toward what's here now",
                 ))
-                ToolCard(tool: niceCatch.suggestion.tool, detail: niceCatch.suggestion.detail) {
-                    runningTool = niceCatch.suggestion.tool
+                ToolCard(tool: NiceCatch.suggestion, detail: NiceCatch.suggestion.reason) {
+                    runningTool = NiceCatch.suggestion
                 }
                 SecondaryButton(title: LocalizedStringResource("niceCatch.done", defaultValue: "Done"), action: done)
             }
@@ -75,7 +62,7 @@ struct NiceCatchView: View {
         .sensoryFeedback(.success, trigger: hasAppeared)
         .onAppear {
             isTitleFocused = true
-            // Under Reduce Motion everything is simply there; the count still fades in.
+            // Under Reduce Motion everything is simply there; the last times still fade in.
             withAnimation(reduceMotion ? .easeOut(duration: 0.2) : .easeOut(duration: 0.4).delay(0.5)) {
                 hasAppeared = true
             }
@@ -163,60 +150,49 @@ private struct ConfettiBurst: View {
     }
 }
 
-/// "10 loops noticed this week +1": the count includes the loop just saved, which the +1 marks. Opens Insights.
-private struct WeeklyCount: View {
-    let count: Int
-    let action: () -> Void
+/// "The last 5 times you overthought it": a dot for what each gave, oldest first, then a line on what it gave most.
+/// Just a card: the trigger's page is in Insights.
+private struct LastTimesCard: View {
+    let lastTimes: LastTimes
 
     var body: some View {
-        Button(action: action) {
-            HStack(spacing: 8) {
-                Text(sentence)
-                    .font(.theme(.body))
-                    .foregroundStyle(.theme(.textSecondary))
-                Text(verbatim: "+1")
-                    .font(.theme(.footnote))
-                    .fontWeight(.heavy)
-                    .foregroundStyle(.theme(.greenOnTint))
-                    .padding(.vertical, 2)
-                    .padding(.horizontal, 8)
-                    .background(.theme(.greenTint), in: .capsule)
-                    .accessibilityHidden(true)
+        InsightsCard(title: lastTimes.title) {
+            HStack(spacing: 6) {
+                ForEach(Array(lastTimes.outcomes.enumerated()), id: \.offset) { _, outcome in
+                    Circle()
+                        .fill(.theme(Self.color(outcome)))
+                        .frame(width: 14, height: 14)
+                }
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 16)
-            .cardSurface(cornerRadius: 20)
-            .contentShape(.rect(cornerRadius: 20))
+            // The line says what the dots show.
+            .accessibilityHidden(true)
+            Text(lastTimes.line.restylingEmphasis(font: .theme(.callout).bold(), color: .theme(.textPrimary)))
+                .font(.theme(.callout))
+                .foregroundStyle(.theme(.textSecondary))
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .buttonStyle(.plain)
-        .accessibilityHint(Text(LocalizedStringResource("niceCatch.count.hint", defaultValue: "Opens Insights")))
+        .multilineTextAlignment(.leading)
+        .accessibilityElement(children: .combine)
     }
 
-    /// The count is the strong run of a plural sentence, so translators keep it in the right place.
-    private var sentence: AttributedString {
-        AttributedString(
-            localized: LocalizedStringResource(
-                "niceCatch.count",
-                defaultValue: "**\(count)** loops noticed this week",
-            )
-        )
-        .restylingEmphasis(font: .theme(.title3), color: .theme(.accentText))
+    private static func color(_ outcome: ResultOutcome) -> Theme.ColorRole {
+        switch outcome {
+        case .noBetter: .redFill
+        case .relief: .greenFill
+        case .unclear: .grayFill
+        }
     }
 }
 
 #if DEBUG
     #Preview {
-        NiceCatchView(
-            niceCatch: NiceCatch(
-                loop: Loop(
-                    trigger: OptionChoice(.work, label: "Work"),
-                    behavior: OptionChoice(.overthought, label: "Overthought it"),
-                    result: OptionChoice(.moreWorry, label: "More worry"),
-                ),
-                loopsThisWeek: 10,
-            ),
-            showInsights: {},
-            done: {},
-        )
+        let loops = [StarterID.moreWorry, .moreWorry, .littleRelief, .moreWorry, .moreWorry].map { result in
+            Loop(
+                trigger: OptionChoice(.tryingToSleep, label: "Trying to sleep"),
+                behavior: OptionChoice(.overthought, label: "Overthought it"),
+                result: OptionChoice(result, label: String(localized: result.label)),
+            )
+        }
+        NiceCatchView(niceCatch: NiceCatch(loop: loops[loops.count - 1], history: loops)) {}
     }
 #endif

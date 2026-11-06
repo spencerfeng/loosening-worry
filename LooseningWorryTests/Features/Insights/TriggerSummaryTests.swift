@@ -27,7 +27,7 @@ struct TriggerSummaryTests {
         #expect(String(localized: one.lighterLine) == "lighter 1 of 1 time")
         #expect(String(localized: InsightsReport.Share(count: 5, total: 6).noBetterLine) == "no better 5 of 6 times")
 
-        let loop = Loop.sample(createdAt: .now, noticed: .asItStarted)
+        let loop = Loop.sample(createdAt: .now, noticed: .whileHappening)
         let detail = try #require(InsightsReport(
             loops: [loop],
             saved: [],
@@ -37,6 +37,6 @@ struct TriggerSummaryTests {
         ).trigger("trigger.work"))
         #expect(String(localized: detail.totalLine(in: .thisWeek)) == "1 time this week")
         #expect(String(localized: detail.totalLine(in: .lastFourWeeks)) == "1 time in the last 4 weeks")
-        #expect(String(localized: detail.noticedLine) == "As it started 1 of the last 1 time")
+        #expect(String(localized: detail.noticedLine) == "While it was happening 1 of the last 1 time")
     }
 }

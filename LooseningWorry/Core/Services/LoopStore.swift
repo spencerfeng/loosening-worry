@@ -18,27 +18,14 @@ struct LoopStore {
         }
     }
 
-    /// How many loops were logged this calendar week, from its first day in `calendar` up to `now`.
-    func loopsThisWeek(now: Date = .now, calendar: Calendar = .current) throws -> Int {
-        guard let start = calendar.startOfWeek(containing: now) else { return 0 }
-        let loops = FetchDescriptor<Loop>(predicate: #Predicate { $0.createdAt >= start && $0.createdAt <= now })
-        return try context.fetchCount(loops)
-    }
-
-    /// When the person noticed the latest habit set off by the trigger with id `triggerID`, among those where they
-    /// said;
-    /// `nil` if they never did. Loops met with a tool are left out: choosing a tool is noticing the urge as it started,
-    /// so comparing with one would leave the next habit nothing to improve on.
-    func lastNoticed(forTrigger triggerID: String) throws -> NoticeTiming? {
-        let toolPrefix = QuickTool.behaviorIDPrefix
-        var answered = FetchDescriptor<Loop>(
-            predicate: #Predicate {
-                $0.triggerID == triggerID && $0.noticedID != nil && !$0.behaviorID.starts(with: toolPrefix)
-            },
-            sortBy: [SortDescriptor(\.createdAt, order: .reverse)],
-        )
-        answered.fetchLimit = 1
-        return try context.fetch(answered).first?.noticed
+    /// The loops with `loop`'s trigger and habit, oldest first, `loop` included once stored. A tool's id is never a
+    /// habit's, so loops met with a tool never match.
+    func loops(like loop: Loop) throws -> [Loop] {
+        let (triggerID, behaviorID) = (loop.triggerID, loop.behaviorID)
+        return try context.fetch(FetchDescriptor<Loop>(
+            predicate: #Predicate { $0.triggerID == triggerID && $0.behaviorID == behaviorID },
+            sortBy: [SortDescriptor(\.createdAt)],
+        ))
     }
 
     /// The latest loop set off by the trigger with id `triggerID` that has a note, so its words can be shown again;

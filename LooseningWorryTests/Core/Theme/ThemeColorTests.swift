@@ -42,7 +42,6 @@ struct ThemeColorTests {
         // Chart fills for Insights' "What sets you off" (ADR 0007).
         .redFill: ("D9574B", "F09A90"),
         .grayFill: ("C9C5BE", "6B6862"),
-        .accentPaleFill: ("C9D9FA", "2C4170"),
         .violetStrong: ("6A4FD8", "8A73EE"),
         .violetTint: ("EEE9FC", "2A2347"),
         .violetOnTint: ("5B3FC4", "B3A2F5"),
