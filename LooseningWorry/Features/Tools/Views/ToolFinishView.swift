@@ -309,12 +309,14 @@ private extension QuickTool {
         case (.lighter, .breathe):
             LocalizedStringResource(
                 "tool.finish.lighter.breathe",
-                defaultValue: "That's your breath at work. Paying attention to it gave your brain a break from worry.",
+                defaultValue: """
+                That's your breath at work. Your brain just noticed steady attention feels better than worry.
+                """,
             )
         case (.lighter, .noteIt):
             LocalizedStringResource(
                 "tool.finish.lighter.noteIt",
-                defaultValue: "That's noticing at work. Naming what's here gave your brain a step back from worry.",
+                defaultValue: "That's naming at work. Your brain just noticed stepping back feels better than worry.",
             )
         case (.lighter, .beKind):
             LocalizedStringResource(
@@ -330,14 +332,15 @@ private extension QuickTool {
             LocalizedStringResource(
                 "tool.finish.heavier.breathe",
                 defaultValue: """
-                Some moments are just hard, and that's fine. Getting curious about the feeling can help.
+                Some moments are just hard, and that's fine. Getting curious lets you meet the feeling up close.
                 """,
             )
         case (.heavier, _):
             LocalizedStringResource(
                 "tool.finish.heavier",
                 defaultValue: """
-                Some moments are just hard, and that's fine. A minute of breathing can help.
+                Some moments are just hard, and that's fine. A minute with your breath gives your attention \
+                somewhere steady.
                 """,
             )
         }

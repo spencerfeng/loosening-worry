@@ -10,7 +10,10 @@ extension QuickTool {
                 "tool.reason.curious",
                 defaultValue: "Look at the worry instead of being pulled along by it",
             )
-        case .breathe: LocalizedStringResource("tool.reason.breathe", defaultValue: "Slow down with your breath")
+        case .breathe: LocalizedStringResource(
+                "tool.reason.breathe",
+                defaultValue: "Rest your attention on your breath",
+            )
         case .noteIt:
             LocalizedStringResource("tool.reason.noteIt", defaultValue: "Name what's here, one word at a time")
         case .beKind:
