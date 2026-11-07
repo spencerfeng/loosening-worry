@@ -4,11 +4,12 @@ The panel behind each drawing is the card's `tint` in lessons.json, drawn by the
 No words inside the art: it can't be translated. Run generate.py after changing anything here.
 """
 import math
-V, VT, VL = '#6A4FD8', '#EEE9FC', '#D9CFF8'
-A, AT = '#F0A33A', '#FDF0DC'
+V, VT, VL, VS = '#6A4FD8', '#EEE9FC', '#D9CFF8', '#8A73EE'
+A, AT, AM, AD = '#F0A33A', '#FDF0DC', '#F7DDB5', '#B86E12'
 G, GT, GD = '#4CB782', '#E3F4EA', '#2E8A5C'
 B, BT, BL, BS = '#2E6AE6', '#E4EDFD', '#C9D9FA', '#5B8DF0'
 R, W, INK = '#D9574B', '#FFFFFF', '#262624'
+TAN, VM, BM = '#C9A982', '#B3A2F5', '#A9C3F8'
 
 def spark(x, y, c, k=1):
     return (f'<path d="M{x} {y-9*k}l{2.4*k} {6.6*k} {6.6*k} {2.4*k} {-6.6*k} {2.4*k} {-2.4*k} {6.6*k} '
@@ -82,7 +83,7 @@ def pencil(cx, cy, rot=35):
 def arrowhead(x, y, rot, c, k=1):
     return f'<path d="M{-8*k} {-7*k} L{8*k} 0 L{-8*k} {7*k}z" transform="translate({x} {y}) rotate({rot})" fill="{c}"/>'
 
-def ring3(cx=171, cy=100, r=62, trig=None, beh=None, res=None, ringc='#A9C3F8', arr=BS):
+def ring3(cx=171, cy=100, r=62, trig=None, beh=None, res=None, ringc=BM, arr=BS):
     pts = [(cx, cy-r), (cx+r*math.cos(math.radians(30)), cy+r*0.5), (cx-r*math.cos(math.radians(30)), cy+r*0.5)]
     out = f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{ringc}" stroke-width="10"/>'
     for ang, rot in [(-30, 60), (90, 180), (210, -60)]:
@@ -93,7 +94,6 @@ def ring3(cx=171, cy=100, r=62, trig=None, beh=None, res=None, ringc='#A9C3F8', 
     out += (res if res is not None else f'<circle cx="{rx:.1f}" cy="{ry}" r="26" fill="{G}"/>' + star(rx, ry, 13, W))
     return out
 
-TAN, VM, BM = '#C9A982', '#B3A2F5', '#A9C3F8'
 
 
 def mag(cx, cy, r, c=GD, fill=W):
@@ -173,7 +173,7 @@ def tool_tile(index, x, y, s):
     inner = [
         (BL, mag(x + c - 4 * k, y + c - 4 * k, s * 0.2, B)),
         ('#CDEBD9', wave(x + 10 * k, y + c, s - 20 * k, 8 * k, GD, 5 * k, 1)),
-        ('#F7DDB5', lines(x + 12 * k, y + 16 * k, [s * 0.57, s * 0.43, s * 0.29], c='#B86E12', gap=10 * k, h=5 * k)),
+        (AM, lines(x + 12 * k, y + 16 * k, [s * 0.57, s * 0.43, s * 0.29], c=AD, gap=10 * k, h=5 * k)),
         ('#F6CFCB', heart(x + c, y + c + 1, 0.62 * k, R)),
     ][index]
     return tile(x, y, s, inner[0], inner[1])
@@ -199,7 +199,7 @@ def breath(cx, cy, r, c=G):
 
 
 def rings(cx, cy, r):
-    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{VT}"/><circle cx="{cx}" cy="{cy}" r="{r*0.72:.1f}" fill="#D9CFF8"/>'
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{VT}"/><circle cx="{cx}" cy="{cy}" r="{r*0.72:.1f}" fill="{VL}"/>'
             f'<circle cx="{cx}" cy="{cy}" r="{r*0.44:.1f}" fill="{V}"/><circle cx="{cx+r*0.78:.1f}" cy="{cy-r*0.6:.1f}" r="{r*0.15:.1f}" fill="{A}"/>'
             f'<circle cx="{cx-r*0.74:.1f}" cy="{cy+r*0.62:.1f}" r="{r*0.11:.1f}" fill="{G}"/>')
 
@@ -216,19 +216,19 @@ def flag(x, base, h, c=G):
 ART = {}
 
 # Day 1 · Welcome
-ART['day1.hook'] = (VT, '<rect x="96" y="128" width="150" height="40" rx="20" fill="#FFFFFF"/><rect x="96" y="150" width="150" height="22" rx="8" fill="#D9CFF8"/>'
+ART['day1.hook'] = (VT, f'<rect x="96" y="128" width="150" height="40" rx="20" fill="{W}"/><rect x="96" y="150" width="150" height="22" rx="8" fill="{VL}"/>'
     + refresh(171, 76, 30, V, 9)
     + moon(262, 52, 22, A, VT) + clock(82, 62, 24, V, W, (0, -0.55), (-0.45, -0.2)) + spark(282, 132, G, 0.7) + spark(60, 140, A, 0.7))
 ART['day1.idea1'] = (BT, phone(196, 34, 66, 132, V)
     + f'<rect x="210" y="58" width="38" height="20" rx="5" fill="{BS}"/><rect x="210" y="84" width="38" height="20" rx="5" fill="{A}"/><rect x="210" y="110" width="38" height="20" rx="5" fill="{G}"/>'
-    + '<path d="M70 150 Q90 60 180 92" fill="none" stroke="#A9C3F8" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 16"/>'
+    + f'<path d="M70 150 Q90 60 180 92" fill="none" stroke="{BM}" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 16"/>'
     + arrowhead(184, 94, 18, BS) + f'<circle cx="66" cy="156" r="20" fill="{V}"/>' + spark(290, 50, A, 0.8) + spark(110, 40, G, 0.6))
 ART['day1.idea2'] = (BT, ring3(beh='') + gear(171, 100, 22, B, BT))
-ART['day1.idea3'] = (GT, '<circle cx="150" cy="104" r="58" fill="none" stroke="#A9C3F8" stroke-width="10" stroke-dasharray="26 18" stroke-linecap="round"/>'
+ART['day1.idea3'] = (GT, f'<circle cx="150" cy="104" r="58" fill="none" stroke="{BM}" stroke-width="10" stroke-dasharray="26 18" stroke-linecap="round"/>'
     + f'<path d="M232 170 V96" stroke="{GD}" stroke-width="7" stroke-linecap="round"/>'
     + f'<path d="M232 120 C206 118 198 96 202 84 C222 86 232 102 232 120z" fill="{G}"/><path d="M232 104 C254 100 264 78 260 66 C240 70 230 86 232 104z" fill="{G}"/>'
-    + f'<rect x="206" y="166" width="52" height="14" rx="7" fill="#C9A982"/>' + spark(286, 120, A, 0.8) + spark(84, 44, V, 0.7))
-ART['day1.example'] = (VT, '<rect x="70" y="40" width="150" height="104" rx="14" fill="#FFFFFF"/>' + envelope(104, 66, 82, 54)
+    + f'<rect x="206" y="166" width="52" height="14" rx="7" fill="{TAN}"/>' + spark(286, 120, A, 0.8) + spark(84, 44, V, 0.7))
+ART['day1.example'] = (VT, f'<rect x="70" y="40" width="150" height="104" rx="14" fill="{W}"/>' + envelope(104, 66, 82, 54)
     + f'<circle cx="214" cy="48" r="14" fill="{R}"/>' + moon(276, 52, 22, A, VT)
     + f'<path d="M234 122 l12 -14 12 14 12 -14 12 14" fill="none" stroke="{A}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'
     + spark(282, 160, V, 0.7))
@@ -242,7 +242,7 @@ ART['day1.task'] = (BT, f'<path d="M180 128L214 162" stroke="{B}" stroke-width="
 ART['day2.hook'] = (VT, phone(131, 22, 80, 156, V)
     + f'<rect x="143" y="42" width="56" height="28" rx="6" fill="{A}"/><rect x="143" y="76" width="56" height="28" rx="6" fill="{BS}"/><rect x="143" y="110" width="56" height="28" rx="6" fill="{G}"/><rect x="143" y="144" width="56" height="16" rx="6" fill="{VL}"/>'
     + clock(246, 56, 18, V) + f'<text x="90" y="80" font-size="40" font-weight="800" fill="{V}" font-family="Figtree, sans-serif">?</text>'
-    + '<path d="M104 104v40m-8-8l8 8 8-8" fill="none" stroke="#B3A2F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'
+    + f'<path d="M104 104v40m-8-8l8 8 8-8" fill="none" stroke="{VM}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'
     + spark(262, 142, A) + spark(282, 112, G, 0.7) + spark(80, 150, BS, 0.7))
 ART['day2.idea1'] = (BT, ring3() + spark(272, 46, A) + spark(66, 70, G, 0.7))
 ART['day2.idea2'] = (AT, refresh(150, 108, 50, A, 12)
@@ -274,41 +274,41 @@ ART['day3.hook'] = (BT, envelope(70, 52, 130, 90) + f'<circle cx="196" cy="56" r
     + lines(226, 98, [32, 22], c=BL, gap=14) + spark(290, 46, A, 0.8) + spark(60, 166, G, 0.6))
 ART['day3.idea1'] = (AT, f'<circle cx="104" cy="100" r="54" fill="{W}"/>'
     + f'<path d="M72 100 q8 -16 16 0 t16 0 t16 0 t16 0" fill="none" stroke="{A}" stroke-width="7" stroke-linecap="round"/>'
-    + f'<path d="M162 100h28" stroke="#C9A982" stroke-width="6" stroke-linecap="round"/>' + arrowhead(196, 100, 0, '#C9A982')
+    + f'<path d="M162 100h28" stroke="{TAN}" stroke-width="6" stroke-linecap="round"/>' + arrowhead(196, 100, 0, TAN)
     + f'<circle cx="252" cy="100" r="54" fill="{V}"/>'
     + refresh(252, 100, 26, W, 7) + spark(296, 40, G, 0.7) + spark(56, 40, V, 0.6))
-ART['day3.idea2'] = (VT, ring3(beh=cloud(224.7, 131, 0.95, V) + '<path d="M216 132 a8 8 0 1 1 9 8" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/>', ringc=VL, arr=V)
+ART['day3.idea2'] = (VT, ring3(beh=cloud(224.7, 131, 0.95, V) + f'<path d="M216 132 a8 8 0 1 1 9 8" fill="none" stroke="{W}" stroke-width="3.5" stroke-linecap="round"/>', ringc=VL, arr=V)
     + spark(276, 50, A, 0.8) + spark(66, 160, G, 0.6))
 ART['day3.idea3'] = (GT, '<path d="M120 26 L60 176 L180 176z" fill="#FFF4C8" fill-opacity="0.9"/>' + f'<circle cx="120" cy="138" r="30" fill="{V}"/>' + dots3(120, 138)
     + f'<path d="M180 138 H222 M222 138 L258 102 M222 138 L258 174" fill="none" stroke="{G}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'
     + arrowhead(262, 98, -45, G) + arrowhead(262, 178, 45, G) + f'<circle cx="120" cy="26" r="12" fill="{A}"/>' + spark(296, 52, A, 0.7))
 ART['day3.example'] = (BT, phone(128, 18, 86, 166, V)
     + f'<rect x="142" y="42" width="48" height="20" rx="10" fill="{BL}"/><rect x="152" y="70" width="48" height="20" rx="10" fill="{BS}"/><rect x="142" y="98" width="40" height="20" rx="10" fill="{BL}"/><rect x="142" y="126" width="52" height="20" rx="10" fill="{BL}"/>'
-    + '<path d="M246 140 V60" stroke="#A9C3F8" stroke-width="7" stroke-linecap="round"/>' + arrowhead(246, 56, -90, BS)
+    + f'<path d="M246 140 V60" stroke="{BM}" stroke-width="7" stroke-linecap="round"/>' + arrowhead(246, 56, -90, BS)
     + f'<circle cx="92" cy="70" r="22" fill="{A}"/><text x="92" y="79" text-anchor="middle" font-size="26" font-weight="800" fill="{W}" font-family="Figtree, sans-serif">?</text>'
     + spark(290, 150, G, 0.7))
 ART['day3.try'] = (AT, ''.join(f'<rect x="{x}" y="78" width="80" height="44" rx="22" fill="{c}"/>' for x, c in [(44, V), (131, A), (218, G)])
-    + '<path d="M96 92 A10 10 0 1 0 98 108" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>' + arrowhead(95, 90, -150, W, 0.55)
+    + f'<path d="M96 92 A10 10 0 1 0 98 108" fill="none" stroke="{W}" stroke-width="4" stroke-linecap="round"/>' + arrowhead(95, 90, -150, W, 0.55)
     + lines(156, 90, [30, 22], c=W, gap=12, h=5)
     + f'<path d="M244 100l7 7 13-14" fill="none" stroke="{W}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>'
-    + f'<text x="171" y="58" text-anchor="middle" font-size="34" font-weight="800" fill="#C9A982" font-family="Figtree, sans-serif">?</text>'
+    + f'<text x="171" y="58" text-anchor="middle" font-size="34" font-weight="800" fill="{TAN}" font-family="Figtree, sans-serif">?</text>'
     + spark(64, 50, B, 0.7) + spark(282, 156, V, 0.7))
 ART['day3.task'] = (BT, notebook() + cloud(244, 52, 0.9, V) + pencil(240, 130) + spark(84, 60, A, 0.8) + spark(84, 150, G, 0.6))
 
 # Day 4 · Finding your triggers
 ART['day4.hook'] = (AT, f'<rect x="64" y="40" width="112" height="116" rx="14" fill="{W}"/><rect x="64" y="40" width="112" height="28" rx="14" fill="{R}"/><rect x="64" y="56" width="112" height="12" fill="{R}"/>'
     + ''.join(f'<circle cx="{84+(i%4)*24}" cy="{88+(i//4)*24}" r="6" fill="{BL if i != 6 else V}"/>' for i in range(12))
-    + f'<path d="M206 150 A50 50 0 0 1 306 150z" fill="{A}"/><rect x="196" y="150" width="120" height="8" rx="4" fill="#C9A982"/>'
+    + f'<path d="M206 150 A50 50 0 0 1 306 150z" fill="{A}"/><rect x="196" y="150" width="120" height="8" rx="4" fill="{TAN}"/>'
     + f'<path d="M256 60 V96" stroke="{V}" stroke-width="7" stroke-linecap="round"/>' + arrowhead(256, 100, 90, V) + spark(300, 54, V, 0.6))
 ART['day4.idea1'] = (BT, pin(70, 70, 1.1, V) + clock(170, 56, 22, A) + bell(272, 64, 0.95, G)
     + person(88, 150, 1.2, BS) + cloud(176, 146, 0.9, V) + f'<path d="M262 164 C236 148 240 128 252 128 C258 128 262 133 262 137 C262 133 266 128 272 128 C284 128 288 148 262 164z" fill="{R}"/>' + spark(122, 104, A, 0.6) + spark(226, 104, G, 0.6))
 ART['day4.idea2'] = (GT, f'<path d="M210 124l42 42" stroke="{GD}" stroke-width="14" stroke-linecap="round"/><circle cx="170" cy="86" r="58" fill="{W}" fill-opacity="0.85" stroke="{GD}" stroke-width="10"/>'
     + bolt(170, 86, A, 1.6) + f'<circle cx="80" cy="156" r="5" fill="{A}"/><circle cx="276" cy="52" r="4" fill="{V}"/><circle cx="64" cy="64" r="3.5" fill="{BS}"/>'
     + spark(292, 150, A, 0.6))
-ART['day4.idea3'] = (VT, f'<path d="M110 100 Q171 36 232 100 Q171 164 110 100z" fill="{W}"/><circle cx="171" cy="100" r="26" fill="{V}"/><circle cx="171" cy="100" r="11" fill="#262624"/><circle cx="178" cy="93" r="5" fill="{W}"/>'
+ART['day4.idea3'] = (VT, f'<path d="M110 100 Q171 36 232 100 Q171 164 110 100z" fill="{W}"/><circle cx="171" cy="100" r="26" fill="{V}"/><circle cx="171" cy="100" r="11" fill="{INK}"/><circle cx="178" cy="93" r="5" fill="{W}"/>'
     + f'<path d="M40 100 H84" stroke="{A}" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 12"/>' + bolt(40, 100, A, 1.2)
     + spark(272, 52, G, 0.8) + spark(282, 150, A, 0.6))
-ART['day4.example'] = (VT, '<path d="M70 150 C110 60 170 170 200 96 S270 40 284 70" fill="none" stroke="#B3A2F5" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 13"/>'
+ART['day4.example'] = (VT, f'<path d="M70 150 C110 60 170 170 200 96 S270 40 284 70" fill="none" stroke="{VM}" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 13"/>'
     + pin(70, 118, 1.1, A) + f'<rect x="56" y="150" width="28" height="18" rx="4" fill="{W}"/><rect x="56" y="155" width="28" height="4" fill="{A}"/>'
     + pin(200, 64, 1.1, BS) + f'<rect x="186" y="98" width="28" height="34" rx="3" fill="{W}"/>' + lines(192, 104, [6, 6, 6], c=BL, gap=9, h=5)
     + pin(284, 38, 1.1, V) + moon(300, 130, 16, A, VT) + f'<rect x="258" y="150" width="52" height="16" rx="8" fill="{W}"/>')
@@ -323,14 +323,14 @@ ART['day5.hook'] = (VT, f'<g transform="translate(104 86) rotate(-20)"><rect x="
     + f'<path d="M-6 -6 L-26 -40 H-12 L14 -6z M-6 6 L-26 40 H-12 L14 6z M-50 -4 L-58 -22 H-48 L-38 -4z" fill="{B}"/></g>'
     + f'<rect x="196" y="50" width="92" height="118" rx="12" fill="{W}"/>' + ''.join(check(214, 76+i*26, 8, A if i < 3 else BL) for i in range(4))
     + lines(230, 72, [42, 36, 46, 30], c=VL, gap=26) + moon(74, 156, 18, A, VT) + spark(160, 150, G, 0.7))
-ART['day5.idea1'] = (VT, f'<rect x="112" y="80" width="118" height="88" rx="10" fill="{V}"/><rect x="104" y="60" width="134" height="30" rx="8" fill="#8A73EE"/>'
+ART['day5.idea1'] = (VT, f'<rect x="112" y="80" width="118" height="88" rx="10" fill="{V}"/><rect x="104" y="60" width="134" height="30" rx="8" fill="{VS}"/>'
     + f'<rect x="162" y="60" width="18" height="108" fill="{A}"/>'
     + f'<path d="M171 60 C150 30 128 40 140 58z M171 60 C192 30 214 40 202 58z" fill="{A}"/>'
     + f'<text x="171" y="138" text-anchor="middle" font-size="40" font-weight="800" fill="{W}" font-family="Figtree, sans-serif">?</text>'
     + spark(272, 60, A, 0.9) + spark(80, 70, G, 0.7) + spark(270, 150, BS, 0.6))
-ART['day5.idea2'] = (AT, f'<path d="M238 136 L252 70" stroke="#C9A982" stroke-width="9" stroke-linecap="round"/><rect x="226" y="52" width="58" height="24" rx="8" fill="#C9A982"/><rect x="236" y="59" width="26" height="10" rx="3" fill="{W}"/>'
-    + f'<rect x="70" y="132" width="190" height="26" rx="13" fill="{V}"/>' + ''.join(f'<rect x="{x}" y="138" width="6" height="14" rx="3" fill="#8A73EE"/>' for x in range(94, 246, 20))
-    + f'<circle cx="83" cy="145" r="7" fill="{W}"/><circle cx="247" cy="145" r="7" fill="{W}"/><rect x="74" y="158" width="18" height="16" rx="4" fill="#C9A982"/><rect x="238" y="158" width="18" height="16" rx="4" fill="#C9A982"/>'
+ART['day5.idea2'] = (AT, f'<path d="M238 136 L252 70" stroke="{TAN}" stroke-width="9" stroke-linecap="round"/><rect x="226" y="52" width="58" height="24" rx="8" fill="{TAN}"/><rect x="236" y="59" width="26" height="10" rx="3" fill="{W}"/>'
+    + f'<rect x="70" y="132" width="190" height="26" rx="13" fill="{V}"/>' + ''.join(f'<rect x="{x}" y="138" width="6" height="14" rx="3" fill="{VS}"/>' for x in range(94, 246, 20))
+    + f'<circle cx="83" cy="145" r="7" fill="{W}"/><circle cx="247" cy="145" r="7" fill="{W}"/><rect x="74" y="158" width="18" height="16" rx="4" fill="{TAN}"/><rect x="238" y="158" width="18" height="16" rx="4" fill="{TAN}"/>'
     + refresh(165, 84, 30, A, 9)
     + f'<path d="M40 120 H64 M30 140 H58 M44 160 H64" stroke="{A}" stroke-width="5" stroke-linecap="round"/>' + spark(290, 40, G, 0.7) + spark(292, 150, V, 0.6))
 ART['day5.idea3'] = (BT, ''.join(f'<g transform="translate({x} {y}) rotate({r})"><path d="M-44 -26 H30 L48 0 L30 26 H-44z" fill="{c}"/><circle cx="30" cy="0" r="5" fill="{BT}"/></g>'
@@ -339,9 +339,9 @@ ART['day5.idea3'] = (BT, ''.join(f'<g transform="translate({x} {y}) rotate({r})"
     + f'<path d="M208 62l6 6 12-12" fill="none" stroke="{W}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>'
     + f'<path d="M126 146 a16 14 0 0 1 32 0z M142 146 v12 q0 5 5 5" fill="{W}" stroke="{W}" stroke-width="3" stroke-linecap="round"/>' + spark(296, 140, V, 0.6))
 ART['day5.example'] = (VT, f'<rect x="56" y="32" width="92" height="120" rx="12" fill="{W}"/>' + lines(70, 54, [62, 50, 58, 40], c=VL, gap=20) + check(140, 140, 20)
-    + ''.join(moon(186+i*24, 96, 9, '#B3A2F5', VT) for i in range(6)) + f'<rect x="174" y="118" width="144" height="6" rx="3" fill="{VL}"/>'
+    + ''.join(moon(186+i*24, 96, 9, VM, VT) for i in range(6)) + f'<rect x="174" y="118" width="144" height="6" rx="3" fill="{VL}"/>'
     + spark(290, 48, A, 0.7))
-ART['day5.try'] = (AT, f'<rect x="44" y="60" width="150" height="70" rx="26" fill="{W}"/><path d="M76 126 l-8 20 24-16z" fill="{W}"/>' + dots3(119, 95, '#C9A982', 18, 6)
+ART['day5.try'] = (AT, f'<rect x="44" y="60" width="150" height="70" rx="26" fill="{W}"/><path d="M76 126 l-8 20 24-16z" fill="{W}"/>' + dots3(119, 95, TAN, 18, 6)
     + f'<path d="M206 95 H232" stroke="{V}" stroke-width="6" stroke-linecap="round"/>' + arrowhead(238, 95, 0, V)
     + f'<rect x="250" y="66" width="58" height="58" rx="12" fill="{V}"/><text x="279" y="108" text-anchor="middle" font-size="34" font-weight="800" fill="{W}" font-family="Figtree, sans-serif">?</text>'
     + spark(290, 154, G, 0.7) + spark(70, 40, V, 0.6))
@@ -392,7 +392,7 @@ ART['day6.idea2'] = (BT, f'<path d="M50 168 H292" stroke="{BM}" stroke-width="4"
     + arrowhead(296, 168, 0, BM) + spark(90, 110, G, 0.8) + spark(280, 46, A, 0.7))
 ART['day6.idea3'] = (GT, f'<path d="M48 100 H294" stroke="{GD}" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 12"/>'
     + f'<circle cx="70" cy="100" r="16" fill="{G}"/><circle cx="170" cy="100" r="16" fill="{A}"/><circle cx="262" cy="100" r="16" fill="{R}"/>'
-    + clock(70, 50, 14, GD) + clock(170, 50, 14, '#B86E12') + mag(262, 100, 34) + spark(120, 156, A, 0.7))
+    + clock(70, 50, 14, GD) + clock(170, 50, 14, AD) + mag(262, 100, 34) + spark(120, 156, A, 0.7))
 ART['day6.example'] = (VT, f'<rect x="72" y="40" width="130" height="120" rx="14" fill="{W}"/>'
     + ''.join(f'<path d="M{x} {y} l0 22" stroke="{VM}" stroke-width="2"/><circle cx="{x}" cy="{y}" r="12" fill="{c}"/>' for x, y, c in [(110, 74, A), (137, 64, BS), (164, 76, G)])
     + lines(96, 116, [82, 60], c=VL, gap=16) + f'<circle cx="200" cy="44" r="14" fill="{R}"/>'
@@ -412,7 +412,7 @@ ART['day7.idea1'] = (BT, ''.join(f'<circle cx="{70+(i%9)*25}" cy="{48+(i//9)*26}
 ART['day7.idea2'] = (VT, f'<path d="M60 170 H290" stroke="{VM}" stroke-width="4" stroke-linecap="round"/>' + bars(74, 166, [40, 120, 52, 30, 64], [VL, V, VL, VL, VL], w=30, gap=16)
     + star(121, 30, 13, A) + spark(280, 50, G, 0.7))
 ART['day7.idea3'] = (AT, ''.join(f'<circle cx="{x}" cy="{y}" r="8" fill="{c}"/>' for x, y, c in [(80, 60, V), (110, 130, G), (150, 90, BS), (210, 150, V), (270, 60, G)])
-    + mag(176, 92, 40, '#B86E12') + heart(176, 94, 0.7, R) + spark(286, 140, V, 0.7))
+    + mag(176, 92, 40, AD) + heart(176, 94, 0.7, R) + spark(286, 140, V, 0.7))
 ART['day7.example'] = (VT, f'<circle cx="150" cy="100" r="66" fill="{W}"/><path d="M150 100 L{150+58*math.cos(math.radians(-90+270)):.1f} {100+58*math.sin(math.radians(-90+270)):.1f} A58 58 0 0 1 {150+58*math.cos(math.radians(-90+330)):.1f} {100+58*math.sin(math.radians(-90+330)):.1f}z" fill="{V}"/>'
     + f'<circle cx="150" cy="100" r="66" fill="none" stroke="{VM}" stroke-width="6"/><circle cx="150" cy="100" r="6" fill="{INK}"/>'
     + moon(266, 64, 26, A, VT) + spark(266, 150, G, 0.8))
@@ -448,7 +448,7 @@ ART['day9.idea2'] = (BT, f'<path d="M40 110 H300" stroke="{BM}" stroke-width="6"
     + f'<circle cx="76" cy="110" r="24" fill="{A}"/>' + bolt(76, 110) + f'<rect x="112" y="84" width="110" height="52" rx="14" fill="{W}" fill-opacity="0.9"/>'
     + f'<path d="M124 110 h86" stroke="{G}" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round"/>'
     + f'<circle cx="262" cy="110" r="24" fill="{V}"/>' + dots3(262, 110) + spark(167, 52, G, 0.8))
-ART['day9.idea3'] = (AT, f'<rect x="96" y="30" width="86" height="150" rx="8" fill="{W}"/><rect x="104" y="40" width="70" height="132" rx="4" fill="#F7DDB5"/><circle cx="162" cy="108" r="6" fill="{TAN}"/>'
+ART['day9.idea3'] = (AT, f'<rect x="96" y="30" width="86" height="150" rx="8" fill="{W}"/><rect x="104" y="40" width="70" height="132" rx="4" fill="{AM}"/><circle cx="162" cy="108" r="6" fill="{TAN}"/>'
     + f'<path d="M206 76 q14 24 0 48 M224 64 q22 36 0 72 M242 52 q30 48 0 96" fill="none" stroke="{V}" stroke-width="6" stroke-linecap="round"/>' + spark(70, 50, G, 0.7))
 ART['day9.example'] = (AT, f'<path d="M84 96 h80 v44 a28 28 0 0 1 -28 28 h-24 a28 28 0 0 1 -28 -28z" fill="{W}"/><path d="M164 108 a16 16 0 1 1 0 28" fill="none" stroke="{W}" stroke-width="8"/>'
     + f'<path d="M104 84 q-8 -14 0 -26 M124 84 q-8 -14 0 -26 M144 84 q-8 -14 0 -26" fill="none" stroke="{TAN}" stroke-width="4" stroke-linecap="round"/>'
@@ -461,8 +461,8 @@ ART['day9.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="24" fill="{A}
 # Day 10 · Stage 1 review
 ART['day10.hook'] = (VT, ring3(ringc=VL, arr=V) + check(206, 26, 11) + check(262, 148, 11) + check(80, 148, 11))
 ART['day10.idea1'] = (AT, f'<path d="M150 120 L132 176 L150 166 L168 176z M192 120 L210 176 L192 166 L174 176z" fill="{R}"/>'
-    + f'<circle cx="171" cy="90" r="50" fill="{A}"/><circle cx="171" cy="90" r="38" fill="#F7DDB5"/>' + star(171, 90, 24, A) + spark(260, 50, V, 0.8) + spark(80, 140, G, 0.7))
-ART['day10.idea2'] = (GT, '<path d="M150 46 A54 54 0 1 1 96 100" fill="none" stroke="#2E8A5C" stroke-width="10" stroke-linecap="round" stroke-dasharray="40 14 20 14 8 14"/>'
+    + f'<circle cx="171" cy="90" r="50" fill="{A}"/><circle cx="171" cy="90" r="38" fill="{AM}"/>' + star(171, 90, 24, A) + spark(260, 50, V, 0.8) + spark(80, 140, G, 0.7))
+ART['day10.idea2'] = (GT, f'<path d="M150 46 A54 54 0 1 1 96 100" fill="none" stroke="{GD}" stroke-width="10" stroke-linecap="round" stroke-dasharray="40 14 20 14 8 14"/>'
     + f'<circle cx="150" cy="100" r="22" fill="{V}"/>' + dots3(150, 100, gap=9) + plant(262, 168, 70) + spark(286, 46, A, 0.7))
 ART['day10.idea3'] = (BT, ''.join(f'<rect x="{60+i*72}" y="{140-i*36}" width="76" height="{40+i*36}" rx="6" fill="{c}"/>' for i, c in enumerate([BL, BS, B]))
     + check(98, 120, 13) + flag(250, 70, 50, A) + spark(80, 50, V, 0.7))
@@ -492,27 +492,27 @@ ART['day11.example'] = (VT, phone(70, 20, 92, 168, V)
     + f'<path d="M188 160 q10 -6 20 0 q10 6 20 -12 q10 -18 20 -4 q12 14 24 -40 q8 -34 22 -52" fill="none" stroke="{A}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'
     + arrowhead(294, 52, -62, R, 1.2)
     + spark(198, 54, V, 0.8) + spark(48, 160, G, 0.6))
-ART['day11.try'] = (AT, heart(140, 100, 2.2, R) + wave(220, 76, 70, 10, '#B86E12', 5, 1) + wave(220, 104, 70, 10, '#B86E12', 5, 1) + wave(220, 132, 70, 10, '#B86E12', 5, 1)
+ART['day11.try'] = (AT, heart(140, 100, 2.2, R) + wave(220, 76, 70, 10, AD, 5, 1) + wave(220, 104, 70, 10, AD, 5, 1) + wave(220, 132, 70, 10, AD, 5, 1)
     + spark(84, 50, V, 0.7))
 ART['day11.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="26" fill="{W}"/><path d="M226 50 h36 M244 40 v34 M232 50 l-6 12 h12z M256 50 l-6 12 h12z" fill="{A}" stroke="{A}" stroke-width="3" stroke-linejoin="round"/>'
     + pencil(240, 134) + spark(84, 60, V, 0.8))
 
 # Day 12 · Worry is a habit, not a fact
-ART['day12.hook'] = (VT, f'<rect x="70" y="40" width="80" height="140" rx="8" fill="{W}"/><rect x="78" y="50" width="64" height="122" rx="4" fill="#D9CFF8"/><circle cx="130" cy="114" r="5" fill="{V}"/>'
-    + cloud(236, 76, 1.6, '#8A73EE') + f'<path d="M240 92 l-14 22 h14 l-8 20 22 -28 h-14 l8 -14z" fill="{A}"/>' + clock(196, 150, 18, V) + spark(296, 150, G, 0.6))
-ART['day12.idea1'] = (AT, f'<path d="M90 82 L190 46 V154 L90 118z" fill="{V}"/><rect x="66" y="80" width="30" height="40" rx="8" fill="#8A73EE"/>'
+ART['day12.hook'] = (VT, f'<rect x="70" y="40" width="80" height="140" rx="8" fill="{W}"/><rect x="78" y="50" width="64" height="122" rx="4" fill="{VL}"/><circle cx="130" cy="114" r="5" fill="{V}"/>'
+    + cloud(236, 76, 1.6, VS) + f'<path d="M240 92 l-14 22 h14 l-8 20 22 -28 h-14 l8 -14z" fill="{A}"/>' + clock(196, 150, 18, V) + spark(296, 150, G, 0.6))
+ART['day12.idea1'] = (AT, f'<path d="M90 82 L190 46 V154 L90 118z" fill="{V}"/><rect x="66" y="80" width="30" height="40" rx="8" fill="{VS}"/>'
     + outline(f'<text x="246" y="124" text-anchor="middle" font-size="60" font-weight="800" fill="{R}">!</text>') + spark(290, 46, G, 0.7))
-ART['day12.idea2'] = (BT, refresh(171, 100, 64, BS, 10) + cloud(171, 106, 1.2, '#8A73EE')
+ART['day12.idea2'] = (BT, refresh(171, 100, 64, BS, 10) + cloud(171, 106, 1.2, VS)
     + wave(146, 150, 50, 6, R, 5, 2))
 ART['day12.idea3'] = (GT, cloud(150, 86, 1.9, W) + f'<path d="M196 116 L230 140" stroke="{TAN}" stroke-width="3"/>'
     + f'<g transform="translate(250 150) rotate(20)"><path d="M-30 -16 H18 L32 0 L18 16 H-30z" fill="{G}"/><circle cx="18" cy="0" r="4" fill="{GT}"/></g>' + spark(70, 160, A, 0.7))
 ART['day12.example'] = (VT, f'<rect x="96" y="26" width="120" height="152" rx="12" fill="{W}"/>' + lines(114, 50, [84, 70, 84, 60, 80, 52], c=VL, gap=18)
     + moon(256, 52, 18, V, VT) + wave(226, 150, 60, 8, R, 5, 2))
-ART['day12.try'] = (AT, f'<rect x="50" y="50" width="100" height="100" rx="18" fill="{W}"/>' + cloud(100, 96, 0.85, '#8A73EE')
+ART['day12.try'] = (AT, f'<rect x="50" y="50" width="100" height="100" rx="18" fill="{W}"/>' + cloud(100, 96, 0.85, VS)
     + f'<path d="M162 100 H182" stroke="{TAN}" stroke-width="6" stroke-linecap="round"/>' + arrowhead(188, 100, 0, TAN)
     + f'<rect x="196" y="50" width="100" height="100" rx="18" fill="{W}"/>' + wave(212, 92, 68, 14, R, 6, 2)
     + wave(220, 116, 52, 10, R, 6, 2))
-ART['day12.task'] = (BT, notebook() + cloud(244, 60, 0.8, '#8A73EE')
+ART['day12.task'] = (BT, notebook() + cloud(244, 60, 0.8, VS)
     + pencil(240, 134) + spark(84, 60, V, 0.8))
 
 # Day 13 · Feel it in your body
@@ -527,7 +527,7 @@ ART['day13.idea3'] = (GT, person(171, 128, 3.2, '#7FD4A6') + f'<rect x="96" y="9
     + arrowhead(171, 112, 90, GD) + spark(70, 50, A, 0.7) + spark(280, 160, V, 0.6))
 ART['day13.example'] = (VT, ''.join(phone(60+i*14, 40+i*8, 56, 104, c) for i, c in enumerate([VL, VM, V]))
     + heart(234, 104, 2.0, R) + f'<rect x="188" y="96" width="92" height="12" rx="6" fill="{V}"/>' + spark(290, 40, A, 0.7))
-ART['day13.try'] = (AT, person(171, 128, 3.2, '#F7DDB5') + ''.join(f'<circle cx="171" cy="{y}" r="7" fill="{c}"/>' for y, c in [(64, V), (88, V), (118, A), (142, R), (166, G)])
+ART['day13.try'] = (AT, person(171, 128, 3.2, AM) + ''.join(f'<circle cx="171" cy="{y}" r="7" fill="{c}"/>' for y, c in [(64, V), (88, V), (118, A), (142, R), (166, G)])
     + spark(80, 50, V, 0.7) + spark(270, 160, G, 0.6))
 ART['day13.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="26" fill="{W}"/>' + person(244, 62, 0.95, BS) + pin(258, 34, 0.55, R) + pencil(240, 134) + spark(84, 60, A, 0.8))
 
@@ -550,14 +550,14 @@ ART['day15.hook'] = (BT, f'<rect x="56" y="40" width="130" height="120" rx="10" 
     + ''.join(f'<path d="M{216+i*12} 70 v46" stroke="{V}" stroke-width="5" stroke-linecap="round"/>' for i in range(4)) + f'<path d="M210 104 L262 80" stroke="{V}" stroke-width="5" stroke-linecap="round"/>'
     + ''.join(f'<path d="M{272+i*12} 70 v46" stroke="{V}" stroke-width="5" stroke-linecap="round"/>' for i in range(2)) + spark(250, 156, A, 0.7))
 ART['day15.idea1'] = (VT, ''.join(star(70+i*66, 96, 30-i*6, A) for i in range(4)) + f'<path d="M56 154 H290" stroke="{VM}" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 12"/>' + spark(296, 46, G, 0.6))
-ART['day15.idea2'] = (AT, f'<path d="M60 170 H290" stroke="{TAN}" stroke-width="4" stroke-linecap="round"/>' + bars(78, 166, [50, 128, 70, 40], ['#F7DDB5', A, '#F7DDB5', '#F7DDB5'], w=34, gap=22)
+ART['day15.idea2'] = (AT, f'<path d="M60 170 H290" stroke="{TAN}" stroke-width="4" stroke-linecap="round"/>' + bars(78, 166, [50, 128, 70, 40], [AM, A, AM, AM], w=34, gap=22)
     + pin(151, 18, 0.8, V) + spark(286, 60, G, 0.7))
 ART['day15.idea3'] = (GT, f'<rect x="40" y="166" width="262" height="10" rx="5" fill="{TAN}"/>' + plant(90, 166, 30) + plant(171, 166, 62) + plant(252, 166, 104) + spark(80, 50, A, 0.7))
 ART['day15.example'] = (BT, f'<rect x="60" y="36" width="150" height="128" rx="12" fill="{W}"/>'
     + ''.join(f'<path d="M60 {68+i*24} H210" stroke="{BL}" stroke-width="3"/>' for i in range(4)) + ''.join(f'<path d="M{110+i*50} 36 V164" stroke="{BL}" stroke-width="3"/>' for i in range(2))
-    + f'<circle cx="252" cy="76" r="26" fill="{A}"/><circle cx="252" cy="76" r="17" fill="none" stroke="#F7DDB5" stroke-width="4"/>'
+    + f'<circle cx="252" cy="76" r="26" fill="{A}"/><circle cx="252" cy="76" r="17" fill="none" stroke="{AM}" stroke-width="4"/>'
     + f'<path d="M232 126 l20 20 20 -26" fill="none" stroke="{G}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>')
-ART['day15.try'] = (AT, ring3(ringc='#F7DDB5', arr=A) + star(171, 100, 18, A) + spark(276, 50, V, 0.7))
+ART['day15.try'] = (AT, ring3(ringc=AM, arr=A) + star(171, 100, 18, A) + spark(276, 50, V, 0.7))
 ART['day15.task'] = (GT, notebook() + f'<circle cx="244" cy="56" r="28" fill="{W}"/>' + eye(244, 56, 0.4, G) + pencil(240, 134) + spark(84, 60, A, 0.8))
 
 # Day 16 · The "just one more" trap
@@ -567,11 +567,11 @@ ART['day16.hook'] = (BT, f'<rect x="70" y="30" width="90" height="150" rx="8" fi
 ART['day16.idea1'] = (VT, f'<rect x="92" y="54" width="92" height="92" rx="20" fill="{W}"/><path d="M114 100 l18 18 32 -36" fill="none" stroke="{G}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'
     + f'<path d="M242 52 l40 14 v30 c0 26 -20 40 -40 48 c-20 -8 -40 -22 -40 -48 v-30z" fill="{V}"/>' + spark(80, 160, A, 0.7))
 ART['day16.idea2'] = (AT, ''.join(f'<path d="M{60+i*76} 100 l14 14 26 -28" fill="none" stroke="{G}" stroke-opacity="{1-i*0.3:.1f}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>' for i in range(3))
-    + clock(286, 100, 22, '#B86E12') + f'<path d="M50 150 H300" stroke="{TAN}" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>')
+    + clock(286, 100, 22, AD) + f'<path d="M50 150 H300" stroke="{TAN}" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round"/>')
 ART['day16.idea3'] = (GT, stopwatch(120, 104, 46, GD, W, 0.15) + f'<rect x="196" y="90" width="100" height="24" rx="12" fill="{W}"/><rect x="196" y="90" width="34" height="24" rx="12" fill="{G}"/>'
     + spark(290, 50, A, 0.7))
 ART['day16.example'] = (BT, envelope(60, 64, 130, 86) + refresh(244, 104, 30, BS) + stopwatch(276, 44, 16, V, W, 0.1) + spark(90, 40, A, 0.7))
-ART['day16.try'] = (AT, stopwatch(171, 106, 56, '#B86E12', W, 0.08) + spark(80, 60, V, 0.8) + spark(270, 150, G, 0.7))
+ART['day16.try'] = (AT, stopwatch(171, 106, 56, AD, W, 0.08) + spark(80, 60, V, 0.8) + spark(270, 150, G, 0.7))
 ART['day16.task'] = (VT, notebook() + f'<circle cx="244" cy="56" r="26" fill="{W}"/>' + refresh(244, 56, 14, V, 5) + pencil(240, 134) + spark(84, 60, A, 0.8))
 
 # Day 17 · Self-judgment loops
@@ -620,7 +620,7 @@ ART['day19.idea3'] = (VT, f'<path d="M171 40 V160 M120 160 h102" stroke="{TAN}" 
 ART['day19.example'] = (GT, f'<rect x="60" y="40" width="110" height="120" rx="12" fill="{W}"/>' + ''.join(f'<circle cx="80" cy="{70+i*36}" r="7" fill="{G}"/><rect x="94" y="{66+i*36}" width="60" height="8" rx="4" fill="#C8E8D5"/>' for i in range(2))
     + f'<rect x="204" y="56" width="70" height="90" rx="20" fill="{V}"/><circle cx="239" cy="86" r="14" fill="{W}"/><rect x="222" y="108" width="34" height="8" rx="4" fill="{W}"/>' + check(272, 50, 14))
 ART['day19.try'] = (AT, f'<rect x="60" y="40" width="80" height="120" rx="8" fill="{W}"/><circle cx="124" cy="104" r="5" fill="{TAN}"/>' + check(100, 70, 16)
-    + refresh(240, 100, 38, '#B86E12') + spark(176, 40, V, 0.7))
+    + refresh(240, 100, 38, AD) + spark(176, 40, V, 0.7))
 ART['day19.task'] = (BT, f'<rect x="58" y="96" width="100" height="70" rx="12" fill="{W}"/><rect x="184" y="96" width="100" height="70" rx="12" fill="{W}"/>' + check(108, 130, 18) + refresh(234, 132, 18, A, 6)
     + f'<g transform="translate(171 52) rotate(-8)"><rect x="-36" y="-22" width="72" height="44" rx="8" fill="{V}"/>' + lines(-24, -8, [48, 34], c=W, gap=14, h=6) + '</g>')
 
@@ -637,7 +637,7 @@ ART['day20.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="26" fill="{W
 # Day 21 · Curiosity beats worry
 ART['day21.hook'] = (BT, f'<path d="M80 60 h40 a14 14 0 1 1 24 0 h40 v40 a14 14 0 1 0 0 24 v40 h-104z" fill="{A}"/>' + mag(236, 96, 36, B) + spark(286, 160, V, 0.7))
 ART['day21.idea1'] = (AT, f'<rect x="60" y="112" width="64" height="52" rx="8" fill="#E8D9C2"/><rect x="54" y="100" width="76" height="18" rx="6" fill="#E8D9C2"/>'
-    + f'<rect x="168" y="82" width="120" height="96" rx="12" fill="{V}"/><rect x="160" y="62" width="136" height="30" rx="10" fill="#8A73EE"/><rect x="218" y="62" width="20" height="116" fill="{A}"/>'
+    + f'<rect x="168" y="82" width="120" height="96" rx="12" fill="{V}"/><rect x="160" y="62" width="136" height="30" rx="10" fill="{VS}"/><rect x="218" y="62" width="20" height="116" fill="{A}"/>'
     + star(228, 132, 0, A) + spark(228, 40, A, 1.0) + spark(296, 60, G, 0.7))
 ART['day21.idea2'] = (VT, f'<circle cx="104" cy="100" r="30" fill="{A}"/>' + ''.join(f'<path d="M{104+40*math.cos(math.radians(a)):.1f} {100+40*math.sin(math.radians(a)):.1f}L{104+56*math.cos(math.radians(a)):.1f} {100+56*math.sin(math.radians(a)):.1f}" stroke="{A}" stroke-width="5" stroke-linecap="round"/>' for a in range(0, 360, 45))
     + f'<path d="M206 100 c0 -48 80 -48 80 0 s-64 48 -64 0 s48 -32 48 0 s-32 22 -32 0" fill="none" stroke="{V}" stroke-width="9" stroke-linecap="round"/>')
@@ -645,7 +645,7 @@ ART['day21.idea3'] = (GT, person(130, 124, 2.8, '#7FD4A6') + f'<circle cx="130" 
 ART['day21.example'] = (VT, f'<rect x="40" y="132" width="262" height="12" rx="6" fill="{TAN}"/>' + person(130, 112, 2.0, V)
     + f'<path d="M122 108 c0 -8 16 -8 16 0 s-12 8 -12 0" fill="none" stroke="{A}" stroke-width="4" stroke-linecap="round"/>'
     + bubble(190, 36, 110, 54, W, 'left') + dots3(245, 63, V, 16, 5) + spark(280, 160, G, 0.6))
-ART['day21.try'] = (AT, bubble(56, 48, 150, 70, W, 'left') + dots3(131, 83, '#C9A982', 22, 7) + mag(246, 104, 32, '#B86E12') + spark(286, 40, V, 0.6))
+ART['day21.try'] = (AT, bubble(56, 48, 150, 70, W, 'left') + dots3(131, 83, TAN, 22, 7) + mag(246, 104, 32, AD) + spark(286, 40, V, 0.6))
 ART['day21.task'] = (BT, rings(171, 100, 70) + spark(286, 50, A, 0.8) + spark(66, 150, G, 0.6))
 
 # Day 22 · Noticing the details
@@ -654,7 +654,7 @@ ART['day22.idea1'] = (VT, ''.join(f'<path d="M171 100 L{171+66*math.cos(math.rad
     for a, c in zip(range(-90, 270, 60), [V, A, G, BS, R, VM])))
 ART['day22.idea2'] = (AT, f'<path d="M40 100 q20 -60 40 0 t40 0 q15 -30 30 0 t30 0 q10 -12 20 0 t20 0 q6 -4 12 0 t12 0" fill="none" stroke="{A}" stroke-width="8" stroke-linecap="round"/>' + spark(290, 50, V, 0.7))
 ART['day22.idea3'] = (GT, pin(171, 72, 1.8, G) + person(171, 166, 1.2, GD) + spark(80, 60, A, 0.7) + spark(270, 150, V, 0.6))
-ART['day22.example'] = (BT, person(110, 124, 2.8, '#C9D9FA') + ''.join(f'<circle cx="{x}" cy="{y}" r="9" fill="{c}"/>' for x, y, c in [(110, 92, V), (110, 132, A), (74, 160, R), (146, 160, R)])
+ART['day22.example'] = (BT, person(110, 124, 2.8, BL) + ''.join(f'<circle cx="{x}" cy="{y}" r="9" fill="{c}"/>' for x, y, c in [(110, 92, V), (110, 132, A), (74, 160, R), (146, 160, R)])
     + f'<g transform="translate(250 70) rotate(-20) scale(0.7)"><rect x="-56" y="-9" width="112" height="18" rx="9" fill="{BS}"/><path d="M-6 -6 L-26 -40 H-12 L14 -6z M-6 6 L-26 40 H-12 L14 6z M-50 -4 L-58 -22 H-48 L-38 -4z" fill="{B}"/></g>')
 ART['day22.try'] = (AT, ''.join(f'<circle cx="171" cy="100" r="{r}" fill="none" stroke="{A}" stroke-opacity="{o}" stroke-width="5"/>' for r, o in [(24, 1), (44, 0.6), (64, 0.3)]) + f'<circle cx="171" cy="100" r="10" fill="{V}"/>')
 ART['day22.task'] = (VT, rings(171, 100, 70) + spark(286, 150, A, 0.8))
@@ -670,7 +670,7 @@ ART['day23.example'] = (VT, f'<rect x="60" y="138" width="150" height="34" rx="1
     + chip(70, 60, 80, V) + chip(140, 96, 86, A) + chip(176, 44, 72, G) + spark(290, 150, A, 0.6))
 ART['day23.try'] = (AT, ''.join(chip(x, y, w, c) for x, y, w, c in [(60, 120, 90, V), (116, 70, 80, A), (200, 34, 86, G)])
     + ''.join(f'<circle cx="{x}" cy="{y}" r="4" fill="{TAN}"/>' for x, y in [(170, 128), (180, 118), (250, 86)]))
-ART['day23.task'] = (BT, f'<circle cx="171" cy="70" r="40" fill="{W}" stroke="#F7DDB5" stroke-width="5"/>' + lines(151, 64, [40, 24], c='#E8D9C2', gap=12, h=6)
+ART['day23.task'] = (BT, f'<circle cx="171" cy="70" r="40" fill="{W}" stroke="{AM}" stroke-width="5"/>' + lines(151, 64, [40, 24], c='#E8D9C2', gap=12, h=6)
     + chip(76, 128, 76, W, BL) + chip(160, 128, 64, W, BL) + chip(232, 128, 40, W, BL) + spark(270, 46, A, 0.7))
 
 # Day 24 · Breath as an anchor
@@ -692,11 +692,11 @@ ART['day24.task'] = (GT, breath(171, 100, 44) + spark(270, 50, A, 0.8) + spark(7
 # Day 25 · Kindness feels good
 ART['day25.hook'] = (VT, bubble(50, 40, 120, 60, W, 'left') + heart(110, 72, 0.8, R)
     + f'<path d="M180 106 l14 -10 14 8 14 -12 14 10 14 -8 14 12 14 -8 v52 h-112z" fill="{VM}"/>' + spark(80, 156, A, 0.6))
-ART['day25.idea1'] = (AT, ring3(beh=f'<circle cx="224.7" cy="131" r="26" fill="{R}"/>' + outline(f'<text x="224.7" y="144" text-anchor="middle" font-size="30" font-weight="800" fill="{W}">!</text>'), ringc='#F7DDB5', arr='#B86E12'))
+ART['day25.idea1'] = (AT, ring3(beh=f'<circle cx="224.7" cy="131" r="26" fill="{R}"/>' + outline(f'<text x="224.7" y="144" text-anchor="middle" font-size="30" font-weight="800" fill="{W}">!</text>'), ringc=AM, arr=AD))
 ART['day25.idea2'] = (GT, heart(171, 100, 3.2, R) + spark(260, 50, A, 1.0) + spark(80, 70, V, 0.8) + spark(250, 156, G, 0.7))
 ART['day25.idea3'] = (BT, heart(171, 100, 2.6, R) + f'<path d="M100 70 q-10 30 0 60 M84 80 q-8 20 0 40 M242 70 q10 30 0 60 M258 80 q8 20 0 40" fill="none" stroke="{BS}" stroke-width="5" stroke-linecap="round"/>'
     + f'<path d="M226 56 q8 12 0 18 q-8 -6 0 -18z" fill="{BS}"/>')
-ART['day25.example'] = (VT, person(171, 128, 3.2, '#D9CFF8') + f'<circle cx="171" cy="120" r="30" fill="{R}" fill-opacity="0.25"/>' + heart(171, 122, 0.9, R) + spark(260, 50, A, 0.8))
+ART['day25.example'] = (VT, person(171, 128, 3.2, VL) + f'<circle cx="171" cy="120" r="30" fill="{R}" fill-opacity="0.25"/>' + heart(171, 122, 0.9, R) + spark(260, 50, A, 0.8))
 ART['day25.try'] = (AT, person(90, 130, 1.8, V) + person(252, 130, 1.8, BS) + bubble(120, 30, 100, 56, W, 'left') + heart(170, 58, 0.7, R))
 ART['day25.task'] = (VT, ''.join(f'<circle cx="171" cy="100" r="{r}" fill="{R}" fill-opacity="{o}"/>' for r, o in [(72, 0.12), (54, 0.2)]) + heart(171, 102, 1.7, R) + spark(270, 46, A, 0.7))
 
@@ -706,7 +706,7 @@ ART['day26.hook'] = (BT, phone(70, 26, 76, 148, V) + lines(84, 56, [48, 36, 44],
 ART['day26.idea1'] = (BT, f'<path d="M40 160 C110 160 130 40 171 40 C212 40 232 160 302 160" fill="none" stroke="{BS}" stroke-width="10" stroke-linecap="round"/>'
     + f'<circle cx="171" cy="40" r="10" fill="{A}"/>' + spark(80, 70, V, 0.7) + spark(270, 70, G, 0.6))
 ART['day26.idea2'] = (GT, f'<path d="M40 150 C90 150 110 70 160 70 C200 70 210 130 250 130 S290 110 302 110" fill="none" stroke="{G}" stroke-width="10" stroke-linecap="round"/>'
-    + f'<g transform="translate(160 56) rotate(-8)"><ellipse cx="0" cy="0" rx="40" ry="9" fill="{A}"/><path d="M-30 0 H30" stroke="#F7DDB5" stroke-width="2"/></g>' + spark(270, 50, V, 0.7))
+    + f'<g transform="translate(160 56) rotate(-8)"><ellipse cx="0" cy="0" rx="40" ry="9" fill="{A}"/><path d="M-30 0 H30" stroke="{AM}" stroke-width="2"/></g>' + spark(270, 50, V, 0.7))
 ART['day26.idea3'] = (AT, wave(40, 70, 110, 24, A, 7, 1) + wave(150, 110, 90, 16, A, 6, 1) + wave(240, 140, 62, 9, A, 5, 1) + spark(286, 50, V, 0.7))
 ART['day26.example'] = (VT, stopwatch(92, 104, 42, V, W, 0.4) + f'<path d="M160 160 C190 160 200 70 222 70 C244 70 256 160 300 160" fill="none" stroke="{VM}" stroke-width="8" stroke-linecap="round"/>'
     + f'<circle cx="222" cy="70" r="9" fill="{A}"/>' + spark(290, 50, G, 0.6))
@@ -721,14 +721,14 @@ ART['day27.idea1'] = (BT, tool_tiles(43, 112) + ''.join(f'<path d="M{71+i*70} 70
 ART['day27.idea2'] = (AT, calendar(70, 40, 120, 120, V, [None, None, None, None, None, G]) + check(240, 100, 30) + spark(290, 40, V, 0.6))
 ART['day27.idea3'] = (GT, f'<circle cx="171" cy="100" r="62" fill="{W}"/><circle cx="171" cy="100" r="62" fill="none" stroke="{GD}" stroke-width="8"/>'
     + f'<path d="M171 50 L186 100 L171 150 L156 100z" fill="{R}"/><path d="M171 100 L186 100 L171 150 L156 100z" fill="{GD}"/><circle cx="171" cy="100" r="6" fill="{W}"/>' + spark(270, 50, A, 0.7))
-ART['day27.example'] = (VT, f'<rect x="60" y="140" width="150" height="30" rx="12" fill="{W}"/>' + moon(270, 50, 22, A, VT) + chip(70, 60, 80, '#F7DDB5', '#B86E12') + chip(150, 90, 90, '#F7DDB5', '#B86E12'))
+ART['day27.example'] = (VT, f'<rect x="60" y="140" width="150" height="30" rx="12" fill="{W}"/>' + moon(270, 50, 22, A, VT) + chip(70, 60, 80, AM, AD) + chip(150, 90, 90, AM, AD))
 ART['day27.try'] = (AT, f'<circle cx="80" cy="100" r="30" fill="{A}"/>' + bolt(80, 100, W, 1.2) + f'<path d="M124 100 H170" stroke="{TAN}" stroke-width="6" stroke-linecap="round"/>' + arrowhead(176, 100, 0, TAN)
     + tile(196, 64, 72, '#CDEBD9', wave(208, 100, 48, 10, GD, 6, 1)) + spark(290, 46, V, 0.6))
 ART['day27.task'] = (BT, phone(126, 18, 90, 166, V) + ''.join(f'<rect x="140" y="{50+i*22}" width="{62-i*14}" height="12" rx="6" fill="{[A, V, G][i]}"/>' for i in range(3))
     + tile(148, 124, 46, '#CDEBD9', wave(156, 147, 30, 6, GD, 4, 1)) + spark(262, 52, A, 0.8))
 
 # Day 28 · When it comes back
-ART['day28.hook'] = (VT, f'<circle cx="96" cy="70" r="26" fill="{A}"/>' + cloud(206, 80, 1.5, '#8A73EE') + f'<path d="M190 112 l-8 20 M210 112 l-8 20 M230 112 l-8 20" stroke="{BS}" stroke-width="4" stroke-linecap="round"/>'
+ART['day28.hook'] = (VT, f'<circle cx="96" cy="70" r="26" fill="{A}"/>' + cloud(206, 80, 1.5, VS) + f'<path d="M190 112 l-8 20 M210 112 l-8 20 M230 112 l-8 20" stroke="{BS}" stroke-width="4" stroke-linecap="round"/>'
     + f'<path d="M40 166 C120 166 150 130 300 140" fill="none" stroke="{VM}" stroke-width="6" stroke-linecap="round"/>')
 ART['day28.idea1'] = (AT, f'<path d="M171 176 C171 120 120 90 70 40" fill="none" stroke="#E8D9C2" stroke-width="26" stroke-linecap="round"/>'
     + f'<path d="M171 176 C171 120 222 90 272 40" fill="none" stroke="{G}" stroke-width="16" stroke-linecap="round" stroke-dasharray="1 0"/>' + flag(272, 52, 36, G) + spark(70, 140, V, 0.6))
@@ -736,7 +736,7 @@ ART['day28.idea2'] = (GT, f'<path d="M40 150 L100 112 L150 76 L180 106 L230 66 L
     + f'<circle cx="180" cy="106" r="9" fill="{A}"/>' + f'<path d="M40 170 H300" stroke="#A8DCC0" stroke-width="4" stroke-linecap="round"/>' + arrowhead(304, 34, -24, GD))
 ART['day28.idea3'] = (BT, f'<path d="M110 100 a62 62 0 0 1 124 0z" fill="{V}"/><path d="M172 100 V156 a14 14 0 0 1 -28 0" fill="none" stroke="{TAN}" stroke-width="7" stroke-linecap="round"/>'
     + f'<circle cx="274" cy="54" r="22" fill="{A}"/>' + spark(80, 50, G, 0.7))
-ART['day28.example'] = (VT, cloud(110, 84, 1.4, '#8A73EE') + f'<path d="M110 100 l-10 18 h10 l-6 14 16 -20 h-10 l6 -12z" fill="{A}"/>'
+ART['day28.example'] = (VT, cloud(110, 84, 1.4, VS) + f'<path d="M110 100 l-10 18 h10 l-6 14 16 -20 h-10 l6 -12z" fill="{A}"/>'
     + f'<rect x="196" y="56" width="104" height="80" rx="14" fill="{W}"/>' + heart(248, 84, 0.6, R) + lines(216, 108, [64], c=VL) + spark(286, 160, G, 0.6))
 ART['day28.try'] = (AT, tile(48, 64, 72, W, f'<rect x="60" y="100" width="48" height="16" rx="6" fill="{VM}"/><rect x="60" y="88" width="20" height="14" rx="5" fill="{V}"/>' + moon(98, 82, 8, A, W))
     + tile(135, 64, 72, W, lines(147, 80, [48, 40, 48, 30], c=BL, gap=11, h=6)) + tile(222, 64, 72, W, bolt(258, 100, A, 1.4)))
@@ -747,7 +747,7 @@ ART['day28.task'] = (VT, f'<rect x="96" y="40" width="150" height="120" rx="14" 
 ART['day29.hook'] = (GT, f'<path d="M50 166 C120 166 170 110 290 60" fill="none" stroke="#7FD4A6" stroke-width="7" stroke-linecap="round" stroke-dasharray="2 12"/>'
     + flag(56, 166, 40, A) + person(210, 116, 1.1, GD) + flag(290, 70, 40, G) + spark(130, 50, V, 0.7))
 ART['day29.idea1'] = (VT, f'<path d="M171 46 V160 M126 160 h90" stroke="{TAN}" stroke-width="8" stroke-linecap="round"/><path d="M100 90 L242 60" stroke="{V}" stroke-width="7" stroke-linecap="round"/>'
-    + cloud(100, 106, 0.8, '#8A73EE') + f'<rect x="222" y="74" width="40" height="30" rx="6" fill="{W}"/>' + lines(229, 82, [26, 18], c=VL, gap=10, h=5))
+    + cloud(100, 106, 0.8, VS) + f'<rect x="222" y="74" width="40" height="30" rx="6" fill="{W}"/>' + lines(229, 82, [26, 18], c=VL, gap=10, h=5))
 ART['day29.idea2'] = (BT, f'<rect x="54" y="44" width="110" height="110" rx="14" fill="{W}"/><rect x="178" y="44" width="110" height="110" rx="14" fill="{W}"/>'
     + bars(70, 138, [30, 60, 40], [BL, BS, BL], w=20, gap=12) + bars(194, 138, [40, 64, 80], [BL, BS, G], w=20, gap=12))
 ART['day29.idea3'] = (AT, f'<path d="M40 150 L80 118 L106 134 L150 92 L176 116 L220 70 L246 86 L300 40" fill="none" stroke="{A}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>' + arrowhead(304, 37, -40, A) + spark(80, 50, V, 0.6))
@@ -762,10 +762,10 @@ ART['day30.hook'] = (GT, ''.join(f'<circle cx="{66+(i%10)*20}" cy="{60+(i//10)*2
 ART['day30.idea1'] = (VT, ring3(cx=100, cy=100, r=52, ringc=VL, arr=V).replace('r="26"', 'r="20"')
     + ''.join(tool_tile(i, 192 + (i % 2) * 58, 44 + (i // 2) * 58, 50) for i in range(4))
     + spark(290, 160, A, 0.6))
-ART['day30.idea2'] = (AT, ''.join(f'<rect x="{60+i*32}" y="96" width="22" height="22" rx="7" fill="{G if i in (0, 1, 3, 4, 6) else "#F7DDB5"}"/>' for i in range(7)) + spark(171, 60, V, 0.8) + spark(171, 150, A, 0.6))
-ART['day30.idea3'] = (BT, f'<path d="M86 48 h80 v116 h-80z" fill="{V}"/><path d="M166 48 h80 v116 h-80z" fill="#8A73EE"/><path d="M166 48 V164" stroke="{BT}" stroke-width="4"/>'
+ART['day30.idea2'] = (AT, ''.join(f'<rect x="{60+i*32}" y="96" width="22" height="22" rx="7" fill="{G if i in (0, 1, 3, 4, 6) else AM}"/>' for i in range(7)) + spark(171, 60, V, 0.8) + spark(171, 150, A, 0.6))
+ART['day30.idea3'] = (BT, f'<path d="M86 48 h80 v116 h-80z" fill="{V}"/><path d="M166 48 h80 v116 h-80z" fill="{VS}"/><path d="M166 48 V164" stroke="{BT}" stroke-width="4"/>'
     + f'<path d="M210 48 v46 l10 -8 10 8 v-46z" fill="{A}"/>' + spark(280, 50, G, 0.7))
 ART['day30.example'] = (GT, notebook(70, 28) + breath(236, 80, 24) + moon(250, 156, 16, A, GT))
-ART['day30.try'] = (AT, f'<rect x="106" y="70" width="130" height="96" rx="14" fill="{V}"/><path d="M98 70 h146 v-14 a8 8 0 0 0 -8 -8 h-130 a8 8 0 0 0 -8 8z" fill="#8A73EE"/>'
+ART['day30.try'] = (AT, f'<rect x="106" y="70" width="130" height="96" rx="14" fill="{V}"/><path d="M98 70 h146 v-14 a8 8 0 0 0 -8 -8 h-130 a8 8 0 0 0 -8 8z" fill="{VS}"/>'
     + heart(171, 112, 1.0, A) + spark(270, 46, G, 0.7))
 ART['day30.task'] = (BT, bell(140, 96, 1.6, A) + gear(242, 120, 26, V, BT) + spark(260, 46, G, 0.7))
