@@ -66,12 +66,12 @@ struct LessonReaderViewModelTests {
     /// The task button marks the lesson done and says where to go, so the reader can close and open it.
     @Test
     func `starting today's task finishes the lesson and gives its action`() throws {
-        let reader = try reader(day: 21)
+        let reader = try reader(day: 22)
 
         let action = reader.startTask(now: now)
 
         #expect(action == .tool(.curious))
-        #expect(progress.completed.map(\.day) == [21])
+        #expect(progress.completed.map(\.day) == [22])
     }
 
     /// The reader closes straight to the task, so the done screen mustn't show as it goes.

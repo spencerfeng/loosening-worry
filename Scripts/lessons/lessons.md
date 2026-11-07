@@ -70,7 +70,7 @@ Pick the phone example or one of your own. Say each part to yourself: "The trigg
 
 **Today's task**
 
-When you catch one today, tap Log and choose a trigger, a behavior and a result. It doesn't need to be a worry loop yet. Any habit counts.
+When you catch one today, tap + and choose a trigger, a behavior and a result. The app then asks when you noticed it; any answer is fine. It doesn't need to be a worry loop yet. Any habit counts.
 
 *Button: Log a loop*
 
@@ -104,7 +104,7 @@ Think of a recent worry. Instead of asking "What was I worried about?", ask "Wha
 
 **Today's task**
 
-Log one loop where worrying is the behavior. If you're not sure, choose "Overthought it" and keep going. A rough log is better than none.
+Log one loop where worrying is the behavior. If an uneasy feeling set it off, choose "A worried feeling." If you're not sure what you did, choose "Overthought it" and keep going. A rough log is better than none.
 
 *Button: Log a loop*
 
@@ -138,7 +138,7 @@ Scan your day so far. Pick one trigger from each group if you can: a **place**, 
 
 **Today's task**
 
-Notice three triggers today. Log each one when you catch it, and pick your best guess for the behavior and result. The trigger is today's focus.
+Notice three triggers today. Once a loop has run, log it, and pick your best guess for the behavior and result. Inside triggers count too: "A worried feeling" and "A worrying thought" are in the list. The trigger is today's focus.
 
 *Button: Log a loop*
 
@@ -172,7 +172,7 @@ Think of a recent worry. Finish this sentence: "If I keep worrying about this, t
 
 **Today's task**
 
-Log a worry loop, then add a note naming what you hoped the worry would do for you. Keep it to a few words, like "keep me safe" or "be ready."
+Log a worry loop. Then tap "Add details" and, under "How did it feel?", add a few words on what you hoped the worry would do and what it did, like "wanted to be ready, felt wired."
 
 *Button: Log a loop*
 
@@ -232,7 +232,7 @@ A map is just information. A busy week of loops doesn't mean you're doing badly.
 
 **Example — Where the worry lives**
 
-After a week of logging, Mei opened Insights and saw that most of her loops started between 9 and 11 pm, and "Kept checking" came up again and again. She hadn't realized her evenings were where most of the worry lived.
+After a week of logging, Mei opened Insights and saw that most of her loops started between 8 and 10 pm, and "Kept checking" came up again and again. She hadn't realized her evenings were where most of the worry lived.
 
 **Try it now (30 s)**
 
@@ -240,7 +240,7 @@ Before you look, make a guess. Which trigger do you think shows up most? What ti
 
 **Today's task**
 
-Open Insights and look at your week. Check your guess against what's there: your top triggers, when loops tend to start, and what your most common habit gave you. If you've logged only a few loops, that's fine. Look at what's there.
+Open Insights and look at your week. Check your guess against what's there: what sets you off, when loops tend to start, and what your most common habit gave you. If you've logged only a few loops, that's fine. Look at what's there.
 
 *Button: Open Insights*
 
@@ -280,7 +280,7 @@ Log one loop today where the behavior isn't worrying: scrolling, snacking, searc
 
 ## Day 9 · Catch it sooner
 
-**Key idea:** noticing earlier gives you more choice. · **Task:** log a loop as it starts, not after.
+**Key idea:** noticing earlier gives you more choice. · **Task:** notice a loop while it's still happening.
 
 **Hook**
 
@@ -300,7 +300,7 @@ Loops often announce themselves: a tight jaw, a familiar "What if…", a hand al
 
 **Example — The first "What if…"**
 
-Zara used to notice her money worry only after an hour of checking her bank app. This week she caught it at the first "What if…" while making coffee, and logged it right there, before the checking started.
+Zara used to notice her money worry only after an hour of checking her bank app. This week she caught herself ten minutes in, still scrolling her transactions, and logged it right there: noticed while it was happening.
 
 **Try it now (30 s)**
 
@@ -308,7 +308,7 @@ What's usually the very first sign that one of your loops is starting? A thought
 
 **Today's task**
 
-Try to log a loop as it starts, while the trigger is still fresh. If you only catch it afterward, log it anyway, and notice how far in you were when you noticed.
+When you log a loop today, answer "When did you notice?" honestly. "Afterwards" is fine; that's where everyone starts. See if one loop today can be "While it was happening."
 
 *Button: Log a loop*
 
@@ -410,7 +410,7 @@ Think of one thing you worried about last week. What did the worry predict? What
 
 **Today's task**
 
-Find one worry that didn't come true, or didn't turn out as badly as it said. Log it as a loop and add a few words in the note, like "didn't happen."
+Find one worry that didn't come true, or didn't turn out as badly as it said. Log it as a loop, then tap "Add details" and, under "How did it feel?", add a few words, like "it didn't happen, and the worry wore me out."
 
 *Button: Log a loop*
 
@@ -444,7 +444,7 @@ Take a breath. Scan your forehead, jaw, shoulders, chest and stomach. Where is t
 
 **Today's task**
 
-After the next loop you log, scan your body and name where you feel its result. Add it in the note, like "tight chest" or "heavy stomach."
+After the next loop you log, scan your body and name where you feel its result. Tap "Add details" and write it under "How did it feel?", like "tight chest" or "heavy stomach."
 
 *Button: Log a loop*
 
@@ -478,7 +478,7 @@ Think of a habit that tugs at you. Picture the urge arriving. Instead of saying 
 
 **Today's task**
 
-When an urge comes, watch it for a few breaths. Whatever you do next, log the loop.
+When an urge comes, watch it for a few breaths. If you end up doing the habit, log the loop. If the urge passes, just notice that.
 
 *Button: Log a loop*
 
@@ -508,11 +508,11 @@ Hana's most common loop was money worry (trigger) followed by reopening her budg
 
 **Try it now (30 s)**
 
-What's your most common loop? If you're not sure, Insights shows your top triggers and your most common habit.
+What's your most common loop? If you're not sure, Insights shows what sets you off and your most common habit.
 
 **Today's task**
 
-The next time your most common loop shows up, log it and check its result carefully. Take a breath before you choose, and feel what it really gave you.
+The next time your most common loop shows up, log it and check its result carefully. Take a breath before you choose, and feel what it really gave you. Once this loop has run a couple of times, Nice catch shows what the habit has given you.
 
 *Button: Log a loop*
 
@@ -606,7 +606,7 @@ Success here isn't fewer loops. Logging more can simply mean you're noticing mor
 
 **Example — What overthinking gave**
 
-Omar felt like nothing had changed. Then he looked at what "Overthought it" had given him over the past two weeks: more worry, nearly every time. Seeing it in one place made something click: "That habit really isn't doing what I thought."
+Omar felt like nothing had changed. Then he looked at what "Overthought it" had given him over the past four weeks: more worry, nearly every time. Seeing it in one place made something click: "That habit really isn't doing what I thought."
 
 **Try it now (30 s)**
 
@@ -670,7 +670,7 @@ Some habits loosen quickly. Others take longer, especially the ones you've pract
 
 **Idea 3 — What comes next**
 
-In stage 3 you'll use four tools that give your brain something better to do when a loop starts: curiosity, breathing, noting and kindness. They work best now, after you've seen what the old habits really give you.
+In stage 3 you'll use four tools that give your brain something better to do when a loop starts: curiosity, breathing, noting and kindness. You'll find them in Log a loop, under "Nothing yet, I'm in it now," and on Home under "Feeling it now?" They work best now, after you've seen what the old habits really give you.
 
 **Example — The letdown coming**
 
@@ -716,9 +716,9 @@ Notice any feeling in your body right now, even a small one. Say "Hmm…" and ge
 
 **Today's task**
 
-The next time a loop starts, open Get curious and follow it to the end. Afterward, notice how you feel.
+The next time a loop starts, tap +, choose what set it off, then "Nothing yet, I'm in it now" and Get curious. Follow it to the end and answer how you feel, so the app can show you which tools help.
 
-*Button: Get curious*
+*Button: Log a loop*
 
 ## Day 22 · Noticing the details
 
@@ -784,9 +784,9 @@ For the next few breaths, name whatever shows up: "thinking," "hearing," "itchy,
 
 **Today's task**
 
-The next time you're caught in a loop, open Note it and tap a word each time you notice something. Keep going for a minute or two.
+The next time you're caught in a loop, meet it with Note it from Log a loop, as on day 21. Tap a word each time you notice something, until it ends.
 
-*Button: Note it*
+*Button: Log a loop*
 
 ## Day 24 · Breath as an anchor
 
@@ -806,11 +806,11 @@ Slow breathing won't make worry disappear. Think of it as an anchor: something s
 
 **Idea 3 — Before helps too**
 
-Breathing helps in the middle of a loop, and it also helps just before a moment you know will be hard. A minute or two beforehand can take the edge off.
+Breathing helps in the middle of a loop, and it also helps just before a moment you know will be hard. A minute beforehand can take the edge off.
 
 **Example — Ten minutes to ten**
 
-Chris had a presentation at 10. At 9:50 they sat in a quiet corner and used Breathe for two minutes: in for four, out for six. Their heart was still beating fast when they began, but they felt steady enough to start.
+Chris had a presentation at 10. At 9:50 they sat in a quiet corner and used Breathe for a minute: in for four, out for six. Their heart was still beating fast when they began, but they felt steady enough to start.
 
 **Try it now (60 s)**
 
@@ -818,7 +818,7 @@ Breathe in through your nose for a count of four, then out slowly for a count of
 
 **Today's task**
 
-Think of a moment today that might be stressful: a meeting, a call, a conversation. Use Breathe for a minute or two just before it.
+Think of a moment today that might be stressful: a meeting, a call, a conversation. Use Breathe for a minute just before it.
 
 *Button: Breathe*
 
@@ -886,9 +886,9 @@ Think of an urge you feel often. Imagine it arriving, and picture it as a wave: 
 
 **Today's task**
 
-The next time an urge shows up, ride it for a few minutes before you act. Use Breathe if it helps. Notice whether it rises and falls.
+The next time an urge shows up, meet it with Breathe from Log a loop. Ride the urge for a few minutes before you act, and notice whether it rises and falls.
 
-*Button: Breathe*
+*Button: Log a loop*
 
 ## Day 27 · Your go-to tool
 
@@ -912,7 +912,7 @@ Think about which tools have left you feeling lighter. Your own results are a be
 
 **Example — Bedtime worry**
 
-Leila's top trigger was "Trying to sleep." She'd noticed that Note it settled her mind more than breathing did. So she decided: when bedtime worry starts, she'll tap words for two minutes instead of lying there replaying the day.
+Leila's top trigger was "Trying to sleep." She'd noticed that Note it settled her mind more than breathing did. So she decided: when bedtime worry starts, she'll tap words for a minute and a half instead of lying there replaying the day.
 
 **Try it now (45 s)**
 
@@ -920,7 +920,7 @@ Think about your top trigger. Which of the four tools seems the best fit for it,
 
 **Today's task**
 
-Check your top trigger in Insights and choose a go-to tool for it. The next time that trigger shows up, use the tool and notice how you feel afterward.
+In Insights, tap the trigger at the top of "What sets you off" and choose a go-to tool for it. Its page shows how often your habits were no better, and how often meeting it with a tool left you lighter. Next time it shows up, meet it with your tool from Log a loop.
 
 *Button: Open Insights*
 
@@ -960,7 +960,7 @@ Go through Be kind and keep one phrase that feels true to you. On a hard day you
 
 ## Day 29 · Look how far you've come
 
-**Key idea:** progress shows in the data. · **Task:** compare week 1 and week 4 in Insights.
+**Key idea:** progress shows in the data. · **Task:** compare your weeks in Insights.
 
 **Hook**
 
@@ -972,7 +972,7 @@ On an anxious day it's easy to believe nothing has changed, because memory leans
 
 **Idea 2 — What to look for**
 
-Compare your weeks. You may have logged more loops as you got better at noticing, or fewer as some loosened. Look at what your common habits gave you, and how you felt after using the tools.
+Compare your weeks. You may have logged more loops as you got better at noticing, or fewer as some loosened. Look at what your common habits gave you, and how you felt after meeting your loops with a tool.
 
 **Idea 3 — Progress isn't a straight line**
 
@@ -980,7 +980,7 @@ Some weeks are harder than others. A rough week near the end doesn't erase what 
 
 **Example — Week 1 and week 4**
 
-Ines compared her first and fourth weeks. She'd logged about the same number of loops, but in week 1 most were "Overthought it" followed by "More worry." In week 4 she'd used Get curious and Breathe several times, and felt lighter after most of them.
+Ines compared her weeks. She'd logged about as many loops as at the start, but they felt different. On her Work page she saw it in one place: the old habit had almost never helped, and meeting the urge with a tool usually left her lighter.
 
 **Try it now (30 s)**
 
@@ -988,7 +988,7 @@ Before you look: what's one thing you think has changed since day 1?
 
 **Today's task**
 
-Open Insights, choose "Last 4 weeks" and compare your first week with this one. Notice what's different, and what's the same.
+Open Insights, choose "Last 4 weeks" and compare the oldest week on the chart with this one. Then tap your top trigger to see how the old habit and the tools compare.
 
 *Button: Open Insights*
 
@@ -1006,7 +1006,7 @@ You can spot a loop's trigger, behavior and result. You've seen what your habits
 
 **Idea 2 — Keep it light**
 
-The course ends, but the skills work best with small, regular use: logging a loop when you notice one, and reaching for a tool when worry shows up. A few minutes a day is plenty.
+The course ends, but the skills work best with small, regular use: logging a loop when you notice one, and choosing "Nothing yet, I'm in it now" to meet the urge with a tool when you catch one starting. A few minutes a day is plenty.
 
 **Idea 3 — Come back any time**
 
