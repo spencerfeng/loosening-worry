@@ -51,8 +51,7 @@ enum Feeling: String, CaseIterable, Sendable {
         case .veryUnpleasant, .unpleasant: unpleasant
         case .slightlyUnpleasant: unpleasant.union([.indifferent])
         case .neutral: neutral
-        case .slightlyPleasant: pleasant.union([.indifferent])
-        case .pleasant, .veryPleasant: pleasant
+        case .slightlyPleasant, .pleasant, .veryPleasant: pleasant
         }
         let shown = allCases.sorted {
             String(localized: $0.label).localizedStandardCompare(String(localized: $1.label)) == .orderedAscending
@@ -71,11 +70,9 @@ enum Feeling: String, CaseIterable, Sendable {
         .passionate, .peaceful, .proud, .relieved, .satisfied, .surprised,
     ]
 
-    /// Our own pick: Apple's grouping for neutral isn't published. Calm and settled words, plus the low-key
-    /// unpleasant ones someone might call neutral.
-    private static let neutral: Set<Feeling> = [
-        .calm, .content, .drained, .indifferent, .peaceful, .relieved, .satisfied, .stressed, .surprised, .worried,
-    ]
+    /// Our own pick: Apple's grouping for neutral isn't published. Calm and settled words, plus Drained, the low-key
+    /// unpleasant one someone might call neutral.
+    private static let neutral: Set<Feeling> = [.calm, .content, .drained, .indifferent, .peaceful]
 
     /// The word as the check-in shows it, translated. The catalog key is spelled out so the compiler can extract it.
     var label: LocalizedStringResource {

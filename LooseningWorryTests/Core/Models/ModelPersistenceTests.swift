@@ -82,7 +82,7 @@ struct ModelPersistenceTests {
         #expect(fetched.lastRevisitedAt == lastRevisitedAt)
     }
 
-    @Test(arguments: [OptionKind.trigger, .behavior, .result])
+    @Test(arguments: OptionKind.allCases)
     func `an option reads back with its kind`(kind: OptionKind) throws {
         let option = LoopOption(kind: kind, label: "Checked my phone")
         let reader = try save(option)
@@ -92,6 +92,15 @@ struct ModelPersistenceTests {
         #expect(fetched.kind == kind)
         #expect(fetched.label == "Checked my phone")
         #expect(fetched.starterID == nil)
+    }
+
+    /// Decoding is what SwiftData does to a stored kind; `OptionKindStoreTests` reads one from a real store.
+    @Test
+    func `a kind from a newer version decodes as unrecognized`() throws {
+        let kinds = try JSONDecoder().decode([OptionKind].self, from: Data(#"["result", "addedLater"]"#.utf8))
+
+        #expect(kinds == [.result, .unrecognized])
+        #expect(!OptionKind.allCases.contains(.unrecognized))
     }
 
     /// Loops count an option by this id, so two options must never share one, even when added at the same moment.
@@ -162,6 +171,20 @@ struct ModelPersistenceTests {
         #expect(fetched.createdAt == createdAt)
         #expect(fetched.pleasantness == .unpleasant)
         #expect(fetched.feelings == [.overwhelmed, .anxious])
+    }
+
+    @Test
+    func `a check-in reads back with its contexts' ids and text, in order`() throws {
+        let checkIn = CheckIn(CheckInAnswer(pleasantness: .neutral, feelings: [], contexts: [
+            OptionChoice(.contextWork, label: "Work"),
+            OptionChoice(id: "own-1", label: "Moving house"),
+        ]))
+
+        let reader = try save(checkIn)
+        let fetched = try #require(try reader.fetch(FetchDescriptor<CheckIn>()).only)
+
+        #expect(fetched.contextIDs == ["context.work", "own-1"])
+        #expect(fetched.contextLabels == ["Work", "Moving house"])
     }
 
     /// A newer version may add words; until this one knows them, they're left out rather than shown wrong.

@@ -1,30 +1,35 @@
 import SwiftData
 import SwiftUI
 
-/// "Your options": add, remove and restore the person's triggers, behaviors and results. Opened from a logger step,
-/// on that step's tab.
+/// "Your options": add, remove and restore the person's triggers, behaviors and results, opened from a logger step on
+/// that step's tab; or their check-in contexts, opened from the check-in with no other tabs.
 struct EditOptionsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
     @State private var model: EditOptionsViewModel
+    /// Told about each option the person adds here, so the screen that opened this one can pick it.
+    private let added: (OptionChoice) -> Void
 
-    init(kind: OptionKind) {
+    init(kind: OptionKind, added: @escaping (OptionChoice) -> Void = { _ in }) {
         _model = State(initialValue: EditOptionsViewModel(kind: kind))
+        self.added = added
     }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                Picker(selection: kindSelection) {
-                    ForEach(OptionKind.allCases, id: \.self) { kind in
-                        Text(kind.logCopy.optionsTab).tag(kind)
+                if tabs.count > 1 {
+                    Picker(selection: kindSelection) {
+                        ForEach(tabs, id: \.self) { kind in
+                            Text(kind.loopCopy.optionsTab).tag(kind)
+                        }
+                    } label: {
+                        Text(LocalizedStringResource("edit.tabs", defaultValue: "Option type"))
                     }
-                } label: {
-                    Text(LocalizedStringResource("edit.tabs", defaultValue: "Option type"))
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
 
                 if let error = model.editError {
                     Text(error.message)
@@ -46,7 +51,7 @@ struct EditOptionsView: View {
                     OptionSection(section: section, remove: remove, restore: restore)
                 }
 
-                Text(model.kind == .result ? Self.resultsFootnote : Self.footnote)
+                Text(model.kind.copy.editFootnote)
                     .font(.theme(.caption))
                     .foregroundStyle(.theme(.textTertiary))
             }
@@ -61,7 +66,7 @@ struct EditOptionsView: View {
                 AccessibilityNotification.Announcement(String(localized: error.message)).post()
             }
         }
-        .navigationTitle(Text(LocalizedStringResource("edit.title", defaultValue: "Your options")))
+        .navigationTitle(Text(model.kind.copy.editTitle))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -72,6 +77,11 @@ struct EditOptionsView: View {
                 }
             }
         }
+    }
+
+    /// The logger's three steps, or just the contexts when opened from a check-in.
+    private var tabs: [OptionKind] {
+        OptionKind.loopSteps.contains(model.kind) ? OptionKind.loopSteps : [model.kind]
     }
 
     private var kindSelection: Binding<OptionKind> {
@@ -87,7 +97,7 @@ struct EditOptionsView: View {
     private func add() {
         withAnimation(animation) {
             model.add(saved: savedOptions) { text in
-                _ = try OptionStore(context: modelContext).addOwn(text, kind: model.kind)
+                try added(OptionStore(context: modelContext).addOwn(text, kind: model.kind))
             }
         }
     }
@@ -104,22 +114,6 @@ struct EditOptionsView: View {
             model.restore(choice) { try OptionStore(context: modelContext).restore($0, kind: kind) }
         }
     }
-
-    private static let footnote = LocalizedStringResource(
-        "edit.footnote",
-        defaultValue: """
-        Removed options stop showing in the logger. Past loops keep them, and you can restore them any time. \
-        To fix a typo, remove the option and add it again.
-        """,
-    )
-
-    private static let resultsFootnote = LocalizedStringResource(
-        "edit.footnote.results",
-        defaultValue: """
-        Core results can’t be removed and always stay in the same order, so step 3 never nudges your answer. \
-        To fix a typo in your own option, remove it and add it again.
-        """,
-    )
 }
 
 /// Opens the add card: "+ Add a trigger".
@@ -133,7 +127,7 @@ private struct AddOptionButton: View {
                 Image(systemName: "plus")
                     .fontWeight(.bold)
                     .accessibilityHidden(true)
-                Text(kind.logCopy.addLabel)
+                Text(kind.copy.addLabel)
             }
             .font(.theme(.callout))
             .foregroundStyle(.theme(.accentText))
@@ -159,14 +153,14 @@ private struct AddOptionCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(kind.logCopy.addLabel)
+            Text(kind.copy.addLabel)
                 .font(.theme(.footnote))
                 .foregroundStyle(.theme(.textTertiary))
                 // The field carries the same label.
                 .accessibilityHidden(true)
             HStack(spacing: 8) {
-                TextField(text: $draft, prompt: Text(kind.logCopy.addPlaceholder)) {
-                    Text(kind.logCopy.addLabel)
+                TextField(text: $draft, prompt: Text(kind.copy.addPlaceholder)) {
+                    Text(kind.copy.addLabel)
                 }
                 .font(.theme(.body))
                 .foregroundStyle(.theme(.textPrimary))
@@ -179,7 +173,7 @@ private struct AddOptionCard: View {
                 .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(.theme(.border)) }
 
                 Button(action: add) {
-                    Text(LocalizedStringResource("log.addOwn.add", defaultValue: "Add"))
+                    Text(LocalizedStringResource("option.addOwn.add", defaultValue: "Add"))
                         .font(.theme(.callout))
                         .foregroundStyle(.theme(.textOnAccent))
                         .padding(.horizontal, 16)

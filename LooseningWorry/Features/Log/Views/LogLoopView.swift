@@ -38,7 +38,7 @@ struct LogLoopView: View {
                         LogSummaryCard(model: model) { step in
                             withAnimation(stepAnimation) { model.goTo(step) }
                         }
-                        if let label = model.unsavedOption {
+                        if let label = model.ownDraft.unsavedLabel {
                             Text(Self.unsavedNote(label))
                                 .font(.theme(.caption))
                                 .foregroundStyle(.theme(.textSecondary))
@@ -58,9 +58,9 @@ struct LogLoopView: View {
                                 choices: visible.choices,
                                 hasMore: visible.hasMore,
                                 selectedID: model.answerID(in: choices, for: step),
-                                isAddingOwn: model.isAddingOwn,
-                                draft: $model.draft,
-                                canAddOwn: model.canAddOwn,
+                                isAddingOwn: model.ownDraft.isOpen,
+                                draft: $model.ownDraft.text,
+                                canAddOwn: model.ownDraft.canAdd,
                                 meetIt: step == .behavior ? { meetIt() } : nil,
                             ) { choice in
                                 withAnimation(stepAnimation) { model.pick(choice) }
@@ -69,7 +69,7 @@ struct LogLoopView: View {
                             } edit: {
                                 editing = step
                             } toggleAddOwn: {
-                                model.toggleAddOwn()
+                                model.ownDraft.toggle()
                             } addOwn: {
                                 withAnimation(stepAnimation) {
                                     model.addOwn(existing: choices, save: saveOwnOption)
@@ -95,16 +95,16 @@ struct LogLoopView: View {
                     .padding(20)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                // The keyboard covers the bottom of the sheet, so keep the add-your-own field and its Add button above
-                // it: when the field opens, and again once the keyboard has shrunk the visible area.
-                .onChange(of: model.isAddingOwn) { revealAddOwnField(with: proxy) }
-                .onGeometryChange(for: CGFloat.self) { $0.size.height - $0.safeAreaInsets.bottom } action: { _ in
-                    revealAddOwnField(with: proxy)
-                }
+                .keepsAboveKeyboard(
+                    LogQuestion.addOwnFieldID,
+                    isShowing: model.ownDraft.isOpen,
+                    in: proxy,
+                    animation: stepAnimation,
+                )
             }
             // Stays under the header while the questions scroll.
             .safeAreaInset(edge: .top, spacing: 0) {
-                StepProgressBar(steps: OptionKind.allCases.map { model.progress(for: $0) })
+                StepProgressBar(steps: OptionKind.loopSteps.map { model.progress(for: $0) })
                     .padding(.horizontal, 20)
                     .padding(.top, 14)
                     .background(.theme(.background))
@@ -143,13 +143,13 @@ struct LogLoopView: View {
                 ToolbarItem(placement: .principal) {
                     FlowHeader(
                         title: "Log a loop",
-                        detail: model.currentStep.map { "Step \($0.stepNumber) of \(OptionKind.allCases.count)" }
+                        detail: model.currentStep.map { "Step \($0.stepNumber) of \(OptionKind.loopSteps.count)" }
                             ?? "All done",
                     )
                 }
             }
             .onChange(of: model.pickCount) {
-                if let label = model.unsavedOption {
+                if let label = model.ownDraft.unsavedLabel {
                     AccessibilityNotification.Announcement(String(localized: Self.unsavedNote(label))).post()
                 }
             }
@@ -198,13 +198,6 @@ struct LogLoopView: View {
             "log.addOwn.notSaved",
             defaultValue: "Couldn't save \"\(label)\" to your list, but it's in this loop.",
         )
-    }
-
-    private func revealAddOwnField(with proxy: ScrollViewProxy) {
-        guard model.isAddingOwn else { return }
-        withAnimation(stepAnimation) {
-            proxy.scrollTo(LogQuestion.addOwnFieldID, anchor: .bottom)
-        }
     }
 
     /// Under Reduce Motion, changes fade instead of moving.

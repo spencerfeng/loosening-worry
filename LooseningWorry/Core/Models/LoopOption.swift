@@ -1,11 +1,63 @@
 import Foundation
 import SwiftData
 
-enum OptionKind: String, Codable, CaseIterable {
+/// What an option answers: one of a loop's three steps, or a check-in's context.
+///
+/// The raw value is what `LoopOption` stores, so it never changes once released.
+enum OptionKind: String, CaseIterable, Sendable {
     case trigger, behavior, result
+    /// What's having the biggest impact on the person, the check-in's last step.
+    case context
+    /// A kind from a newer version, read from a synced option. No list asks for it, so such options stay out of
+    /// sight; see `init(from:)`.
+    case unrecognized
+
+    /// The kinds this version offers.
+    static let allCases: [OptionKind] = [.trigger, .behavior, .result, .context]
+
+    /// A loop's steps, in the logger's order.
+    static let loopSteps: [OptionKind] = [.trigger, .behavior, .result]
+
+    /// How a kind's choices are listed.
+    enum ChoiceOrder {
+        /// The person's own first, newest first, then the starters in their order.
+        case ownNewestFirst
+        /// The starters in their fixed order, then the person's own, oldest first, so step 3 never nudges the answer.
+        case startersFirst
+        /// The person's own and the starters together, alphabetical in the person's language.
+        case alphabetical
+    }
+
+    var choiceOrder: ChoiceOrder {
+        switch self {
+        case .trigger, .behavior: .ownNewestFirst
+        case .result: .startersFirst
+        case .context: .alphabetical
+        // Never listed, so any order does.
+        case .unrecognized: .ownNewestFirst
+        }
+    }
 }
 
-/// A trigger, behavior or result the person added, or their change to a starter.
+extension OptionKind: Codable {
+    /// SwiftData reads a stored kind through `Codable`, and a decoding failure crashes the fetch. A kind from a newer
+    /// version reads as `unrecognized` instead, so every other option still loads. Kept on the enum rather than by
+    /// storing text, since changing the stored type would migrate every saved kind back to the default.
+    init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        self = Self(rawValue: rawValue) ?? .unrecognized
+    }
+
+    /// Writing `unrecognized` back would replace the newer kind it stands in for, on every device. Nothing does: no
+    /// list shows such an option, and changes reach only options a list showed.
+    func encode(to encoder: Encoder) throws {
+        assert(self != .unrecognized, "An option of an unrecognized kind was saved, replacing its newer kind")
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
+}
+
+/// A trigger, behavior, result or check-in context the person added, or their change to a starter.
 ///
 /// With no `starterID` it is their own option. With one, it overrides that `StarterOption` to hide it from their list;
 /// starters can't be renamed. It keeps the starter's full text, so adding that text again brings the starter back.

@@ -15,6 +15,10 @@ struct StarterOptionTests {
         (OptionKind.result, [
             "More worry", "Tense and tired", "Nothing changed", "A little relief", "It actually helped", "Not sure",
         ]),
+        (OptionKind.context, [
+            "Community", "Current events", "Dating", "Education", "Family", "Fitness", "Friends", "Health", "Hobbies",
+            "Identity", "Money", "Partner", "Self-care", "Spirituality", "Tasks", "Travel", "Weather", "Work",
+        ]),
     ])
     func `each kind offers its starters in order`(kind: OptionKind, labels: [String]) {
         let starters = StarterOption.options(for: kind)
@@ -49,10 +53,20 @@ struct StarterOptionTests {
         ])
     }
 
+    @Test
+    func `the check-in contexts have stable ids`() {
+        #expect(StarterOption.options(for: .context).map(\.id.rawValue) == [
+            "context.community", "context.currentEvents", "context.dating", "context.education", "context.family",
+            "context.fitness", "context.friends", "context.health", "context.hobbies", "context.identity",
+            "context.money", "context.partner", "context.selfCare", "context.spirituality", "context.tasks",
+            "context.travel", "context.weather", "context.work",
+        ])
+    }
+
     /// A starter's kind is read from its id, so a mistyped prefix would put it on the wrong step.
     @Test(arguments: StarterID.allCases)
     func `every id starts with its kind`(id: StarterID) {
-        #expect(id.rawValue.wholeMatch(of: /(trigger|behavior|result)\.[a-zA-Z]+/) != nil)
+        #expect(id.rawValue.wholeMatch(of: /(trigger|behavior|result|context)\.[a-zA-Z]+/) != nil)
         #expect(StarterOption.options(for: id.kind).contains { $0.id == id })
     }
 

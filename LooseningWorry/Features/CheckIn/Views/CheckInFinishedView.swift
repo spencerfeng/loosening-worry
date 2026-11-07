@@ -62,7 +62,7 @@ struct CheckInFinishedView: View {
                 .accessibilityFocused($isTitleFocused)
             FlowLayout(spacing: 6, alignment: .center) {
                 ForEach(Array(model.summary.enumerated()), id: \.offset) { _, label in
-                    Text(label)
+                    Text(verbatim: label)
                         .font(.theme(.footnote))
                         .fontWeight(.bold)
                         .foregroundStyle(.theme(.textSecondary))
@@ -73,7 +73,7 @@ struct CheckInFinishedView: View {
             }
             // Read once, as a list, rather than chip by chip.
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(Text(model.summary.map { String(localized: $0) }.formatted(.list(type: .and))))
+            .accessibilityLabel(Text(model.summary.formatted(.list(type: .and))))
             if let line = model.closingLine {
                 Text(line)
                     .font(.theme(.body))

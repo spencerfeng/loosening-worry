@@ -46,6 +46,29 @@ struct CheckInViewModelTests {
     }
 
     @Test
+    func `the words under More stay hidden until More is tapped`() {
+        let model = onWords(.unpleasant)
+        #expect(!model.showsMoreFeelings)
+
+        model.showMoreFeelings()
+
+        #expect(model.showsMoreFeelings)
+    }
+
+    @Test
+    func `a word picked under More keeps More open, even once unpicked`() {
+        let model = onWords(.unpleasant)
+        model.showMoreFeelings()
+
+        // Calm is under More for unpleasant. Unpicking it leaves More open, rather than folding it away under the
+        // person's finger.
+        model.toggle(.calm)
+        model.toggle(.calm)
+
+        #expect(model.showsMoreFeelings)
+    }
+
+    @Test
     func `words toggle on and off and keep the order they were picked in`() {
         let model = onWords(.unpleasant)
 
@@ -58,19 +81,20 @@ struct CheckInViewModelTests {
         #expect(model.feelings == [.overwhelmed, .drained])
     }
 
+    /// Whether or not the answer changes, the step left starts fresh; the earlier step keeps its answer.
     @Test
-    func `going back to change how it feels keeps the words picked`() {
+    func `going back clears the words picked and closes More, keeping how it feels`() {
         let model = onWords(.unpleasant)
         model.toggle(.anxious)
+        model.showMoreFeelings()
 
         model.back()
         #expect(model.step == .pleasantness)
-        model.choose(.slightlyUnpleasant)
+        #expect(model.pleasantness == .unpleasant)
         model.next()
 
-        #expect(model.feelings == [.anxious])
-        // Slightly unpleasant adds Indifferent to the unpleasant words.
-        #expect(model.groupedFeelings.first.contains(.indifferent))
+        #expect(model.feelings.isEmpty)
+        #expect(!model.showsMoreFeelings)
     }
 
     @Test
@@ -78,6 +102,7 @@ struct CheckInViewModelTests {
         let model = onWords(.unpleasant)
         model.toggle(.anxious)
         model.toggle(.overwhelmed)
+        model.next()
         var stored: [CheckIn] = []
 
         model.finish { stored.append($0) }
@@ -92,13 +117,13 @@ struct CheckInViewModelTests {
     }
 
     @Test
-    func `if saving fails, it stays on step 2 to try again, and saves just once`() {
+    func `if saving fails, it stays on step 3 to try again, and saves just once`() {
         struct Failed: Error {}
-        let model = onWords(.neutral)
+        let model = onContexts(.neutral)
         var stored: [CheckIn] = []
 
         model.finish { _ in throw Failed() }
-        #expect(model.step == .feelings)
+        #expect(model.step == .contexts)
         #expect(model.saveFailed)
         #expect(model.suggestion == nil)
 
@@ -112,7 +137,7 @@ struct CheckInViewModelTests {
     @Test
     func `going back after a failed save clears the failure`() {
         struct Failed: Error {}
-        let model = onWords(.neutral)
+        let model = onContexts(.neutral)
         model.finish { _ in throw Failed() }
 
         model.back()
@@ -122,7 +147,7 @@ struct CheckInViewModelTests {
 
     @Test
     func `once saved, Done doesn't save again`() {
-        let model = onWords(.pleasant)
+        let model = onContexts(.pleasant)
         var stored: [CheckIn] = []
 
         model.finish { stored.append($0) }
@@ -136,10 +161,11 @@ struct CheckInViewModelTests {
         let model = onWords(.veryUnpleasant)
         model.toggle(.lonely)
         model.toggle(.hopeless)
+        model.next()
 
         model.finish { _ in }
 
-        #expect(model.summary.map { String(localized: $0) } == ["Very unpleasant", "Lonely", "Hopeless"])
+        #expect(model.summary == ["Very unpleasant", "Lonely", "Hopeless"])
     }
 
     @Test(arguments: [
@@ -150,7 +176,7 @@ struct CheckInViewModelTests {
         (.veryPleasant, "Noticing a good moment counts too. Your brain learns from what feels good."),
     ])
     func `the finish screen's line fits how it felt`(pleasantness: Pleasantness, line: String) {
-        let model = onWords(pleasantness)
+        let model = onContexts(pleasantness)
 
         model.finish { _ in }
 
@@ -161,6 +187,13 @@ struct CheckInViewModelTests {
     private func onWords(_ pleasantness: Pleasantness) -> CheckInViewModel {
         let model = CheckInViewModel()
         model.choose(pleasantness)
+        model.next()
+        return model
+    }
+
+    /// A check-in on step 3, after `pleasantness` and no words.
+    private func onContexts(_ pleasantness: Pleasantness) -> CheckInViewModel {
+        let model = onWords(pleasantness)
         model.next()
         return model
     }

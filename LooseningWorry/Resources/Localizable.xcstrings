@@ -1,8 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Add your own" : {},
-    "All done" : {},
+    "Add your own" : {
+
+    },
+    "All done" : {
+
+    },
     "checkIn.back" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -10,6 +14,72 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Back"
+          }
+        }
+      }
+    },
+    "checkIn.context.addLabel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add a context"
+          }
+        }
+      }
+    },
+    "checkIn.context.addPlaceholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "e.g. Moving house"
+          }
+        }
+      }
+    },
+    "checkIn.context.edit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit your contexts"
+          }
+        }
+      }
+    },
+    "checkIn.context.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Optional. Tap Done if none fits."
+          }
+        }
+      }
+    },
+    "checkIn.context.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn't save \"%@\" to your list, but it's in this check-in."
+          }
+        }
+      }
+    },
+    "checkIn.context.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What's having the biggest impact on you?"
           }
         }
       }
@@ -64,7 +134,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Pick any that fit. Naming it is already a step back from it."
+            "value" : "Optional. Tap Next if no word fits."
           }
         }
       }
@@ -201,8 +271,12 @@
         }
       }
     },
-    "Choose below" : {},
-    "Closed" : {},
+    "Choose below" : {
+
+    },
+    "Closed" : {
+
+    },
     "edit.add.cancel" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -298,6 +372,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Removed options stop showing in the logger. Past loops keep them, and you can restore them any time. To fix a typo, remove the option and add it again."
+          }
+        }
+      }
+    },
+    "edit.footnote.contexts" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Removed contexts stop showing in check-ins. Past check-ins keep them, and you can restore them any time. To fix a typo, remove the context and add it again."
           }
         }
       }
@@ -496,6 +581,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Your options"
+          }
+        }
+      }
+    },
+    "edit.title.contexts" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your contexts"
           }
         }
       }
@@ -918,7 +1014,9 @@
         }
       }
     },
-    "Home" : {},
+    "Home" : {
+
+    },
     "home.banner.choose" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1172,7 +1270,9 @@
         }
       }
     },
-    "Insights" : {},
+    "Insights" : {
+
+    },
     "insights.busiest" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1729,7 +1829,9 @@
         }
       }
     },
-    "Learn" : {},
+    "Learn" : {
+
+    },
     "learn.minutes" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -2126,17 +2228,8 @@
         }
       }
     },
-    "Log a loop" : {},
-    "log.addOwn.add" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Add"
-          }
-        }
-      }
+    "Log a loop" : {
+
     },
     "log.addOwn.notSaved" : {
       "extractionState" : "extracted_with_value",
@@ -2145,17 +2238,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Couldn't save \"%@\" to your list, but it's in this loop."
-          }
-        }
-      }
-    },
-    "log.addOwn.savedNote" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "It's saved to your list for next time."
           }
         }
       }
@@ -2266,17 +2348,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Add details (optional)"
-          }
-        }
-      }
-    },
-    "log.edit" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit"
           }
         }
       }
@@ -2398,28 +2469,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Nothing yet, I'm in it now"
-          }
-        }
-      }
-    },
-    "log.more" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "More"
-          }
-        }
-      }
-    },
-    "log.more.hint" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Shows the rest of the list"
           }
         }
       }
@@ -3221,7 +3270,9 @@
         }
       }
     },
-    "Not answered yet" : {},
+    "Not answered yet" : {
+
+    },
     "onboarding.continue" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -3618,7 +3669,64 @@
         }
       }
     },
-    "Open" : {},
+    "Open" : {
+
+    },
+    "option.addOwn.add" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "option.addOwn.savedNote" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It's saved to your list for next time."
+          }
+        }
+      }
+    },
+    "option.edit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit"
+          }
+        }
+      }
+    },
+    "option.more" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More"
+          }
+        }
+      }
+    },
+    "option.more.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Shows the rest of the list"
+          }
+        }
+      }
+    },
     "pleasantness.neutral" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -4066,6 +4174,204 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Snacked"
+          }
+        }
+      }
+    },
+    "starter.context.community" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Community"
+          }
+        }
+      }
+    },
+    "starter.context.currentEvents" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Current events"
+          }
+        }
+      }
+    },
+    "starter.context.dating" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dating"
+          }
+        }
+      }
+    },
+    "starter.context.education" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Education"
+          }
+        }
+      }
+    },
+    "starter.context.family" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Family"
+          }
+        }
+      }
+    },
+    "starter.context.fitness" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fitness"
+          }
+        }
+      }
+    },
+    "starter.context.friends" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Friends"
+          }
+        }
+      }
+    },
+    "starter.context.health" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Health"
+          }
+        }
+      }
+    },
+    "starter.context.hobbies" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Hobbies"
+          }
+        }
+      }
+    },
+    "starter.context.identity" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Identity"
+          }
+        }
+      }
+    },
+    "starter.context.money" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Money"
+          }
+        }
+      }
+    },
+    "starter.context.partner" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Partner"
+          }
+        }
+      }
+    },
+    "starter.context.selfCare" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Self-care"
+          }
+        }
+      }
+    },
+    "starter.context.spirituality" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Spirituality"
+          }
+        }
+      }
+    },
+    "starter.context.tasks" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tasks"
+          }
+        }
+      }
+    },
+    "starter.context.travel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Travel"
+          }
+        }
+      }
+    },
+    "starter.context.weather" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Weather"
+          }
+        }
+      }
+    },
+    "starter.context.work" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Work"
           }
         }
       }

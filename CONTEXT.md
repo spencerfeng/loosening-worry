@@ -9,14 +9,22 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   Breathe, Note it and Be kind. Each tool is shown in one hue from the theme (see ADR 0001), but the
   hue is not the tool's identity.
 - **Check-in**: a short record of how the person feels right now, started from the Check in row on Home (under "For
-  you today", above the lesson) or from the reminder after the course. Two steps: how it feels overall, on Apple's
-  seven-step State of Mind scale from very unpleasant to very pleasant, then any of HealthKit's 38 State of Mind
-  labels that describe it, with the ones that match the first answer listed first and the rest under More. The words
-  are fixed: unlike a loop's options, they can't be added to, hidden or reworded. It can be done any number of times a
-  day; Home shows today's count and the time of the last one. It never leads to the lesson. When the feeling is on the
-  unpleasant side, the finish screen suggests a tool chosen from the words picked (worry words to Get curious,
-  self-judgment to Be kind, heated words to Note it, drained to Breathe), with the other tools and Log a loop beside
-  it.
+  you today", above the lesson) or from the reminder after the course. Three steps: how it feels overall, on Apple's
+  seven-step State of Mind scale from very unpleasant to very pleasant; then, optionally, any of HealthKit's 38 State
+  of Mind labels that describe it, with the ones that match the first answer listed first and the rest behind More;
+  then, optionally, any **check-in contexts**. Going back clears what was picked on the step left; the step returned
+  to keeps its answer. The labels are fixed: unlike options, they can't be added to, hidden or reworded. It can be
+  done any number of times a day; Home shows today's count and the time of the last one. It never leads to the lesson.
+  When the feeling is on the unpleasant side, the finish screen suggests a tool chosen from the words picked (worry
+  words to Get curious, self-judgment to Be kind, heated words to Note it, drained to Breathe), with the other tools
+  and Log a loop beside it.
+- **Check-in context**: what's having the biggest impact on the person, the check-in's last step. Contexts are options
+  of their own kind (`OptionKind.context`). The starters are HealthKit's 18 State of Mind associations (Community,
+  Current events, … Work); the person's own sit among them, all listed alphabetically, and one just added, in the step
+  or on the Edit screen, is picked. Text left typed in the field when the person taps Done is added too. The person
+  adds their own in the step, kept for next time, and removes or restores any, starters included, on the Edit screen,
+  which shows only contexts when opened from the check-in. A check-in keeps each context's id and its text as it was,
+  like a loop.
 - **Reminder**: the daily notification, at a time the person picks during onboarding or in Settings
   (`ReminderSettings`, `ReminderScheduler`). During the course it names the next lesson; once every lesson is done it
   asks "How are you right now?" and opens the check-in. It's kept on each device, since each device asks for its own

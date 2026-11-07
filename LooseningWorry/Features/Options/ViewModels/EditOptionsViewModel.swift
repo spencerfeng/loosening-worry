@@ -1,9 +1,9 @@
 import Foundation
 import Observation
 
-/// The Edit options screen: one tab per step, listing the person's own options, the starters and what they removed,
-/// with a card for adding one of their own. Options can't be renamed; to fix a typo, the person removes the option
-/// and adds it again.
+/// The Edit options screen: one tab per loop step, or the check-in's contexts alone, listing the person's own options,
+/// the starters and what they removed, with a card for adding one of their own. Options can't be renamed; to fix a
+/// typo, the person removes the option and adds it again.
 @Observable @MainActor
 final class EditOptionsViewModel {
     /// The tab showing.
@@ -73,14 +73,14 @@ final class EditOptionsViewModel {
 
     // MARK: - Sections
 
-    /// The current tab's sections: the person's own, newest first; the starters, or step 3's core results; then
-    /// what they removed. Empty sections are left out.
+    /// The current tab's sections: the person's own, newest first, or for contexts alphabetical as the check-in lists
+    /// them; the starters, or step 3's core results; then what they removed. Empty sections are left out.
     func sections(saved: [LoopOption]) -> [EditSection] {
         let showing = OptionList.choices(for: kind, saved: saved)
         let starters = showing.filter { $0.starterID != nil }
-        let ownOldestFirst = showing.filter { $0.starterID == nil }
-        // The logger lists results oldest first; this screen lists everything newest first.
-        let own = kind == .result ? ownOldestFirst.reversed() : ownOldestFirst
+        let ownAsListed = showing.filter { $0.starterID == nil }
+        // The logger lists results oldest first; this screen lists them newest first, like triggers and behaviors.
+        let own = kind.choiceOrder == .startersFirst ? ownAsListed.reversed() : ownAsListed
         let removed = OptionList.removedChoices(for: kind, saved: saved)
         let showingTexts = Set(showing.map(\.label))
 

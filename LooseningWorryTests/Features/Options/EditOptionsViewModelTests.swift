@@ -29,6 +29,18 @@ struct EditOptionsViewModelTests {
         #expect(sections.flatMap(\.rows).allSatisfy { $0.action == .remove })
     }
 
+    @Test
+    func `the contexts tab lists the person's own alphabetically, as the check-in does`() {
+        let model = EditOptionsViewModel(kind: .context)
+        let saved = [own("Moving house", kind: .context, daysAgo: 30), own("Exams", kind: .context, daysAgo: 2)]
+
+        let sections = model.sections(saved: saved)
+
+        #expect(sections.map(\.kind) == [.yourOwn, .starters])
+        #expect(sections[0].rows.map(\.label) == ["Exams", "Moving house"])
+        #expect(sections[1].rows.count == StarterOption.options(for: .context).count)
+    }
+
     /// Step 3's core results can't be removed, so they're shown locked.
     @Test
     func `the results tab lists the core results, locked`() {

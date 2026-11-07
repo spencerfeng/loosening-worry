@@ -48,16 +48,13 @@ struct FeelingTests {
         "Joyful", "Passionate", "Peaceful", "Proud", "Relieved", "Satisfied", "Surprised",
     ]
 
-    /// Indifferent sits between the two sides, so the slightly steps offer it too.
+    /// Indifferent sits next to slightly unpleasant, so that step offers it too; the pleasant steps keep it under More.
     @Test(arguments: [
         (Pleasantness.veryUnpleasant, unpleasantWords),
         (.unpleasant, unpleasantWords),
         (.slightlyUnpleasant, (unpleasantWords + ["Indifferent"]).sorted()),
-        (.neutral, [
-            "Calm", "Content", "Drained", "Indifferent", "Peaceful", "Relieved", "Satisfied", "Stressed", "Surprised",
-            "Worried",
-        ]),
-        (.slightlyPleasant, (pleasantWords + ["Indifferent"]).sorted()),
+        (.neutral, ["Calm", "Content", "Drained", "Indifferent", "Peaceful"]),
+        (.slightlyPleasant, pleasantWords),
         (.pleasant, pleasantWords),
         (.veryPleasant, pleasantWords),
     ])

@@ -40,6 +40,26 @@ enum StarterID: String, CaseIterable, Sendable {
     case actuallyHelped = "result.actuallyHelped"
     case notSure = "result.notSure"
 
+    // The check-in's contexts: HealthKit's State of Mind associations, alphabetical.
+    case contextCommunity = "context.community"
+    case contextCurrentEvents = "context.currentEvents"
+    case contextDating = "context.dating"
+    case contextEducation = "context.education"
+    case contextFamily = "context.family"
+    case contextFitness = "context.fitness"
+    case contextFriends = "context.friends"
+    case contextHealth = "context.health"
+    case contextHobbies = "context.hobbies"
+    case contextIdentity = "context.identity"
+    case contextMoney = "context.money"
+    case contextPartner = "context.partner"
+    case contextSelfCare = "context.selfCare"
+    case contextSpirituality = "context.spirituality"
+    case contextTasks = "context.tasks"
+    case contextTravel = "context.travel"
+    case contextWeather = "context.weather"
+    case contextWork = "context.work"
+
     /// The step the starter belongs to, read from the id's prefix.
     var kind: OptionKind {
         guard let kind = OptionKind(rawValue: String(rawValue.prefix { $0 != "." })) else {
@@ -85,11 +105,30 @@ enum StarterID: String, CaseIterable, Sendable {
         case .actuallyHelped:
             LocalizedStringResource("starter.result.actuallyHelped", defaultValue: "It actually helped")
         case .notSure: LocalizedStringResource("starter.result.notSure", defaultValue: "Not sure")
+        case .contextCommunity: LocalizedStringResource("starter.context.community", defaultValue: "Community")
+        case .contextCurrentEvents:
+            LocalizedStringResource("starter.context.currentEvents", defaultValue: "Current events")
+        case .contextDating: LocalizedStringResource("starter.context.dating", defaultValue: "Dating")
+        case .contextEducation: LocalizedStringResource("starter.context.education", defaultValue: "Education")
+        case .contextFamily: LocalizedStringResource("starter.context.family", defaultValue: "Family")
+        case .contextFitness: LocalizedStringResource("starter.context.fitness", defaultValue: "Fitness")
+        case .contextFriends: LocalizedStringResource("starter.context.friends", defaultValue: "Friends")
+        case .contextHealth: LocalizedStringResource("starter.context.health", defaultValue: "Health")
+        case .contextHobbies: LocalizedStringResource("starter.context.hobbies", defaultValue: "Hobbies")
+        case .contextIdentity: LocalizedStringResource("starter.context.identity", defaultValue: "Identity")
+        case .contextMoney: LocalizedStringResource("starter.context.money", defaultValue: "Money")
+        case .contextPartner: LocalizedStringResource("starter.context.partner", defaultValue: "Partner")
+        case .contextSelfCare: LocalizedStringResource("starter.context.selfCare", defaultValue: "Self-care")
+        case .contextSpirituality: LocalizedStringResource("starter.context.spirituality", defaultValue: "Spirituality")
+        case .contextTasks: LocalizedStringResource("starter.context.tasks", defaultValue: "Tasks")
+        case .contextTravel: LocalizedStringResource("starter.context.travel", defaultValue: "Travel")
+        case .contextWeather: LocalizedStringResource("starter.context.weather", defaultValue: "Weather")
+        case .contextWork: LocalizedStringResource("starter.context.work", defaultValue: "Work")
         }
     }
 }
 
-/// An option the logger offers before the person adds their own.
+/// An option the logger or the check-in offers before the person adds their own.
 ///
 /// Starters live in code, not in SwiftData, so they translate, never duplicate across synced devices, and reach
 /// everyone in an app update. A person's removals are saved as `LoopOption` overrides keyed by `id`.

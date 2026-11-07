@@ -7,7 +7,7 @@ struct LogSummaryCard: View {
 
     var body: some View {
         VStack(spacing: 2) {
-            ForEach(OptionKind.allCases, id: \.self) { step in
+            ForEach(OptionKind.loopSteps, id: \.self) { step in
                 LogSummaryRow(
                     step: step,
                     isMeeting: step == .behavior && model.isMeeting,
@@ -42,7 +42,7 @@ private struct LogSummaryRow: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(isMeeting
                         ? LocalizedStringResource("log.meetIt.summaryLabel", defaultValue: "What you'll do")
-                        : step.logCopy.summaryLabel)
+                        : step.loopCopy.summaryLabel)
                         .textCase(.uppercase)
                         .font(.theme(.footnote))
                         .tracking(0.6)

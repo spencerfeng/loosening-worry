@@ -1,13 +1,18 @@
 import Foundation
 
-/// One choice the logger shows for a step.
-struct OptionChoice: Equatable {
+/// One choice a step shows: in the logger, or among the check-in's contexts.
+struct OptionChoice: Equatable, Sendable {
     /// What a loop stores to count this choice by: the starter's id, or the `optionID` of the person's own option.
     let id: String
     let label: String
     /// The ids of other options showing this same text, which the list shows once: copies synced from two devices,
     /// or a starter and one of the person's own. Loops logged with any of them count as this choice.
     var mergedIDs: [String] = []
+
+    /// Every id the choice shows: its own, then its merged copies'. A loop or check-in under any of them counts as it.
+    var allIDs: [String] {
+        [id] + mergedIDs
+    }
 
     /// Set when the choice is a starter.
     var starterID: StarterID? {
@@ -35,21 +40,19 @@ struct OptionChoice: Equatable {
     }
 }
 
-/// Combines the starters with what the person saved into the choices the logger shows.
+/// Combines the starters with what the person saved into the choices the logger and the check-in show.
 enum OptionList {
-    /// The person's own options come first, newest first, then the starters the person hasn't hidden, each in its own
-    /// words: options can't be renamed. Results are
-    /// the exception: step 3 never nudges the answer, so its core results always lead, in their fixed order, and the
-    /// person's own follow in the order they were added. Hidden options are left out, and each text (case included)
-    /// appears only once, in its first place, so a starter matching one of their own appears as theirs on steps 1
-    /// and 2, and as the starter on step 3. The ids of the copies left out go into the shown choice's `mergedIDs`.
+    /// The person's own options and the starters they haven't hidden, each in its own words (options can't be
+    /// renamed), in the kind's `choiceOrder`. Hidden options are left out, and each text (case included) appears only
+    /// once, so a starter matching one of their own appears as theirs, except on step 3, where the core results lead
+    /// and it appears as the starter. The ids of the copies left out go into the shown choice's `mergedIDs`.
     static func choices(for kind: OptionKind, saved: [LoopOption]) -> [OptionChoice] {
         let ofKind = saved.filter { $0.kind == kind }
         let starters = starterChoices(for: kind, overrides: winningOverrides(in: ofKind))
         let custom = customChoicesOldestFirst(in: ofKind)
-        let all = switch kind {
-        case .trigger, .behavior: custom.reversed() + starters
-        case .result: starters + custom
+        let all = switch kind.choiceOrder {
+        case .ownNewestFirst, .alphabetical: custom.reversed() + starters
+        case .startersFirst: starters + custom
         }
         var shown: [OptionChoice] = []
         var placeOfLabel: [String: Int] = [:]
@@ -61,7 +64,12 @@ enum OptionList {
                 shown.append(choice)
             }
         }
-        return shown
+        return kind.choiceOrder == .alphabetical ? alphabetical(shown) : shown
+    }
+
+    /// `choices` in alphabetical order in the person's language, as check-in contexts are listed.
+    static func alphabetical(_ choices: [OptionChoice]) -> [OptionChoice] {
+        choices.sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
     }
 
     /// The choice showing exactly `typed`, once spaces around it are trimmed: case and inner spaces count. The logger's

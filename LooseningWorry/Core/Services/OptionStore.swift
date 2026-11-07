@@ -38,7 +38,7 @@ struct OptionStore {
     /// keeping its full text so typing it again brings it back. Past loops keep it either way.
     /// - Throws: `EditError.coreResult` for a core result, which can't be removed.
     func remove(_ choice: OptionChoice) throws {
-        if Self.ids(of: choice).contains(where: { StarterID(rawValue: $0)?.kind == .result }) {
+        if choice.allIDs.contains(where: { StarterID(rawValue: $0)?.kind == .result }) {
             throw EditError.coreResult
         }
         let saved = try context.fetch(FetchDescriptor<LoopOption>())
@@ -66,10 +66,6 @@ struct OptionStore {
         try saveOrRollBack()
     }
 
-    private static func ids(of choice: OptionChoice) -> [String] {
-        [choice.id] + choice.mergedIDs
-    }
-
     /// Calls `starter` for each starter `choice` shows, and `own` for each of the person's own options it shows.
     private func forEachOption(
         showing choice: OptionChoice,
@@ -77,7 +73,7 @@ struct OptionStore {
         starter: (StarterID) -> Void,
         own: (LoopOption) -> Void,
     ) {
-        for id in Self.ids(of: choice) {
+        for id in choice.allIDs {
             if let starterID = StarterID(rawValue: id) {
                 starter(starterID)
             } else if let option = saved.first(where: { $0.optionID == id }) {
@@ -100,10 +96,10 @@ struct OptionStore {
     private func bringBack(_ option: LoopOption) {
         option.isHidden = false
         option.updatedAt = .now
-        // One of their own is listed by when it was added. On steps 1 and 2, newest first, so coming back puts it
-        // first, as a new one would be. Step 3 keeps the order they were added, so a result keeps its place. A starter
-        // keeps its place among the starters.
-        if option.isCustom, option.kind != .result {
+        // Where it's listed newest first, coming back puts it first, as a new one would be. Step 3 keeps the order
+        // they were added, so a result keeps its place; contexts are alphabetical. A starter keeps its place among the
+        // starters.
+        if option.isCustom, option.kind.choiceOrder == .ownNewestFirst {
             option.createdAt = .now
         }
     }

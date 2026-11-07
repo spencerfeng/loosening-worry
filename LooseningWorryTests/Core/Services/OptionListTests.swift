@@ -3,7 +3,7 @@ import Foundation
 import Testing
 
 struct OptionListTests {
-    @Test(arguments: [OptionKind.trigger, .behavior, .result])
+    @Test(arguments: OptionKind.loopSteps)
     func `with nothing saved, a kind offers its starters in order`(kind: OptionKind) {
         let choices = OptionList.choices(for: kind, saved: [])
 
@@ -11,6 +11,32 @@ struct OptionListTests {
         #expect(choices.map(\.label) == starters.map(\.text))
         #expect(choices.map(\.starterID) == starters.map(\.id))
         #expect(choices.map(\.id) == starters.map(\.id.rawValue))
+    }
+
+    @Test
+    func `check-in contexts list theirs among the starters, alphabetically`() {
+        let movingHouse = LoopOption(kind: .context, label: "Moving house")
+        let exams = LoopOption(kind: .context, label: "exams")
+        let hidden = LoopOption(overriding: .contextWeather, label: "Weather")
+        hidden.isHidden = true
+
+        let choices = OptionList.choices(for: .context, saved: [movingHouse, exams, hidden])
+
+        #expect(choices.map(\.label) == [
+            "Community", "Current events", "Dating", "Education", "exams", "Family", "Fitness", "Friends", "Health",
+            "Hobbies", "Identity", "Money", "Moving house", "Partner", "Self-care", "Spirituality", "Tasks", "Travel",
+            "Work",
+        ])
+    }
+
+    @Test
+    func `a context of theirs with a starter's text appears once, as theirs`() {
+        let own = LoopOption(kind: .context, label: "Work")
+
+        let work = OptionList.choices(for: .context, saved: [own]).filter { $0.label == "Work" }
+
+        #expect(work.map(\.id) == [own.optionID])
+        #expect(work.first?.mergedIDs == ["context.work"])
     }
 
     @Test

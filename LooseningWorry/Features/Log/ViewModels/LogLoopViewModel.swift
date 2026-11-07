@@ -12,12 +12,8 @@ final class LogLoopViewModel {
     private var lastAnswered: OptionKind?
     /// Counts every pick, so the logger can replay its feedback even when a step is answered again.
     private(set) var pickCount = 0
-    /// Whether the "+ Add your own" field is open for the current step.
-    private(set) var isAddingOwn = false
-    /// What the person has typed into that field.
-    var draft = ""
-    /// Text the person just added that was picked but couldn't be saved to their list; `nil` otherwise.
-    private(set) var unsavedOption: String?
+    /// The current step's "+ Add your own" field.
+    var ownDraft = AddOwnDraft()
     /// Whether the optional details card is open.
     private(set) var isShowingDetails = false
     /// How anxious the person felt, 0–10, or `nil` until they set it: an untouched slider records nothing.
@@ -43,15 +39,6 @@ final class LogLoopViewModel {
     /// Whether Save is offered: every step answered, none reopened, and not saved yet.
     var canSave: Bool {
         currentStep == nil && !isSaved
-    }
-
-    /// Whether the draft holds anything to add once spaces around it are trimmed.
-    var canAddOwn: Bool {
-        !trimmedDraft.isEmpty
-    }
-
-    private var trimmedDraft: String {
-        draft.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// Loops from the last 90 days, read when the logger opens, that steps 1 and 2 are ordered by.
@@ -136,13 +123,14 @@ final class LogLoopViewModel {
     /// never asks again for one already given.
     func pick(_ choice: OptionChoice) {
         guard let step = currentStep else { return }
-        closeAddOwn()
+        // The field belongs to one step, so it closes, dropping the draft, when the step is answered or left.
+        ownDraft.close()
         isShowingAllChoices = false
         stepOrder = nil
         answers[step] = choice
         pickCount += 1
         lastAnswered = step
-        currentStep = OptionKind.allCases.first { answers[$0] == nil }
+        currentStep = OptionKind.loopSteps.first { answers[$0] == nil }
     }
 
     /// What replays the summary card's pop for `step`: a new value on every pick that answers it, `nil` unless it was
@@ -153,7 +141,7 @@ final class LogLoopViewModel {
 
     /// "Nothing yet, I'm in it now": keeps the trigger and offers the tools instead of the habits.
     func meetIt() {
-        closeAddOwn()
+        ownDraft.close()
         isMeeting = true
     }
 
@@ -162,32 +150,19 @@ final class LogLoopViewModel {
         isMeeting = false
     }
 
-    func toggleAddOwn() {
-        isAddingOwn.toggle()
-        draft = ""
-        unsavedOption = nil
-    }
-
-    /// Saves the draft, trimmed, as the person's own option for the current step and picks it. Text that matches a
-    /// choice exactly, case included, picks that choice instead of saving a duplicate; blank text does nothing.
+    /// Saves the draft as the person's own option for the current step and picks it, as `AddOwnDraft.take` does.
     /// - Parameters:
     ///   - existing: The choices the step shows now.
     ///   - save: Stores a new option, given its step and its text, and returns the choice to pick. If it throws, the
-    ///     text is still picked under an id of its own, since the loop keeps its own copy, and `unsavedOption` tells
-    ///     the person it wasn't kept for next time.
+    ///     text is still picked, and the draft's `unsavedLabel` tells the person it wasn't kept for next time.
     func addOwn(existing: [OptionChoice], save: (OptionKind, String) throws -> OptionChoice) {
-        guard canAddOwn, let step = currentStep else { return }
-        let label = trimmedDraft
-        if let match = OptionList.match(label, in: existing) {
-            pick(match)
-            return
-        }
-        do {
-            try pick(save(step, label))
-        } catch {
-            Self.logger.error("Couldn't save an option the person added: \(error)")
-            pick(.unsavedOwn(label))
-            unsavedOption = label
+        guard
+            let step = currentStep,
+            let added = ownDraft.take(existing: existing, save: { try save(step, $0) })
+        else { return }
+        pick(added.choice)
+        if !added.isSaved {
+            ownDraft.unsavedLabel = added.choice.label
         }
     }
 
@@ -243,21 +218,13 @@ final class LogLoopViewModel {
 
     /// Reopens a step from the summary card, keeping its answer.
     func goTo(_ step: OptionKind) {
-        closeAddOwn()
+        ownDraft.close()
         isMeeting = false
         isShowingAllChoices = false
         stepOrder = nil
         // A failed save was about the loop as it stood; the person is changing it now.
         saveFailed = false
         currentStep = step
-    }
-
-    /// The field belongs to one step, so it closes, dropping the draft, when the step is answered or left. Any note
-    /// about the last added option goes with it.
-    private func closeAddOwn() {
-        isAddingOwn = false
-        draft = ""
-        unsavedOption = nil
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Log")
