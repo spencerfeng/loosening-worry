@@ -382,35 +382,35 @@ Log every loop you notice today. At "What did it actually give you?", take one b
 
 ## Day 12 · Worry is a habit, not a fact
 
-**Key idea:** a worried thought is not a prediction. · **Task:** note one worry that didn't come true.
+**Key idea:** a worried thought is a habit, not information. · **Task:** notice what worrying gave you.
 
 **Hook**
 
-Your partner is late home, and within two minutes your mind has written a whole story: the accident, the hospital, the phone call. Then the door opens.
+Your partner is late home, and within two minutes your mind has written a whole story: the accident, the hospital, the phone call. Your heart is pounding, though nothing has happened.
 
 **Idea 1 — Worry sounds certain**
 
 Worried thoughts often arrive sounding sure: "This will go badly." "They're upset with me." The certainty is part of the habit. It feels like information, but it's a pattern your mind has practiced.
 
-**Idea 2 — Check the track record**
+**Idea 2 — Look at what it gives you**
 
-Think back over this month's worries. How many came true the way the worry said they would? Most people find very few did, and the ones that did were rarely helped by the worrying.
+Think back over this month's worries. Whatever happened in the end, what did the worrying itself give you? Most people find it mostly left them tired and tense, whatever happened.
 
 **Idea 3 — A thought, not a fact**
 
 You don't have to prove a worried thought wrong. You can simply see it as a thought: "There's the worry habit again." That small step back makes it easier to hold lightly.
 
-**Example — Two small edits**
+**Example — The whole weekend**
 
-Kofi spent the whole weekend convinced his boss would tear his report apart. On Monday the feedback was two small edits and "Thanks, good work." He made a note of it, and the next time the same worry came up, he recognized it.
+Kofi spent the whole weekend replaying how his boss would tear his report apart. By Sunday night he was exhausted, and the report was exactly as he'd left it on Friday. He made a note of what the worrying gave him, and the next time it came up, he recognized it as the habit, not a warning.
 
 **Try it now (45 s)**
 
-Think of one thing you worried about last week. What did the worry predict? What actually happened?
+Think of one thing you worried about last week. Whatever happened in the end, what did all that worrying give you while it ran?
 
 **Today's task**
 
-Find one worry that didn't come true, or didn't turn out as badly as it said. Log it as a loop, then tap "Add details" and, under "How did it feel?", add a few words, like "it didn't happen, and the worry wore me out."
+The next time a worry runs today, log it. At "What did it actually give you?", pick what the worrying itself gave you, not how things turned out. Then tap "Add details" and, under "How did it feel?", add a few words, like "the worry wore me out."
 
 *Button: Log a loop*
 
@@ -606,7 +606,7 @@ Success here isn't fewer loops. Logging more can simply mean you're noticing mor
 
 **Example — What overthinking gave**
 
-Omar felt like nothing had changed. Then he looked at what "Overthought it" had given him over the past four weeks: more worry, nearly every time. Seeing it in one place made something click: "That habit really isn't doing what I thought."
+Omar felt like nothing had changed. Then he looked at what "Overthought it" had given him over the past four weeks: more worry, nearly every time. It surprised him, so the next time he caught himself overthinking, he paused to feel it: tight chest, racing head. That was when it really clicked: "This habit isn't doing what I thought."
 
 **Try it now (30 s)**
 
@@ -614,7 +614,7 @@ Think of one small change in the past week. A loop caught sooner? An urge that p
 
 **Today's task**
 
-Open Insights and look at your most common habit: what has it given you? Notice how it feels to see that in one place.
+Open Insights and look at your most common habit: what has it given you? Next time it shows up, notice whether it feels the way the numbers say.
 
 *Button: Open Insights*
 
@@ -670,7 +670,7 @@ Some habits loosen quickly. Others take longer, especially the ones you've pract
 
 **Idea 3 — What comes next**
 
-In stage 3 you'll use four tools that give your brain something better to do when a loop starts: curiosity, breathing, noting and kindness. You'll find them in Log a loop, under "Nothing yet, I'm in it now," and on Home under "Feeling it now?" They work best now, after you've seen what the old habits really give you.
+In stage 3 you'll use four tools that feel better than the old habit: curiosity, breathing, noting and kindness. You'll find them in Log a loop, under "Nothing yet, I'm in it now," and on Home under "Feeling it now?" They work best now, after you've seen what the old habits really give you.
 
 **Example — The letdown coming**
 
@@ -716,7 +716,7 @@ Notice any feeling in your body right now, even a small one. Say "Hmm…" and ge
 
 **Today's task**
 
-The next time a loop starts, tap +, choose what set it off, then "Nothing yet, I'm in it now" and Get curious. Follow it to the end and answer how you feel, so the app can show you which tools help.
+The next time a loop starts, tap +, choose what set it off, then "Nothing yet, I'm in it now" and Get curious. Follow it to the end and answer how you feel, so you can see how it compares with the old habit.
 
 *Button: Log a loop*
 
@@ -790,15 +790,15 @@ The next time you're caught in a loop, meet it with Note it from Log a loop, as 
 
 ## Day 24 · Breath as an anchor
 
-**Key idea:** slow breathing gives the body a calm signal. · **Task:** use Breathe before a stressful moment.
+**Key idea:** the breath gives your attention somewhere steady to rest. · **Task:** use Breathe before a stressful moment.
 
 **Hook**
 
 Before a hard phone call, you notice your breath is fast and high in your chest, as if you're already running.
 
-**Idea 1 — Breath talks to the body**
+**Idea 1 — Something steady**
 
-Anxiety speeds the breath up. Slowing it down, especially the out-breath, sends the opposite signal: there's no emergency right now.
+When anxiety rises, your attention gets pulled into the worried story. Following your breath, especially the slow out-breath, gives it somewhere steady to rest while you notice what's happening.
 
 **Idea 2 — An anchor, not a fix**
 
@@ -806,7 +806,7 @@ Slow breathing won't make worry disappear. Think of it as an anchor: something s
 
 **Idea 3 — Before helps too**
 
-Breathing helps in the middle of a loop, and it also helps just before a moment you know will be hard. A minute beforehand can take the edge off.
+Breathing helps in the middle of a loop, and it also helps just before a moment you know will be hard. A minute beforehand helps you go into it with your attention steady.
 
 **Example — Ten minutes to ten**
 

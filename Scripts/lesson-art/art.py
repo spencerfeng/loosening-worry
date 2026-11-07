@@ -502,20 +502,17 @@ ART['day12.hook'] = (VT, f'<rect x="70" y="40" width="80" height="140" rx="8" fi
     + cloud(236, 76, 1.6, '#8A73EE') + f'<path d="M240 92 l-14 22 h14 l-8 20 22 -28 h-14 l8 -14z" fill="{A}"/>' + clock(196, 150, 18, V) + spark(296, 150, G, 0.6))
 ART['day12.idea1'] = (AT, f'<path d="M90 82 L190 46 V154 L90 118z" fill="{V}"/><rect x="66" y="80" width="30" height="40" rx="8" fill="#8A73EE"/>'
     + outline(f'<text x="246" y="124" text-anchor="middle" font-size="60" font-weight="800" fill="{R}">!</text>') + spark(290, 46, G, 0.7))
-ART['day12.idea2'] = (BT, f'<rect x="96" y="28" width="150" height="148" rx="14" fill="{W}"/>'
-    + ''.join((check(122, 54+i*30, 10) if i == 2 else f'<circle cx="122" cy="{54+i*30}" r="10" fill="{BL}"/><path d="M117 {49+i*30}l10 10m0 -10l-10 10" stroke="{W}" stroke-width="3" stroke-linecap="round"/>')
-              + f'<rect x="142" y="{50+i*30}" width="{84-i*6}" height="8" rx="4" fill="{BL}"/>' for i in range(5)) + spark(286, 50, A, 0.7))
+ART['day12.idea2'] = (BT, refresh(171, 100, 64, BS, 10) + cloud(171, 106, 1.2, '#8A73EE')
+    + wave(146, 150, 50, 6, R, 5, 2))
 ART['day12.idea3'] = (GT, cloud(150, 86, 1.9, W) + f'<path d="M196 116 L230 140" stroke="{TAN}" stroke-width="3"/>'
     + f'<g transform="translate(250 150) rotate(20)"><path d="M-30 -16 H18 L32 0 L18 16 H-30z" fill="{G}"/><circle cx="18" cy="0" r="4" fill="{GT}"/></g>' + spark(70, 160, A, 0.7))
 ART['day12.example'] = (VT, f'<rect x="96" y="26" width="120" height="152" rx="12" fill="{W}"/>' + lines(114, 50, [84, 70, 84, 60, 80, 52], c=VL, gap=18)
-    + f'<path d="M110 82 h40" stroke="{R}" stroke-width="3"/><path d="M180 118 q8 -10 16 0" fill="none" stroke="{R}" stroke-width="3"/>'
-    + check(238, 140, 22) + spark(276, 50, A, 0.8))
-ART['day12.try'] = (AT, f'<rect x="50" y="50" width="100" height="100" rx="18" fill="{W}"/>' + cloud(100, 96, 0.85, '#8A73EE') + f'<path d="M100 108 l-8 14 h8 l-4 12 14 -18 h-8 l4 -8z" fill="{A}"/>'
+    + moon(256, 52, 18, V, VT) + wave(226, 150, 60, 8, R, 5, 2))
+ART['day12.try'] = (AT, f'<rect x="50" y="50" width="100" height="100" rx="18" fill="{W}"/>' + cloud(100, 96, 0.85, '#8A73EE')
     + f'<path d="M162 100 H182" stroke="{TAN}" stroke-width="6" stroke-linecap="round"/>' + arrowhead(188, 100, 0, TAN)
-    + f'<rect x="196" y="50" width="100" height="100" rx="18" fill="{W}"/><circle cx="246" cy="100" r="22" fill="{A}"/>'
-    + ''.join(f'<path d="M{246+30*math.cos(math.radians(a)):.1f} {100+30*math.sin(math.radians(a)):.1f}L{246+38*math.cos(math.radians(a)):.1f} {100+38*math.sin(math.radians(a)):.1f}" stroke="{A}" stroke-width="4" stroke-linecap="round"/>' for a in range(0, 360, 45)))
-ART['day12.task'] = (BT, notebook() + f'<circle cx="244" cy="56" r="16" fill="{A}"/>'
-    + ''.join(f'<path d="M{244+21*math.cos(math.radians(a)):.1f} {56+21*math.sin(math.radians(a)):.1f}L{244+28*math.cos(math.radians(a)):.1f} {56+28*math.sin(math.radians(a)):.1f}" stroke="{A}" stroke-width="4" stroke-linecap="round"/>' for a in range(0, 360, 45))
+    + f'<rect x="196" y="50" width="100" height="100" rx="18" fill="{W}"/>' + wave(212, 92, 68, 14, R, 6, 2)
+    + wave(220, 116, 52, 10, R, 6, 2))
+ART['day12.task'] = (BT, notebook() + cloud(244, 60, 0.8, '#8A73EE')
     + pencil(240, 134) + spark(84, 60, V, 0.8))
 
 # Day 13 · Feel it in your body
