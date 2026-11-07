@@ -5,6 +5,7 @@ and sets each card's `tint` in lessons.json to its drawing's panel, so a card sh
 """
 import json
 import pathlib
+import re
 import shutil
 
 import art
@@ -14,10 +15,15 @@ FOLDER = ROOT / 'LooseningWorry/Resources/Assets.xcassets/Lessons'
 LESSONS = ROOT / 'LooseningWorry/Resources/lessons.json'
 TINTS = {art.VT: 'violet', art.BT: 'blue', art.AT: 'amber', art.GT: 'green'}
 
-# Dark mode: the panel tints (used inside the art for cut-outs) and the deeper hues take the theme's dark values.
+# Dark mode: the panel tints (used inside the art for cut-outs) and the deeper hues take the theme's dark values, with
+# two exceptions so a hue never meets the lighter shade drawn beside it:
+# - the light violet and light blue get dark values of their own, as violet and blue lighten onto them: VS borrows
+#   VM's, and BS takes a brighter sky blue;
+# - deep green keeps its light value, as every lighter green met G or the pale greens; it still stands 3:1 off each panel.
 DARK = {
     art.VT: '#2A2347', art.BT: '#1E2B47', art.AT: '#3A2C17', art.GT: '#17322A',
-    art.V: '#8A73EE', art.GD: '#5CC48F', art.B: '#4C82F0',
+    art.V: '#8A73EE', art.B: '#4C82F0',
+    art.VS: art.VM, art.BS: '#47AAF5',
 }
 
 
@@ -27,9 +33,8 @@ def svg(body):
 
 
 def dark(text):
-    for light, night in DARK.items():
-        text = text.replace(f'"{light}"', f'"{night}"')
-    return text
+    # One pass, so a color swapped in is never swapped again: violet's dark value is VS's light one.
+    return re.sub(r'"(#[0-9A-F]{6})"', lambda m: f'"{DARK.get(m[1], m[1])}"', text)
 
 
 def main():
