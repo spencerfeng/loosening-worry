@@ -126,10 +126,11 @@ struct InsightsReportTests {
         #expect(report(loops).busiestHours == 6)
     }
 
-    /// What the habit logged most gave the person: of its loops with a clear result, how many brought more worry,
-    /// tension or no change. "Not sure" and the person's own results say nothing either way, so they're left out.
+    /// What the habit logged most gave the person: of all its loops, how many brought more worry, tension or no
+    /// change, as on the trigger page. "Not sure" and the person's own results count toward the total, never as no
+    /// better.
     @Test
-    func `the habit card counts what the top behavior gave, among clear results`() throws {
+    func `the habit card counts what the top behavior gave, out of every time`() throws {
         let overthought = ("behavior.overthought", "Overthought it")
         let checked = ("behavior.keptChecking", "Kept checking")
         let loops = [
@@ -144,9 +145,29 @@ struct InsightsReportTests {
         let habit = try #require(report(loops).habit)
 
         #expect(habit.label == "Overthought it")
+        #expect(habit.total == 5)
         #expect(habit.clearResults == 3)
         #expect(habit.unrewarding == 2)
         #expect(habit.hasEnough)
+    }
+
+    /// Three clear results are enough to speak, however many "Not sure" sit beside them, and they all count toward the
+    /// total, so the card reads "2 of 5".
+    @Test
+    func `the habit card speaks after three clear results, counting the unsure ones too`() throws {
+        let loops = [
+            loop(date(day: 26, hour: 8), result: ("result.moreWorry", "More worry")),
+            loop(date(day: 26, hour: 9), result: ("result.notSure", "Not sure")),
+            loop(date(day: 26, hour: 10), result: ("result.littleRelief", "A little relief")),
+            loop(date(day: 27, hour: 9), result: ("result.notSure", "Not sure")),
+            loop(date(day: 27, hour: 10), result: ("result.nothingChanged", "Nothing changed")),
+        ]
+
+        let habit = try #require(report(loops).habit)
+
+        #expect(habit.hasEnough)
+        #expect(habit.total == 5)
+        #expect(habit.unrewarding == 2)
     }
 
     /// Meeting the urge with a tool isn't a habit to see through, so the card never names one.

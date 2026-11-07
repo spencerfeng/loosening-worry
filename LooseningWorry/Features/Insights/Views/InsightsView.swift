@@ -269,10 +269,10 @@ private struct HabitCard: View {
             )
         }
         let span = String(localized: period.span)
-        let (unrewarding, clear) = (habit.unrewarding, habit.clearResults)
+        let (unrewarding, total) = (habit.unrewarding, habit.total)
         return LocalizedStringResource(
             "insights.habit.detail",
-            defaultValue: "\(unrewarding) of \(clear) times \(span), it brought more worry, tension, or no change.",
+            defaultValue: "\(unrewarding) of \(total) times \(span), it brought more worry, tension, or no change.",
         )
     }
 
@@ -282,10 +282,10 @@ private struct HabitCard: View {
             Circle()
                 .stroke(.theme(.border), lineWidth: 6)
             Circle()
-                .trim(from: 0, to: Double(habit.unrewarding) / Double(max(habit.clearResults, 1)))
+                .trim(from: 0, to: Double(habit.unrewarding) / Double(max(habit.total, 1)))
                 .stroke(.theme(.greenFill), style: StrokeStyle(lineWidth: 6, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-            Text(verbatim: "\(habit.unrewarding)/\(habit.clearResults)")
+            Text(verbatim: "\(habit.unrewarding)/\(habit.total)")
                 .font(.theme(.subheadline))
                 .foregroundStyle(.theme(.greenStrong))
         }

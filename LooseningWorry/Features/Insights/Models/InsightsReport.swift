@@ -49,13 +49,17 @@ struct InsightsReport {
         let count: Int
     }
 
-    /// What the habit logged most gave the person, among its loops with a clear result.
+    /// What the habit logged most gave the person, out of every time it ran, as the trigger page counts. Unlike that
+    /// page, the card waits for three clear results before it speaks.
     struct Habit: Equatable {
         /// As last worded.
         let label: String
+        /// Every loop of it in the period.
+        let total: Int
         /// How many of its loops have a result that says how it went: a core result other than "Not sure".
         let clearResults: Int
-        /// Of those, the ones that brought more worry, tension or no change.
+        /// The ones that brought more worry, tension or no change. "Not sure" and the person's own results count
+        /// toward `total`, never here.
         let unrewarding: Int
 
         /// Three clear results before the card speaks, so it doesn't draw a lesson from one or two.
@@ -206,10 +210,13 @@ struct InsightsReport {
     var habit: Habit? {
         let habits = loops.filter { $0.metWithTool == nil }
         guard let top = ranked(habits, by: \.behaviorID, label: \.behaviorLabel).first else { return nil }
-        let clear = habits.filter { choiceID($0.behaviorID) == top.id }
-            .map { ResultOutcome(resultID: $0.resultID) }
-            .filter { $0 != .unclear }
-        return Habit(label: top.label, clearResults: clear.count, unrewarding: clear.count { $0 == .noBetter })
+        let outcomes = habits.filter { choiceID($0.behaviorID) == top.id }.map { ResultOutcome(resultID: $0.resultID) }
+        return Habit(
+            label: top.label,
+            total: outcomes.count,
+            clearResults: outcomes.count { $0 != .unclear },
+            unrewarding: outcomes.count { $0 == .noBetter },
+        )
     }
 
     private func choiceID(_ id: String) -> String {
