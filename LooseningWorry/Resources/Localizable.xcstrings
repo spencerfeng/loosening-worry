@@ -4570,7 +4570,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Is the voice harsh, or kind? Just notice. You don't need to change it."
+            "value" : "Is the voice harsh, or kind? Notice how it feels in your body. You don't need to change it."
           }
         }
       }
@@ -4658,7 +4658,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Come back to it whenever the harsh voice returns."
+            "value" : "Notice how these words feel next to the harsh voice. Come back to them whenever it returns."
           }
         }
       }
@@ -4713,7 +4713,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Words that helped before."
+            "value" : "Kind words you've kept."
           }
         }
       }
@@ -4922,7 +4922,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "That's kindness at work. Your brain just noticed warmth feels better than worry."
+            "value" : "That's kindness at work. Your brain just noticed warmth feels better than judgment."
           }
         }
       }

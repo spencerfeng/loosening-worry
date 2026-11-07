@@ -203,7 +203,7 @@ private struct BeKindReading: View {
                     title: LocalizedStringResource("tool.beKind.yourPhrases", defaultValue: "Your phrases"),
                     guide: LocalizedStringResource(
                         "tool.beKind.yourPhrases.guide",
-                        defaultValue: "Words that helped before.",
+                        defaultValue: "Kind words you've kept.",
                     ),
                 )
                 ForEach(beKind.readingList, id: \.self) { phrase in

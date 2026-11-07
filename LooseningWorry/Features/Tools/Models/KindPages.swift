@@ -2,8 +2,10 @@ import Foundation
 
 /// Be kind's pages: the self-compassion break (Neff and Germer's Mindful Self-Compassion), noticing how you're talking
 /// to yourself, a kind touch, then that it's hard, that others feel this too, and kindness; then what you'd say to a
-/// friend, and something to take away. Invitations, never instructions: every page can be passed by. The wording is
-/// Claude's draft from that practice and clinical writing; worth a clinician's review before launch.
+/// friend, and something to take away. As in Brewer's approach, the person feels what the harsh voice does in the body
+/// and how kindness feels beside it, because that felt difference is what loosens the self-judgment habit.
+/// Invitations, never instructions: every page can be passed by. The wording is Claude's draft from that practice and
+/// clinical writing; worth a clinician's review before launch.
 enum KindPage: CaseIterable {
     case notice, touch, hard, notAlone, kindness, friend, takeAway
 
@@ -45,7 +47,9 @@ enum KindPage: CaseIterable {
         case .notice:
             LocalizedStringResource(
                 "tool.beKind.notice.guide",
-                defaultValue: "Is the voice harsh, or kind? Just notice. You don't need to change it.",
+                defaultValue: """
+                Is the voice harsh, or kind? Notice how it feels in your body. You don't need to change it.
+                """,
             )
         case .touch:
             LocalizedStringResource(
@@ -75,7 +79,9 @@ enum KindPage: CaseIterable {
         case .takeAway:
             LocalizedStringResource(
                 "tool.beKind.takeAway.guide",
-                defaultValue: "Come back to it whenever the harsh voice returns.",
+                defaultValue: """
+                Notice how these words feel next to the harsh voice. Come back to them whenever it returns.
+                """,
             )
         }
     }

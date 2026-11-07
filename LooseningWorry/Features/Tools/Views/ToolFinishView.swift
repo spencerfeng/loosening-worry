@@ -319,7 +319,7 @@ private extension QuickTool {
         case (.lighter, .beKind):
             LocalizedStringResource(
                 "tool.finish.lighter.beKind",
-                defaultValue: "That's kindness at work. Your brain just noticed warmth feels better than worry.",
+                defaultValue: "That's kindness at work. Your brain just noticed warmth feels better than judgment.",
             )
         case (.same, _):
             LocalizedStringResource(

@@ -159,7 +159,7 @@ final class BeKindViewModelTests {
         #expect(model.takeAway == "It's okay to find this hard.")
     }
 
-    /// Kind words that helped before are the fastest way back to kindness, so they're offered first.
+    /// Kind words the person has kept are the fastest way back to kindness, so they're offered first.
     @Test
     func `with phrases kept, it opens on a choice between going through it and reading them`() throws {
         try store.keep("This is hard right now.", now: start)
