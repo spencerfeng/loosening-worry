@@ -214,7 +214,8 @@ private struct FollowedCard: View {
                         .foregroundStyle(.theme(.textPrimary))
                     Spacer()
                     Text(followed.count, format: .number)
-                        .foregroundStyle(.theme(.textSecondary))
+                        .fontWeight(.bold)
+                        .foregroundStyle(.theme(.textPrimary))
                 }
                 .font(.theme(.body))
                 .accessibilityElement(children: .combine)
@@ -263,11 +264,11 @@ private struct ShareRow: View {
                 HStack {
                     Text(name).foregroundStyle(.theme(.textPrimary))
                     Spacer()
-                    Text(line).foregroundStyle(.theme(.textSecondary))
+                    Text(line).foregroundStyle(.theme(.textTertiary))
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(name).foregroundStyle(.theme(.textPrimary))
-                    Text(line).foregroundStyle(.theme(.textSecondary))
+                    Text(line).foregroundStyle(.theme(.textTertiary))
                 }
             }
             .font(.theme(.callout))
