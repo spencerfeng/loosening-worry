@@ -219,9 +219,45 @@ final class LogLoopViewModel {
     /// The levels the person can pick from.
     static let anxietyRange = 0 ... 10
 
-    /// Sets how anxious the person felt, kept within `anxietyRange`.
+    /// Sets how anxious the person felt, kept within `anxietyRange`, as dragging along the levels does.
     func setAnxiety(_ level: Int) {
         anxiety = min(max(level, Self.anxietyRange.lowerBound), Self.anxietyRange.upperBound)
+    }
+
+    /// The level under a touch on the row of levels: equal cells with `spacing` between them. A touch in a gap counts
+    /// as
+    /// the nearer cell, and one past either end as that end.
+    static func anxietyLevel(atX x: Double, rowWidth: Double, spacing: Double) -> Int {
+        let count = anxietyRange.count
+        let pitch = (rowWidth - spacing * Double(count - 1)) / Double(count) + spacing
+        // Each boundary falls in the middle of a gap.
+        let index = Int(((x + spacing / 2) / max(pitch, 1)).rounded(.down))
+        return anxietyRange.lowerBound + min(max(index, 0), count - 1)
+    }
+
+    /// One step up or down, as VoiceOver's adjustable control moves: up from unset starts at the lowest level, and down
+    /// from the lowest goes back to unset, as a second tap does on screen.
+    func stepAnxiety(by step: Int) {
+        guard let anxiety else {
+            if step > 0 {
+                setAnxiety(Self.anxietyRange.lowerBound)
+            }
+            return
+        }
+        if anxiety + step < Self.anxietyRange.lowerBound {
+            self.anxiety = nil
+        } else {
+            setAnxiety(anxiety + step)
+        }
+    }
+
+    /// A tap on a level: picks it, or, if it's the one already picked, takes it back.
+    func pickAnxiety(_ level: Int) {
+        if anxiety == level {
+            anxiety = nil
+        } else {
+            setAnxiety(level)
+        }
     }
 
     /// Reopens a step from the summary card, keeping its answer.

@@ -85,13 +85,16 @@ struct LogLoopView: View {
                             }
                             LogDetails(
                                 isShowing: model.isShowingDetails,
-                                anxiety: model.anxiety,
+                                anxiety: AnxietyControl(
+                                    level: model.anxiety,
+                                    set: { model.setAnxiety($0) },
+                                    pick: { model.pickAnxiety($0) },
+                                    step: { model.stepAnxiety(by: $0) },
+                                ),
                                 note: $model.note,
                                 isNoteFocused: $isNoteFocused,
                             ) {
                                 withAnimation(stepAnimation) { model.toggleDetails() }
-                            } setAnxiety: { level in
-                                model.setAnxiety(level)
                             } noteGrew: {
                                 // Its new last line would otherwise slide under the keyboard.
                                 withAnimation(stepAnimation) {

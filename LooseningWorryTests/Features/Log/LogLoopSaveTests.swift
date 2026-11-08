@@ -197,7 +197,7 @@ struct LogLoopNoticedTests {
 
 @MainActor
 struct LogLoopDetailsTests {
-    /// A slider always shows a number, so opening the details must not record one the person never chose.
+    /// Opening the details must not record a level the person never chose.
     @Test
     func `the anxiety level stays unset until the person sets it`() throws {
         let model = finishedModel()
@@ -220,6 +220,55 @@ struct LogLoopDetailsTests {
         model.setAnxiety(level)
 
         #expect(model.anxiety == kept)
+    }
+
+    /// Tapping the chosen level again takes it back, so a level picked by mistake needn't be saved.
+    @Test
+    func `picking the chosen level again clears it`() {
+        let model = finishedModel()
+        model.toggleDetails()
+        model.pickAnxiety(6)
+        #expect(model.anxiety == 6)
+
+        model.pickAnxiety(6)
+
+        #expect(model.anxiety == nil)
+        model.pickAnxiety(3)
+        #expect(model.anxiety == 3)
+        model.pickAnxiety(8)
+        #expect(model.anxiety == 8)
+    }
+
+    /// The row is 11 cells of equal width with 3-point gaps; a touch counts as the cell it's in, or, in a gap, the
+    /// nearer
+    /// one, and anything past an end as that end.
+    @Test(arguments: [
+        (0.0, 0), (24.0, 0), (25.9, 0), (26.5, 1), (150.0, 5), (299.0, 10), (-20.0, 0), (340.0, 10),
+    ])
+    func `a touch on the row counts as the cell under it`(x: Double, level: Int) {
+        #expect(LogLoopViewModel.anxietyLevel(atX: x, rowWidth: 300, spacing: 3) == level)
+    }
+
+    /// VoiceOver moves through the levels one step at a time: up from "Not set" starts at 0, and down from 0 goes back
+    /// to "Not set", as a second tap does on screen.
+    @Test
+    func `stepping through the levels starts at 0 and steps back to unset`() {
+        let model = finishedModel()
+        model.toggleDetails()
+
+        model.stepAnxiety(by: 1)
+        #expect(model.anxiety == 0)
+        model.stepAnxiety(by: 1)
+        #expect(model.anxiety == 1)
+        model.stepAnxiety(by: -1)
+        model.stepAnxiety(by: -1)
+        #expect(model.anxiety == nil)
+        model.stepAnxiety(by: -1)
+        #expect(model.anxiety == nil)
+
+        model.setAnxiety(10)
+        model.stepAnxiety(by: 1)
+        #expect(model.anxiety == 10)
     }
 
     @Test(arguments: [("  Before the 1:1 \n", "Before the 1:1"), ("   ", nil), ("", nil)])

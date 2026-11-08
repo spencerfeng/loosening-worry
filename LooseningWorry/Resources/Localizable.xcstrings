@@ -2598,7 +2598,29 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "How anxious, 0–10"
+            "value" : "How anxious were you?"
+          }
+        }
+      }
+    },
+    "log.details.anxiety.high" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Extremely"
+          }
+        }
+      }
+    },
+    "log.details.anxiety.low" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Not at all"
           }
         }
       }
