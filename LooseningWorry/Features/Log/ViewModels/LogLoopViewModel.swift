@@ -8,6 +8,8 @@ final class LogLoopViewModel {
     /// The step being asked, or `nil` once all three are answered.
     private(set) var currentStep: OptionKind? = .trigger
     private var answers: [OptionKind: OptionChoice] = [:]
+    /// Which way the last move between steps went.
+    private(set) var direction = StepDirection.forward
     /// The step answered last; `nil` until the first pick.
     private var lastAnswered: OptionKind?
     /// Counts every pick, so the logger can replay its feedback even when a step is answered again.
@@ -123,6 +125,7 @@ final class LogLoopViewModel {
     /// never asks again for one already given.
     func pick(_ choice: OptionChoice) {
         guard let step = currentStep else { return }
+        let before = place
         // The field belongs to one step, so it closes, dropping the draft, when the step is answered or left.
         ownDraft.close()
         isShowingAllChoices = false
@@ -131,6 +134,7 @@ final class LogLoopViewModel {
         pickCount += 1
         lastAnswered = step
         currentStep = OptionKind.loopSteps.first { answers[$0] == nil }
+        setDirection(from: before)
     }
 
     /// What replays the summary card's pop for `step`: a new value on every pick that answers it, `nil` unless it was
@@ -141,13 +145,17 @@ final class LogLoopViewModel {
 
     /// "Nothing yet, I'm in it now": keeps the trigger and offers the tools instead of the habits.
     func meetIt() {
+        let before = place
         ownDraft.close()
         isMeeting = true
+        setDirection(from: before)
     }
 
     /// Back from the tools to the habits, keeping the trigger.
     func stopMeeting() {
+        let before = place
         isMeeting = false
+        setDirection(from: before)
     }
 
     /// Saves the draft as the person's own option for the current step and picks it, as `AddOwnDraft.take` does.
@@ -218,6 +226,7 @@ final class LogLoopViewModel {
 
     /// Reopens a step from the summary card, keeping its answer.
     func goTo(_ step: OptionKind) {
+        let before = place
         ownDraft.close()
         isMeeting = false
         isShowingAllChoices = false
@@ -225,6 +234,21 @@ final class LogLoopViewModel {
         // A failed save was about the loop as it stood; the person is changing it now.
         saveFailed = false
         currentStep = step
+        setDirection(from: before)
+    }
+
+    /// Where the person is, for telling which way a move went: the step being asked, the tools just past step 2, and
+    /// past the last step once every step is answered.
+    private var place: Double {
+        guard let currentStep, let index = OptionKind.loopSteps.firstIndex(of: currentStep) else {
+            return Double(OptionKind.loopSteps.count)
+        }
+        return Double(index) + (isMeeting ? 0.5 : 0)
+    }
+
+    /// Sets `direction` from where the person was before a move to where they are now.
+    private func setDirection(from before: Double) {
+        direction = place < before ? .back : .forward
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "Log")

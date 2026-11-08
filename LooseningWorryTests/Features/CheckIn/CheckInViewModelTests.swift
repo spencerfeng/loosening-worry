@@ -19,6 +19,41 @@ struct CheckInViewModelTests {
     }
 
     @Test
+    func `a check-in starts moving forward`() {
+        #expect(CheckInViewModel().direction == .forward)
+    }
+
+    @Test
+    func `going back moves back`() {
+        let model = onWords(.unpleasant)
+
+        model.back()
+
+        #expect(model.direction == .back)
+    }
+
+    @Test
+    func `going back from step 3 moves back`() {
+        let model = onWords(.unpleasant)
+        model.next()
+
+        model.back()
+
+        #expect(model.step == .feelings)
+        #expect(model.direction == .back)
+    }
+
+    @Test
+    func `going on after going back moves forward`() {
+        let model = onWords(.unpleasant)
+        model.back()
+
+        model.next()
+
+        #expect(model.direction == .forward)
+    }
+
+    @Test
     func `before step 1 is answered there are no words, chips or closing line yet`() {
         let model = CheckInViewModel()
 

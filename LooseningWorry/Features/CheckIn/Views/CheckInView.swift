@@ -141,9 +141,11 @@ struct CheckInView: View {
         reduceMotion ? nil : .easeOut(duration: 0.28)
     }
 
+    /// A step comes in from the side it lies on: a later one from the trailing edge, an earlier one, after Back,
+    /// from the leading edge. The step it replaces fades.
     private var stepTransition: AnyTransition {
         reduceMotion ? .opacity : .asymmetric(
-            insertion: .move(edge: .trailing).combined(with: .opacity),
+            insertion: .move(edge: model.direction == .back ? .leading : .trailing).combined(with: .opacity),
             removal: .opacity,
         )
     }

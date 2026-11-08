@@ -14,6 +14,8 @@ final class CheckInViewModel {
     }
 
     private(set) var step = Step.pleasantness
+    /// Which way the last move between steps went.
+    private(set) var direction = StepDirection.forward
     /// Step 1's answer, once chosen.
     private(set) var pleasantness: Pleasantness?
     /// Step 2's words, in the order they were picked.
@@ -159,8 +161,9 @@ final class CheckInViewModel {
         switch step {
         case .pleasantness where pleasantness != nil: step = .feelings
         case .feelings: step = .contexts
-        default: break
+        default: return
         }
+        direction = .forward
     }
 
     /// Step 3's Done: saves the check-in through `store`, then shows the finish screen. If `store` throws, it stays
@@ -200,8 +203,9 @@ final class CheckInViewModel {
             saveFailed = false
             ownDraft.close()
             step = .feelings
-        default: break
+        default: return
         }
+        direction = .back
     }
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "LooseningWorry", category: "CheckIn")

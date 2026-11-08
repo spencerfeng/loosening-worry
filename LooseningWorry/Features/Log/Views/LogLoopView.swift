@@ -205,10 +205,12 @@ struct LogLoopView: View {
         .easeOut(duration: reduceMotion ? 0.2 : 0.28)
     }
 
-    /// The next question slides in from the right; the one it replaces leaves at once, so the two never overlap.
+    /// A later question slides in from the trailing side, an earlier one, reopened or returned to, from the leading
+    /// side (an x offset follows the layout direction); the one it replaces leaves at once, so the two never overlap.
     private var questionTransition: AnyTransition {
         .asymmetric(
-            insertion: reduceMotion ? .opacity : .offset(x: 28).combined(with: .opacity),
+            insertion: reduceMotion ? .opacity : .offset(x: model.direction == .back ? -28 : 28)
+                .combined(with: .opacity),
             removal: .identity,
         )
     }
