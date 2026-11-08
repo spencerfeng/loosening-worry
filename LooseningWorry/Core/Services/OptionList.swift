@@ -77,6 +77,19 @@ enum OptionList {
         choices.sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
     }
 
+    /// Each id an option of `kind` was logged under, mapped to the one choice that stands for it: the choice showing it
+    /// now, or the one the Removed list shows it under. History counts by it, so copies of one text count as one.
+    static func choicesByID(for kind: OptionKind, saved: [LoopOption]) -> [String: OptionChoice] {
+        var byID: [String: OptionChoice] = [:]
+        // Removed first, so a choice showing now wins for an id both list.
+        for choice in removedChoices(for: kind, saved: saved) + choices(for: kind, saved: saved) {
+            for id in choice.allIDs {
+                byID[id] = choice
+            }
+        }
+        return byID
+    }
+
     /// The choice showing exactly `typed`, once spaces around it are trimmed: case and inner spaces count. The logger's
     /// add-your-own and the Edit options screen both check new text with it, so neither saves a twin.
     static func match(_ typed: String, in choices: [OptionChoice]) -> OptionChoice? {

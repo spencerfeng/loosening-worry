@@ -22,10 +22,10 @@ struct TriggerSummaryTests {
     /// The page's lines count with the same hand-written plurals.
     @Test
     func `the page's lines read one as one time`() throws {
-        let one = InsightsReport.Share(count: 1, total: 1)
+        let one = Share(count: 1, total: 1)
         #expect(String(localized: one.noBetterLine) == "no better 1 of 1 time")
         #expect(String(localized: one.lighterLine) == "lighter 1 of 1 time")
-        #expect(String(localized: InsightsReport.Share(count: 5, total: 6).noBetterLine) == "no better 5 of 6 times")
+        #expect(String(localized: Share(count: 5, total: 6).noBetterLine) == "no better 5 of 6 times")
 
         let loop = Loop.sample(createdAt: .now, noticed: .whileHappening)
         let detail = try #require(InsightsReport(

@@ -1372,6 +1372,202 @@
         }
       }
     },
+    "insights.checkIns" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check-ins"
+          }
+        }
+      }
+    },
+    "insights.checkIns.felt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How your check-ins felt"
+          }
+        }
+      }
+    },
+    "insights.checkIns.named" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The feelings you name most"
+          }
+        }
+      }
+    },
+    "insights.checkIns.neutral" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Neutral"
+          }
+        }
+      }
+    },
+    "insights.checkIns.onPleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "On pleasant check-ins"
+          }
+        }
+      }
+    },
+    "insights.checkIns.onUnpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "On unpleasant check-ins"
+          }
+        }
+      }
+    },
+    "insights.checkIns.pleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pleasant"
+          }
+        }
+      }
+    },
+    "insights.checkIns.share" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld %#@checkIns@"
+          },
+          "substitutions" : {
+            "checkIns" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "check-in"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "check-ins"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.checkIns.total" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %#@checkIns@ %2$@"
+          },
+          "substitutions" : {
+            "checkIns" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "check-in"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "new",
+                      "value" : "check-ins"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "insights.checkIns.unpleasant" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unpleasant"
+          }
+        }
+      }
+    },
+    "insights.checkIns.wait" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "After a few more check-ins, you'll see patterns here."
+          }
+        }
+      }
+    },
+    "insights.checkIns.weighs" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What weighs on you, what lifts you"
+          }
+        }
+      }
+    },
+    "insights.checkIns.weighs.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "What you picked, by how you felt"
+          }
+        }
+      }
+    },
+    "insights.checkIns.weighs.note" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Neutral check-ins aren't counted here."
+          }
+        }
+      }
+    },
     "insights.empty" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1608,6 +1804,39 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "insights.show" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Show insights for"
+          }
+        }
+      }
+    },
+    "insights.show.checkIns" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Check-ins"
+          }
+        }
+      }
+    },
+    "insights.show.loops" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Loops"
           }
         }
       }

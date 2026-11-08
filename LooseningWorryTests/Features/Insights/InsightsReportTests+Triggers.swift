@@ -99,8 +99,8 @@ extension InsightsReportTests {
 
         let page = try #require(report(loops).trigger("trigger.work"))
 
-        #expect(page.habitsNoBetter == InsightsReport.Share(count: 2, total: 5))
-        #expect(page.toolsLighter == InsightsReport.Share(count: 1, total: 4))
+        #expect(page.habitsNoBetter == Share(count: 2, total: 5))
+        #expect(page.toolsLighter == Share(count: 1, total: 4))
     }
 
     /// Noticing earlier is the progress the dots show: the habits only, since meeting the urge with a tool comes before
@@ -178,8 +178,8 @@ extension InsightsReportTests {
 
         let page = try #require(report(loops).trigger("trigger.work"))
 
-        #expect(page.habitsNoBetter == InsightsReport.Share(count: 0, total: 2))
-        #expect(page.toolsLighter == InsightsReport.Share(count: 0, total: 2))
+        #expect(page.habitsNoBetter == Share(count: 0, total: 2))
+        #expect(page.toolsLighter == Share(count: 0, total: 2))
     }
 
     /// Each part of the page shows only once it has something to say.

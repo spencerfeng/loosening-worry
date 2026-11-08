@@ -68,12 +68,6 @@ struct InsightsReport {
         }
     }
 
-    /// How many of some loops went a given way, for "no better 5 of 6 times".
-    struct Share: Equatable {
-        let count: Int
-        let total: Int
-    }
-
     let period: InsightsPeriod
     /// Oldest first.
     let bars: [Bar]
@@ -111,16 +105,9 @@ struct InsightsReport {
                 isCurrent: (start ..< end).contains(now),
             )
         }
-        var choiceIDs: [String: String] = [:]
-        for choice in OptionList.choices(for: .trigger, saved: saved) + OptionList.choices(
-            for: .behavior,
-            saved: saved,
-        ) {
-            for id in [choice.id] + choice.mergedIDs {
-                choiceIDs[id] = choice.id
-            }
-        }
-        self.choiceIDs = choiceIDs
+        let byID = OptionList.choicesByID(for: .trigger, saved: saved)
+            .merging(OptionList.choicesByID(for: .behavior, saved: saved)) { trigger, _ in trigger }
+        choiceIDs = byID.mapValues(\.id)
     }
 
     /// "Most loops start between 8 and 10 am": the hour that begins the two-hour stretch of the day with the most
@@ -300,10 +287,10 @@ struct TriggerDetail: Equatable {
     let followedBy: [Followed]
     /// Of all its habits, the ones that brought more worry, tension or no change, so the total matches what followed
     /// it; `nil` until one has a clear result, as there's nothing to say before then.
-    let habitsNoBetter: InsightsReport.Share?
+    let habitsNoBetter: Share?
     /// Of all its tool runs, the ones that left the person lighter; `nil` until one has a Lighter, About the same or
     /// Heavier answer.
-    let toolsLighter: InsightsReport.Share?
+    let toolsLighter: Share?
     /// When the person noticed its last eight habits that say, oldest first. Tool runs have no answer: the person met
     /// the urge before a habit ran.
     let noticed: [NoticeTiming]

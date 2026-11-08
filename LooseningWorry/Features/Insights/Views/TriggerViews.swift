@@ -7,16 +7,14 @@ struct WhatSetsYouOffCard: View {
     let open: (String) -> Void
 
     var body: some View {
-        InsightsCard(title: LocalizedStringResource("insights.setsYouOff", defaultValue: "What sets you off")) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(LocalizedStringResource("insights.setsYouOff.detail", defaultValue: "And what you did about it"))
-                    .font(.theme(.subheadline))
-                    .foregroundStyle(.theme(.textTertiary))
-                ColorKey(entries: [
-                    (.redFill, LocalizedStringResource("insights.key.habit", defaultValue: "The old habit")),
-                    (.greenFill, LocalizedStringResource("insights.key.tool", defaultValue: "Met it with a tool")),
-                ])
-            }
+        InsightsCard(
+            title: LocalizedStringResource("insights.setsYouOff", defaultValue: "What sets you off"),
+            subtitle: LocalizedStringResource("insights.setsYouOff.detail", defaultValue: "And what you did about it"),
+        ) {
+            ColorKey(entries: [
+                (.redFill, LocalizedStringResource("insights.key.habit", defaultValue: "The old habit")),
+                (.greenFill, LocalizedStringResource("insights.key.tool", defaultValue: "Met it with a tool")),
+            ])
             VStack(spacing: 0) {
                 ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
                     if index > 0 {
@@ -185,7 +183,7 @@ extension TriggerDetail {
     }
 }
 
-extension InsightsReport.Share {
+extension Share {
     /// "no better 5 of 6 times", for the habits. "times" is a plural on the total, written by hand in the catalog.
     var noBetterLine: LocalizedStringResource {
         LocalizedStringResource("insights.trigger.noBetter", defaultValue: "no better \(count) of \(total) times")
@@ -255,7 +253,7 @@ private struct GaveCard: View {
 private struct ShareRow: View {
     let name: LocalizedStringResource
     let line: LocalizedStringResource
-    let share: InsightsReport.Share
+    let share: Share
     let color: Theme.ColorRole
 
     var body: some View {
@@ -279,7 +277,7 @@ private struct ShareRow: View {
                     GeometryReader { proxy in
                         Capsule()
                             .fill(.theme(color))
-                            .frame(width: proxy.size.width * Double(share.count) / Double(max(share.total, 1)))
+                            .frame(width: proxy.size.width * share.fraction)
                     }
                 }
                 .accessibilityHidden(true)

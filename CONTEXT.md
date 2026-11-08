@@ -17,7 +17,9 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   done any number of times a day; Home shows today's count and the time of the last one. It never leads to the lesson.
   When the feeling is on the unpleasant side, the finish screen suggests a tool chosen from the words picked (worry
   words to Get curious, self-judgment to Be kind, heated words to Note it, drained to Breathe), with the other tools
-  and Log a loop beside it.
+  and Log a loop beside it. Insights has a Check-ins side, beside Loops: how the check-ins felt (a mix, never a score
+  or trend), the five words named most, and the contexts picked most on unpleasant and on pleasant check-ins. It waits
+  for five check-ins in the period.
 - **Check-in context**: what's having the biggest impact on the person, the check-in's last step. Contexts are options
   of their own kind (`OptionKind.context`). The starters are HealthKit's 18 State of Mind associations (Community,
   Current events, … Work); the person's own sit among them, all listed alphabetically, and one just added, in the step

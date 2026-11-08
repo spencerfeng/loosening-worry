@@ -3,7 +3,8 @@ import SwiftData
 import SwiftUI
 
 /// Insights: how many loops the person noticed and when, what sets them off most, and what the habit they reach for
-/// most actually gives them, for this week or the last four. Each card shows as soon as it means something.
+/// most actually gives them; or, switched to check-ins, how those felt. For this week or the last four. Each card
+/// shows as soon as it means something.
 struct InsightsView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     /// Only the loops the longest period can show, so the work stays small as history grows.
@@ -11,8 +12,12 @@ struct InsightsView: View {
     @Query private var savedOptions: [LoopOption]
     /// Whether anything has ever been logged, for the right words when the period is empty.
     @Query private var anyLoop: [Loop]
+    /// Only the check-ins the longest period can show, like `loops`.
+    @Query private var checkIns: [CheckIn]
     /// Back to this week on each visit.
     @State private var period = InsightsPeriod.thisWeek
+    /// Back to loops on each visit.
+    @State private var subject = InsightsSubject.loops
     /// The trigger whose page is open, by the id `InsightsReport.triggers` gives it.
     @State private var openTrigger: String?
 
@@ -26,6 +31,7 @@ struct InsightsView: View {
         var anyLoop = FetchDescriptor<Loop>()
         anyLoop.fetchLimit = 1
         _anyLoop = Query(anyLoop)
+        _checkIns = Query(filter: #Predicate<CheckIn> { $0.createdAt >= start })
     }
 
     var body: some View {
@@ -36,6 +42,7 @@ struct InsightsView: View {
         // A visit starts afresh: this week, and no trigger's page left open for a period it no longer matches.
         .onDisappear {
             period = .thisWeek
+            subject = .loops
             openTrigger = nil
         }
     }
@@ -55,7 +62,26 @@ struct InsightsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     header
-                    if report.isEmpty {
+                    Picker(selection: $subject) {
+                        Text(LocalizedStringResource("insights.show.loops", defaultValue: "Loops"))
+                            .tag(InsightsSubject.loops)
+                        Text(LocalizedStringResource("insights.show.checkIns", defaultValue: "Check-ins"))
+                            .tag(InsightsSubject.checkIns)
+                    } label: {
+                        Text(LocalizedStringResource("insights.show", defaultValue: "Show insights for"))
+                    }
+                    .pickerStyle(.segmented)
+                    if subject == .checkIns {
+                        CheckInInsights(
+                            report: CheckInReport(
+                                checkIns: checkIns,
+                                saved: savedOptions,
+                                period: period,
+                                now: .now,
+                                calendar: .current,
+                            )
+                        )
+                    } else if report.isEmpty {
                         NothingYetCard(period: period, isFirstTime: anyLoop.isEmpty, logLoop: logLoop)
                     } else {
                         LoopsCard(report: report)
@@ -117,6 +143,11 @@ struct InsightsView: View {
             .accessibilityValue(Text(period.name))
         }
     }
+}
+
+/// What Insights is showing: the person's loops, or their check-ins.
+enum InsightsSubject {
+    case loops, checkIns
 }
 
 extension InsightsPeriod {
@@ -333,18 +364,27 @@ private struct NothingYetCard: View {
     }
 }
 
-/// A card on the surface color, with a small title when it has one.
+/// A card on the surface color, with a small title when it has one, and a line under the title that says what the
+/// card shows, set close to it.
 struct InsightsCard<Content: View>: View {
     var title: LocalizedStringResource?
+    var subtitle: LocalizedStringResource?
     @ViewBuilder let content: Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             if let title {
-                Text(title)
-                    .font(.theme(.callout))
-                    .foregroundStyle(.theme(.textSecondary))
-                    .accessibilityAddTraits(.isHeader)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.theme(.callout))
+                        .foregroundStyle(.theme(.textSecondary))
+                        .accessibilityAddTraits(.isHeader)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(.theme(.caption))
+                            .foregroundStyle(.theme(.textTertiary))
+                    }
+                }
             }
             content
         }
