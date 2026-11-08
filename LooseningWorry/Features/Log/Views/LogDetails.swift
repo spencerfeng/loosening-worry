@@ -4,12 +4,15 @@ import SwiftUI
 ///
 /// Like `LogQuestion`, it takes values rather than the view model, so it shows what it last showed while it leaves.
 struct LogDetails: View {
-    /// Scroll target for the note field, so the logger can keep what's being typed above the keyboard as it grows.
-    static let noteFieldID = "LogDetails.noteField"
+    /// Scroll target for the details card, so the logger can keep the note being typed above the keyboard and the Save
+    /// button, with the card's own padding showing below it.
+    static let cardID = "LogDetails.card"
 
     let isShowing: Bool
     let anxiety: Int?
     @Binding var note: String
+    /// Whether the note field has focus; the logger keeps it above the keyboard and the Save button while it does.
+    var isNoteFocused: FocusState<Bool>.Binding
     let toggle: () -> Void
     let setAnxiety: (Int) -> Void
     /// Called when the note field grows a line, so the logger can bring its new last line into view.
@@ -39,8 +42,14 @@ struct LogDetails: View {
             .accessibilityValue(isShowing ? Text("Open") : Text("Closed"))
 
             if isShowing {
-                LogDetailsCard(anxiety: anxiety, note: $note, setAnxiety: setAnxiety, noteGrew: noteGrew)
-                    .transition(.opacity)
+                LogDetailsCard(
+                    anxiety: anxiety,
+                    note: $note,
+                    setAnxiety: setAnxiety,
+                    isNoteFocused: isNoteFocused,
+                    noteGrew: noteGrew,
+                )
+                .transition(.opacity)
             }
         }
     }
@@ -51,6 +60,7 @@ private struct LogDetailsCard: View {
     let anxiety: Int?
     @Binding var note: String
     let setAnxiety: (Int) -> Void
+    var isNoteFocused: FocusState<Bool>.Binding
     let noteGrew: () -> Void
 
     private static let anxietyLabel = LocalizedStringResource(
@@ -108,6 +118,7 @@ private struct LogDetailsCard: View {
                     Text(Self.noteLabel)
                 }
                 .lineLimit(1 ... 5)
+                .focused(isNoteFocused)
                 // Only growing calls for a scroll: typing within a line, or the field emptying as the card closes,
                 // leaves the view where the person put it.
                 .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { old, new in
@@ -120,13 +131,13 @@ private struct LogDetailsCard: View {
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
                 .frame(minHeight: 46)
-                .id(LogDetails.noteFieldID)
                 .background(.theme(.background), in: .rect(cornerRadius: 14))
                 .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(.theme(.border)) }
             }
         }
         .padding(16)
         .cardSurface(cornerRadius: 20)
+        .id(LogDetails.cardID)
     }
 
     private var anxietyRange: ClosedRange<Double> {

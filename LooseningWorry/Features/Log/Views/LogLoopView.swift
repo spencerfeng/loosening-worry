@@ -9,6 +9,8 @@ struct LogLoopView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
     @State private var model = LogLoopViewModel()
+    /// Whether the "How did it feel?" note has focus, so it can be kept above the keyboard and the Save button.
+    @FocusState private var isNoteFocused: Bool
     /// The step whose options are being edited, when Edit options is open.
     @State private var editing: OptionKind?
     /// The tool the person is meeting the urge with, after "Nothing yet".
@@ -85,6 +87,7 @@ struct LogLoopView: View {
                                 isShowing: model.isShowingDetails,
                                 anxiety: model.anxiety,
                                 note: $model.note,
+                                isNoteFocused: $isNoteFocused,
                             ) {
                                 withAnimation(stepAnimation) { model.toggleDetails() }
                             } setAnxiety: { level in
@@ -92,7 +95,7 @@ struct LogLoopView: View {
                             } noteGrew: {
                                 // Its new last line would otherwise slide under the keyboard.
                                 withAnimation(stepAnimation) {
-                                    proxy.scrollTo(LogDetails.noteFieldID, anchor: .bottom)
+                                    proxy.scrollTo(LogDetails.cardID, anchor: .bottom)
                                 }
                             }
                         }
@@ -103,6 +106,13 @@ struct LogLoopView: View {
                 .keepsAboveKeyboard(
                     LogQuestion.addOwnFieldID,
                     isShowing: model.ownDraft.isOpen,
+                    in: proxy,
+                    animation: stepAnimation,
+                )
+                // Focusing only scrolls far enough for the caret, leaving the field's foot under the Save button.
+                .keepsAboveKeyboard(
+                    LogDetails.cardID,
+                    isShowing: isNoteFocused,
                     in: proxy,
                     animation: stepAnimation,
                 )
