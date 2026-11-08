@@ -70,6 +70,21 @@ struct EditOptionsViewModelTests {
         #expect(!sections[0].rows.contains { $0.label == "News" })
     }
 
+    /// Starters live in code, so only the person's own can be deleted for good.
+    @Test
+    func `only the person's own removed options can be deleted`() {
+        let news = LoopOption(overriding: .news, label: "News")
+        news.isHidden = true
+        let saved = [own("Rent due", hidden: true), own("Call from Mom"), news]
+
+        let sections = EditOptionsViewModel().sections(saved: saved)
+
+        let canDelete = Dictionary(uniqueKeysWithValues: sections.flatMap(\.rows).map { ($0.label, $0.canDelete) })
+        #expect(canDelete["Rent due"] == true)
+        #expect(canDelete["News"] == false)
+        #expect(canDelete["Call from Mom"] == false)
+    }
+
     /// Restoring would list the text twice, so the button is off until the other one goes.
     @Test
     func `a removed option can't be restored while another shows its text`() {
@@ -205,6 +220,22 @@ struct EditOptionsViewModelTests {
         model.remove(news) { removed.append($0) }
 
         #expect(removed == [news])
+        #expect(model.editError == nil)
+    }
+
+    @Test
+    func `if deleting fails, the screen says so, and the next delete that works clears it`() {
+        struct SaveFailed: Error {}
+        let model = EditOptionsViewModel()
+        let rentDue = OptionChoice(id: "custom.1", label: "Rent due")
+
+        model.delete(rentDue) { _ in throw SaveFailed() }
+        #expect(model.editError == .deleteFailed)
+
+        var deleted: [OptionChoice] = []
+        model.delete(rentDue) { deleted.append($0) }
+
+        #expect(deleted == [rentDue])
         #expect(model.editError == nil)
     }
 }

@@ -26,7 +26,7 @@ final class EditOptionsViewModel {
     private(set) var editError: EditError?
 
     enum EditError: Equatable {
-        case removeFailed, restoreFailed
+        case removeFailed, restoreFailed, deleteFailed
     }
 
     enum AddError: Equatable {
@@ -68,6 +68,17 @@ final class EditOptionsViewModel {
             editError = nil
         } catch {
             editError = .restoreFailed
+        }
+    }
+
+    /// Deletes a removed `choice` of the person's own for good.
+    /// - Parameter store: Saves the change. If it throws, `editError` tells the person nothing changed.
+    func delete(_ choice: OptionChoice, store: (OptionChoice) throws -> Void) {
+        do {
+            try store(choice)
+            editError = nil
+        } catch {
+            editError = .deleteFailed
         }
     }
 
@@ -177,5 +188,20 @@ struct EditRow: Equatable {
 
     var label: String {
         choice.label
+    }
+
+    /// Whether the option is in the Removed list.
+    var isRemoved: Bool {
+        if case .restore = action {
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Whether the option can be deleted for good: a removed one of the person's own. Starters live in code, so they
+    /// can only be hidden, and a row their text merges into stays with them.
+    var canDelete: Bool {
+        isRemoved && !choice.showsStarter
     }
 }

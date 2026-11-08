@@ -9,6 +9,10 @@ struct EditOptionsView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Query private var savedOptions: [LoopOption]
     @State private var model: EditOptionsViewModel
+    /// The removed option the person last asked to delete. It stays set after they confirm or cancel, so the alert
+    /// keeps its title while it closes.
+    @State private var pendingDelete: OptionChoice?
+    @State private var isConfirmingDelete = false
     /// Told about each option the person adds here, so the screen that opened this one can pick it.
     private let added: (OptionChoice) -> Void
 
@@ -48,7 +52,10 @@ struct EditOptionsView: View {
                 }
 
                 ForEach(model.sections(saved: savedOptions), id: \.kind) { section in
-                    OptionSection(section: section, remove: remove, restore: restore)
+                    OptionSection(section: section, remove: remove, restore: restore) { choice in
+                        pendingDelete = choice
+                        isConfirmingDelete = true
+                    }
                 }
 
                 Text(model.kind.copy.editFootnote)
@@ -65,6 +72,30 @@ struct EditOptionsView: View {
             if let error {
                 AccessibilityNotification.Announcement(String(localized: error.message)).post()
             }
+        }
+        // An alert rather than a confirmation dialog: anchored to its button, a dialog shows as a popover, which leaves
+        // out Cancel.
+        .alert(
+            Text(LocalizedStringResource("edit.delete.title", defaultValue: "Delete “\(pendingDelete?.label ?? "")”?")),
+            isPresented: $isConfirmingDelete,
+            presenting: pendingDelete,
+        ) { choice in
+            Button(role: .destructive) {
+                delete(choice)
+            } label: {
+                Text(LocalizedStringResource("edit.delete.confirm", defaultValue: "Delete"))
+            }
+            Button(role: .cancel) {} label: {
+                Text(LocalizedStringResource("edit.delete.cancel", defaultValue: "Cancel"))
+            }
+        } message: { _ in
+            Text(LocalizedStringResource(
+                "edit.delete.message",
+                defaultValue: """
+                It leaves your list for good. What you’ve logged with it keeps it, and adding it again brings that \
+                back.
+                """,
+            ))
         }
         .navigationTitle(Text(model.kind.copy.editTitle))
         .navigationBarTitleDisplayMode(.inline)
@@ -105,6 +136,12 @@ struct EditOptionsView: View {
     private func remove(_ choice: OptionChoice) {
         withAnimation(animation) {
             model.remove(choice) { try OptionStore(context: modelContext).remove($0) }
+        }
+    }
+
+    private func delete(_ choice: OptionChoice) {
+        withAnimation(animation) {
+            model.delete(choice) { try OptionStore(context: modelContext).delete($0) }
         }
     }
 
@@ -232,6 +269,8 @@ private struct OptionSection: View {
     let section: EditSection
     let remove: (OptionChoice) -> Void
     let restore: (OptionChoice) -> Void
+    /// Asks to delete a removed option of the person's own for good.
+    let delete: (OptionChoice) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -246,7 +285,7 @@ private struct OptionSection: View {
                     if index > 0 {
                         Divider().overlay(.theme(.borderSubtle))
                     }
-                    OptionRow(row: row, remove: remove, restore: restore)
+                    OptionRow(row: row, remove: remove, restore: restore, delete: delete)
                 }
             }
             .cardSurface(cornerRadius: 18)
@@ -268,13 +307,15 @@ private struct OptionRow: View {
     let row: EditRow
     let remove: (OptionChoice) -> Void
     let restore: (OptionChoice) -> Void
+    /// Asks to delete a removed option of the person's own for good.
+    let delete: (OptionChoice) -> Void
 
     var body: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(row.label)
                     .font(.theme(.headline))
-                    .foregroundStyle(isRemoved ? .theme(.textTertiary) : .theme(.textPrimary))
+                    .foregroundStyle(row.isRemoved ? .theme(.textTertiary) : .theme(.textPrimary))
                 if let note = row.note {
                     Text(note.text)
                         .font(.theme(.caption))
@@ -283,20 +324,25 @@ private struct OptionRow: View {
             }
             .accessibilityElement(children: .combine)
             Spacer(minLength: 0)
+            if row.canDelete {
+                Button {
+                    delete(row.choice)
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.theme(.redStrong))
+                        .frame(width: 44, height: 44)
+                        .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text(LocalizedStringResource("edit.delete", defaultValue: "Delete \(row.label)")))
+            }
             action
         }
         .padding(.leading, 14)
         .padding(.trailing, 6)
         .padding(.vertical, 6)
         .frame(minHeight: 56)
-    }
-
-    private var isRemoved: Bool {
-        if case .restore = row.action {
-            true
-        } else {
-            false
-        }
     }
 
     @ViewBuilder private var action: some View {
@@ -357,6 +403,8 @@ private extension EditOptionsViewModel.EditError {
             LocalizedStringResource("edit.error.remove", defaultValue: "Couldn’t remove that. Please try again.")
         case .restoreFailed:
             LocalizedStringResource("edit.error.restore", defaultValue: "Couldn’t restore that. Please try again.")
+        case .deleteFailed:
+            LocalizedStringResource("edit.error.delete", defaultValue: "Couldn’t delete that. Please try again.")
         }
     }
 }

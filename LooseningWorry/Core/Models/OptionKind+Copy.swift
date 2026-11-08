@@ -86,7 +86,7 @@ extension OptionKind {
                     "edit.footnote.contexts",
                     defaultValue: """
                     Removed contexts stop showing in check-ins. Past check-ins keep them, and you can restore them \
-                    any time. To fix a typo, remove the context and add it again.
+                    any time or delete your own for good. To fix a typo, remove the context and add it again.
                     """,
                 ),
             )
@@ -102,8 +102,8 @@ extension OptionKind {
     private static let optionsFootnote = LocalizedStringResource(
         "edit.footnote",
         defaultValue: """
-        Removed options stop showing in the logger. Past loops keep them, and you can restore them any time. \
-        To fix a typo, remove the option and add it again.
+        Removed options stop showing in the logger. Past loops keep them, and you can restore them any time or \
+        delete your own for good. To fix a typo, remove the option and add it again.
         """,
     )
 }

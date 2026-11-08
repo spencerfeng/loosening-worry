@@ -35,11 +35,14 @@ Domain language for the app. The design source is the "Loosening Worry — App M
   nothing private. It's kept on each device, and turns itself off if the device's passcode is removed.
 - **Onboarding**: the five screens a device opens on until it has been through them once: what the app is for, what a
   loop is, how to use the app, what it isn't, then the reminder time. Teaching is left to the lessons.
-- **Option**: one choice in the logger for a loop's trigger, behavior or result. Triggers and behaviors are ranked
-  by the person's history (see **Ranking**), six at a time with More for the rest. For results the logger shows the
+- **Option**: one choice in the logger for a loop's trigger, behavior or result. Triggers and behaviors are ranked by
+  the person's history (see **Ranking**), six at a time with More for the rest. For results the logger shows the
   starters (the core results, in a fixed order) first, then the person's own in the order they were added, so step 3
   never nudges the answer. A logged loop keeps each answer's id, which history counts by, and its text as it was, so
-  later changes to an option never rewrite past loops.
+  later changes to an option never rewrite past loops. Removing one of the person's own hides it, keeping its id, so
+  restoring it or typing its text again brings back the same history. From the Removed list they can also delete their
+  own for good (starters can only be hidden). What was logged with it keeps its text, and adding that text again later
+  brings the option back under its old ids, so its history counts with it again.
 - **Starter**: an option that ships with the app, defined in code with a stable id (a `StarterID`, such as
   `trigger.news`) and a translated label. Starters are never stored, so a new or reworded starter reaches everyone
   with the next update. Once released, an id never changes: rewording changes only the label, because overrides

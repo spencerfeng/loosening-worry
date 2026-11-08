@@ -36,6 +36,12 @@ final class CheckIn {
         Pleasantness(rawValue: pleasantnessID)
     }
 
+    /// The contexts picked, with the id each is counted by and its text as picked. A pair missing from either list,
+    /// which only a bad sync could leave, is dropped.
+    var contexts: [OptionChoice] {
+        zip(contextIDs, contextLabels).map(OptionChoice.init(id:label:))
+    }
+
     /// The words picked that this version knows.
     var feelings: [Feeling] {
         feelingIDs.compactMap(Feeling.init(rawValue:))

@@ -42,6 +42,17 @@ final class Loop {
         resultLabel = result.label
     }
 
+    /// The answer to one of the loop's steps, with the id it's counted by and its text as logged; `nil` for a kind that
+    /// isn't a loop step.
+    func answer(for step: OptionKind) -> OptionChoice? {
+        switch step {
+        case .trigger: OptionChoice(id: triggerID, label: triggerLabel)
+        case .behavior: OptionChoice(id: behaviorID, label: behaviorLabel)
+        case .result: OptionChoice(id: resultID, label: resultLabel)
+        case .context, .unrecognized: nil
+        }
+    }
+
     /// When the person noticed it, or `nil` if they didn't say or the answer is one this version doesn't know.
     var noticed: NoticeTiming? {
         get { noticedID.flatMap(NoticeTiming.init(rawValue:)) }

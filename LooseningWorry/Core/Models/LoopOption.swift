@@ -111,6 +111,13 @@ final class LoopOption {
 
     /// A fresh id for one of the person's own options.
     static func newOptionID() -> String {
-        "custom." + UUID().uuidString
+        ownIDPrefix + UUID().uuidString
     }
+
+    /// Whether `id` was made for one of the person's own options, rather than a starter, a tool or its outcome.
+    static func isOwnID(_ id: String) -> Bool {
+        id.hasPrefix(ownIDPrefix)
+    }
+
+    private static let ownIDPrefix = "custom."
 }

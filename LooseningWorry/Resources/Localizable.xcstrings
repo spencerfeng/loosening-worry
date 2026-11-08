@@ -332,6 +332,61 @@
         }
       }
     },
+    "edit.delete" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete %@"
+          }
+        }
+      }
+    },
+    "edit.delete.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "edit.delete.confirm" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "edit.delete.message" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It leaves your list for good. What you’ve logged with it keeps it, and adding it again brings that back."
+          }
+        }
+      }
+    },
+    "edit.delete.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete “%@”?"
+          }
+        }
+      }
+    },
     "edit.done" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -339,6 +394,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Done"
+          }
+        }
+      }
+    },
+    "edit.error.delete" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn’t delete that. Please try again."
           }
         }
       }
@@ -371,7 +437,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Removed options stop showing in the logger. Past loops keep them, and you can restore them any time. To fix a typo, remove the option and add it again."
+            "value" : "Removed options stop showing in the logger. Past loops keep them, and you can restore them any time or delete your own for good. To fix a typo, remove the option and add it again."
           }
         }
       }
@@ -382,7 +448,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Removed contexts stop showing in check-ins. Past check-ins keep them, and you can restore them any time. To fix a typo, remove the context and add it again."
+            "value" : "Removed contexts stop showing in check-ins. Past check-ins keep them, and you can restore them any time or delete your own for good. To fix a typo, remove the context and add it again."
           }
         }
       }

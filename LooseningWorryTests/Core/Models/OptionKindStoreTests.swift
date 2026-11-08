@@ -43,10 +43,12 @@ struct OptionKindStoreTests {
     private static func execute(_ sql: String, at url: URL) throws {
         var database: OpaquePointer?
         defer { sqlite3_close(database) }
-        guard
-            sqlite3_open(url.path, &database) == SQLITE_OK, sqlite3_exec(database, sql, nil, nil, nil) == SQLITE_OK,
-            sqlite3_changes(database) == 1
-        else {
+        guard sqlite3_open(url.path, &database) == SQLITE_OK else {
+            throw SQLiteError(message: String(cString: sqlite3_errmsg(database)))
+        }
+        // The store SwiftData wrote can still be open while it winds down, so wait for its lock rather than fail.
+        sqlite3_busy_timeout(database, 5000)
+        guard sqlite3_exec(database, sql, nil, nil, nil) == SQLITE_OK, sqlite3_changes(database) == 1 else {
             throw SQLiteError(message: String(cString: sqlite3_errmsg(database)))
         }
     }

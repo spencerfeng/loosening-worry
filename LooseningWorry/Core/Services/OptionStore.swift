@@ -7,10 +7,14 @@ import SwiftData
 struct OptionStore {
     let context: ModelContext
 
-    /// Adds `label` as the person's own option. If they hid an option that shows exactly this text, it comes back
-    /// instead, so they never end up with a hidden option and a visible twin.
+    /// Adds `typed`, trimmed, as the person's own option. If they hid an option that shows exactly this text, it comes
+    /// back
+    /// instead, so they never end up with a hidden option and a visible twin. If they deleted one, it comes back
+    /// under its old ids, so what was logged with it before counts with it again.
     /// - Returns: The choice to pick, with the id a loop counts it by: the new option's, or the one brought back.
-    func addOwn(_ label: String, kind: OptionKind) throws -> OptionChoice {
+    func addOwn(_ typed: String, kind: OptionKind) throws -> OptionChoice {
+        // Trimmed as `OptionList.match` trims, so every check below sees the text as it will show.
+        let label = typed.trimmingCharacters(in: .whitespacesAndNewlines)
         let saved = try context.fetch(FetchDescriptor<LoopOption>())
         let choice: OptionChoice
         if let hidden = OptionList.hiddenOption(matching: label, for: kind, saved: saved) {
@@ -18,9 +22,14 @@ struct OptionStore {
             // A starter is counted by its id; one of their own by its option id.
             choice = OptionChoice(id: hidden.starterID ?? hidden.optionID, label: label)
         } else {
-            let option = LoopOption(kind: kind, label: label)
-            context.insert(option)
-            choice = OptionChoice(option)
+            let deletedIDs = try deletedIDs(showing: label, for: kind, saved: saved)
+            let options = (deletedIDs.isEmpty ? [LoopOption.newOptionID()] : deletedIDs).map { id in
+                let option = LoopOption(kind: kind, label: label)
+                option.optionID = id
+                return option
+            }
+            options.forEach(context.insert)
+            choice = OptionChoice(options[0])
         }
         // Saved now rather than with the loop: the logger tells the person it's kept for next time.
         try saveOrRollBack()
@@ -32,6 +41,8 @@ struct OptionStore {
         case coreResult
         /// Another option already shows this text, so restoring would list it twice.
         case alreadyShowing
+        /// Starters live in code, so they can be hidden but not deleted.
+        case starter
     }
 
     /// Removes `choice` from the logger: hides every option showing its text. A starter gets a change that hides it,
@@ -66,6 +77,38 @@ struct OptionStore {
         try saveOrRollBack()
     }
 
+    /// Deletes a removed `choice` of the person's own for good, every copy of its text included. Past loops and
+    /// check-ins keep its text, and adding the text again later counts them with it (see `addOwn`).
+    /// - Throws: `EditError.starter` if the choice shows a starter.
+    func delete(_ choice: OptionChoice) throws {
+        if choice.showsStarter {
+            throw EditError.starter
+        }
+        let ids = Set(choice.allIDs)
+        for option in try context.fetch(FetchDescriptor<LoopOption>()) where ids.contains(option.optionID) {
+            context.delete(option)
+        }
+        try saveOrRollBack()
+    }
+
+    /// The ids of the person's own options of `kind` that showed `label` and were deleted, as the loops or check-ins
+    /// logged with them still hold them: ids made for an option of their own that no option has now. Starters, tools
+    /// and tool outcomes have ids of their own kinds, never taken.
+    private func deletedIDs(showing label: String, for kind: OptionKind, saved: [LoopOption]) throws -> [String] {
+        let logged: [OptionChoice] = switch kind {
+        case .context: try context.fetch(FetchDescriptor<CheckIn>()).flatMap(\.contexts)
+        default: try context.fetch(FetchDescriptor<Loop>()).compactMap { $0.answer(for: kind) }
+        }
+        let taken = Set(saved.map(\.optionID))
+        var ids: [String] = []
+        for entry in logged where entry.label == label {
+            if LoopOption.isOwnID(entry.id), !taken.contains(entry.id), !ids.contains(entry.id) {
+                ids.append(entry.id)
+            }
+        }
+        return ids
+    }
+
     /// Calls `starter` for each starter `choice` shows, and `own` for each of the person's own options it shows.
     private func forEachOption(
         showing choice: OptionChoice,
@@ -76,8 +119,9 @@ struct OptionStore {
         for id in choice.allIDs {
             if let starterID = StarterID(rawValue: id) {
                 starter(starterID)
-            } else if let option = saved.first(where: { $0.optionID == id }) {
-                own(option)
+            } else {
+                // Two devices can each have brought a deleted option back under its old id.
+                saved.filter { $0.optionID == id }.forEach(own)
             }
         }
     }

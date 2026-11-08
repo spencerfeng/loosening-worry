@@ -14,6 +14,11 @@ struct OptionChoice: Equatable, Sendable {
         [id] + mergedIDs
     }
 
+    /// Whether any of its ids is a starter's. Starters live in code, so such a choice can be hidden but not deleted.
+    var showsStarter: Bool {
+        allIDs.contains { StarterID(rawValue: $0) != nil }
+    }
+
     /// Set when the choice is a starter.
     var starterID: StarterID? {
         StarterID(rawValue: id)

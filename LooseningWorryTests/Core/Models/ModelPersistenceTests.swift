@@ -185,6 +185,10 @@ struct ModelPersistenceTests {
 
         #expect(fetched.contextIDs == ["context.work", "own-1"])
         #expect(fetched.contextLabels == ["Work", "Moving house"])
+        #expect(fetched.contexts == [
+            OptionChoice(.contextWork, label: "Work"),
+            OptionChoice(id: "own-1", label: "Moving house"),
+        ])
     }
 
     /// A newer version may add words; until this one knows them, they're left out rather than shown wrong.
