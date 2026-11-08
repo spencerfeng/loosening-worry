@@ -89,6 +89,11 @@ struct LogLoopView: View {
                                 withAnimation(stepAnimation) { model.toggleDetails() }
                             } setAnxiety: { level in
                                 model.setAnxiety(level)
+                            } noteGrew: {
+                                // Its new last line would otherwise slide under the keyboard.
+                                withAnimation(stepAnimation) {
+                                    proxy.scrollTo(LogDetails.noteFieldID, anchor: .bottom)
+                                }
                             }
                         }
                     }

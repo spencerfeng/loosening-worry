@@ -4,11 +4,16 @@ import SwiftUI
 ///
 /// Like `LogQuestion`, it takes values rather than the view model, so it shows what it last showed while it leaves.
 struct LogDetails: View {
+    /// Scroll target for the note field, so the logger can keep what's being typed above the keyboard as it grows.
+    static let noteFieldID = "LogDetails.noteField"
+
     let isShowing: Bool
     let anxiety: Int?
     @Binding var note: String
     let toggle: () -> Void
     let setAnxiety: (Int) -> Void
+    /// Called when the note field grows a line, so the logger can bring its new last line into view.
+    let noteGrew: () -> Void
 
     private static let toggleLabel = LocalizedStringResource(
         "log.details.toggle",
@@ -34,7 +39,7 @@ struct LogDetails: View {
             .accessibilityValue(isShowing ? Text("Open") : Text("Closed"))
 
             if isShowing {
-                LogDetailsCard(anxiety: anxiety, note: $note, setAnxiety: setAnxiety)
+                LogDetailsCard(anxiety: anxiety, note: $note, setAnxiety: setAnxiety, noteGrew: noteGrew)
                     .transition(.opacity)
             }
         }
@@ -46,6 +51,7 @@ private struct LogDetailsCard: View {
     let anxiety: Int?
     @Binding var note: String
     let setAnxiety: (Int) -> Void
+    let noteGrew: () -> Void
 
     private static let anxietyLabel = LocalizedStringResource(
         "log.details.anxiety",
@@ -97,15 +103,24 @@ private struct LogDetailsCard: View {
                     .foregroundStyle(.theme(.textSecondary))
                     // The field carries the same label for VoiceOver.
                     .accessibilityHidden(true)
-                TextField(text: $note, prompt: Text(Self.notePlaceholder)) {
+                // Grows with the note, up to five lines, then scrolls; Return starts a new line, as in Notes.
+                TextField(text: $note, prompt: Text(Self.notePlaceholder), axis: .vertical) {
                     Text(Self.noteLabel)
                 }
-                // Return closes the keyboard, so the Save button is in reach again.
-                .submitLabel(.done)
+                .lineLimit(1 ... 5)
+                // Only growing calls for a scroll: typing within a line, or the field emptying as the card closes,
+                // leaves the view where the person put it.
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { old, new in
+                    if new > old {
+                        noteGrew()
+                    }
+                }
                 .font(.theme(.body))
                 .foregroundStyle(.theme(.textPrimary))
                 .padding(.horizontal, 14)
+                .padding(.vertical, 12)
                 .frame(minHeight: 46)
+                .id(LogDetails.noteFieldID)
                 .background(.theme(.background), in: .rect(cornerRadius: 14))
                 .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(.theme(.border)) }
             }
